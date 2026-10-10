@@ -2,8 +2,8 @@
 Тест 5: Сортировка по цене (low → high и high → low)
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
 
 
 def test_sort_by_price_low_to_high(page):

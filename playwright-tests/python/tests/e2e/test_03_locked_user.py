@@ -2,7 +2,7 @@
 Тест 3: Блокированный пользователь — locked_out_user
 """
 import pytest
-from tests.page_objects.login_page import LoginPage, get_all_credentials
+from page_objects.login_page import LoginPage, get_all_credentials
 
 
 def test_locked_user(page):

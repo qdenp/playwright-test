@@ -2,8 +2,8 @@
 Тест 8: Параметризация логинов через pytest.mark.parametrize
 """
 import pytest
-from tests.page_objects.login_page import LoginPage, get_login_params
-from tests.page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage, get_login_params
+from page_objects.inventory_page import InventoryPage
 
 
 @pytest.mark.parametrize('username,password,should_login,expected_title,expected_error', [

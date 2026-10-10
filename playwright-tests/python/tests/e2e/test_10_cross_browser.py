@@ -2,8 +2,8 @@
 Тест 10: Кросс-браузерная проверка — авторизация
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
 
 
 def test_cross_browser(page):

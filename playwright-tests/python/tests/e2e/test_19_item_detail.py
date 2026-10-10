@@ -3,8 +3,8 @@
 """
 import pytest
 from playwright.sync_api import expect
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
 
 
 def test_item_detail(page):

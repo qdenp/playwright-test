@@ -2,7 +2,7 @@
 Тест 16: Визуальный скриншот страницы товаров
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
+from page_objects.login_page import LoginPage
 
 
 def test_visual_screenshot(page):

@@ -3,10 +3,10 @@
 """
 import pytest
 from playwright.sync_api import expect
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
-from tests.page_objects.cart_page import CartPage
-from tests.page_objects.checkout_page import CheckoutPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
+from page_objects.cart_page import CartPage
+from page_objects.checkout_page import CheckoutPage
 
 
 def test_export_pdf_order(page, tmp_path):

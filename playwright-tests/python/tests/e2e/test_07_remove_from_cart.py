@@ -2,9 +2,9 @@
 Тест 7: Удаление товара из корзины
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
-from tests.page_objects.cart_page import CartPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
+from page_objects.cart_page import CartPage
 
 
 def test_remove_from_cart(page):

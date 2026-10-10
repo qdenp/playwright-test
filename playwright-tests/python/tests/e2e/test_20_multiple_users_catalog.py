@@ -2,8 +2,8 @@
 Тест 20: Разные пользователи видят одинаковый каталог
 """
 import pytest
-from tests.page_objects.login_page import LoginPage, get_all_credentials
-from tests.page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage, get_all_credentials
+from page_objects.inventory_page import InventoryPage
 
 
 def get_test_users():

@@ -2,9 +2,9 @@
 Тест 13: Добавление и удаление всех товаров
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
-from tests.page_objects.inventory_page import InventoryPage
-from tests.page_objects.cart_page import CartPage
+from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
+from page_objects.cart_page import CartPage
 
 
 def test_add_remove_all(page):

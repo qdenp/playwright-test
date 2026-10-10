@@ -2,7 +2,7 @@
 Тест 9: Скриншот при падении — неверные данные
 """
 import pytest
-from tests.page_objects.login_page import LoginPage
+from page_objects.login_page import LoginPage
 
 
 def test_screenshot_on_failure(page):

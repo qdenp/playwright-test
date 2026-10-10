@@ -3,7 +3,7 @@
 """
 import pytest
 from playwright.sync_api import expect
-from tests.page_objects.login_page import LoginPage
+from page_objects.login_page import LoginPage
 
 
 def test_about_page(page):
