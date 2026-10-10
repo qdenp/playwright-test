@@ -26,10 +26,10 @@ def test_item_detail(page):
 
     # Возвращаемся на Products
     page.get_by_text('Back to Products').click()
-    expect(page.locator('[data-test="inventory-item-name"]')).to_be_visible(timeout=5000)
+    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(timeout=5000)
 
     # Открываем детали второго товара
-    inventory_page.products.nth(1).locator('[data-test="inventory-item-name"]').click()
+    page.locator('[data-test="inventory-item-name"]').nth(1).click()
 
     # Проверяем detail второго товара
     expect(page.get_by_text('carry.allTheThings()')).not_to_be_visible(timeout=5000)
@@ -37,4 +37,4 @@ def test_item_detail(page):
 
     # Возвращаемся на Products
     page.get_by_text('Back to Products').click()
-    expect(page.locator('[data-test="inventory-item-name"]')).to_be_visible(timeout=5000)
+    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(timeout=5000)

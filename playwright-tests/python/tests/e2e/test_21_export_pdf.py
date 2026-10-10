@@ -35,8 +35,10 @@ def test_export_pdf_order(page, tmp_path):
     checkout_page.fill_info('Иван', 'Иванов', '100000')
     checkout_page.click_continue()
 
+    # Ожидаем перехода на checkout-step-two (Firefox/WebKit медленнее)
+    page.wait_for_url('**/checkout-step-two.html', timeout=15000)
+
     # Нажимаем Finish
-    checkout_page.wait_for_page_load()
     checkout_page.click_finish()
 
     # Ждём страницу подтверждения
