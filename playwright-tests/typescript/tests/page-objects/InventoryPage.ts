@@ -50,23 +50,26 @@ export class InventoryPage {
   async getProductPrice(index: number): Promise<number> {
     const product = this.products.nth(index);
     const priceText = await product.locator('.inventory_item_price').textContent();
+    if (!priceText) throw new Error(`Price not found for product at index ${index}`);
     return parseFloat(priceText.replace('$', ''));
   }
 
   async getProductTitle(index: number): Promise<string> {
     const product = this.products.nth(index);
-    return await product.locator('.inventory_item_name').textContent();
+    const title = await product.locator('.inventory_item_name').textContent();
+    return title ?? '';
   }
 
   async getProductDescription(index: number): Promise<string> {
     const product = this.products.nth(index);
-    return await product.locator('.inventory_item_desc').textContent();
+    const desc = await product.locator('.inventory_item_desc').textContent();
+    return desc ?? '';
   }
 
   async getCartBadgeCount(): Promise<number> {
     const badge = this.cartBadge.locator('.shopping_cart_badge');
     const text = await badge.textContent();
-    return parseInt(text, 10) || 0;
+    return parseInt(text ?? '0', 10) || 0;
   }
 
   async openCart(): Promise<void> {
@@ -94,7 +97,8 @@ export class InventoryPage {
   }
 
   async getTitleText(): Promise<string> {
-    return await this.headerTitle.textContent();
+    const title = await this.headerTitle.textContent();
+    return title ?? '';
   }
 
   async getAllProductNames(): Promise<string[]> {

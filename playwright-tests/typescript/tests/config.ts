@@ -15,9 +15,9 @@ export interface LoginTestParams {
  * Configuration from environment variables
  */
 export const config = {
-  username: process.env.SAUCE_DEMO_USERNAME || 'standard_user',
-  password: process.env.SAUCE_DEMO_PASSWORD || 'secret_sauce',
-  baseUrl: process.env.SAUCE_DEMO_BASE_URL || 'https://www.saucedemo.com',
+  username: process.env.SAUCE_DEMO_USERNAME ?? 'standard_user',
+  password: process.env.SAUCE_DEMO_PASSWORD ?? 'secret_sauce',
+  baseUrl: process.env.SAUCE_DEMO_BASE_URL ?? 'https://www.saucedemo.com',
 };
 
 /**

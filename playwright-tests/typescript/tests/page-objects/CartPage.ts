@@ -36,7 +36,7 @@ export class CartPage {
     const count = await this.cartItems.count();
     for (let i = 0; i < count; i++) {
       const name = await this.cartItems.nth(i).locator('[data-test="inventory-item-name"]').textContent();
-      names.push(name);
+      names.push(name ?? '');
     }
     return names;
   }
@@ -62,7 +62,8 @@ export class CartPage {
   }
 
   async getTotalPrice(): Promise<string> {
-    return await this.totalPrice.textContent();
+    const price = await this.totalPrice.textContent();
+    return price ?? '';
   }
 
   async continueShopping(): Promise<void> {
