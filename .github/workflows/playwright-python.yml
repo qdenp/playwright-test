@@ -33,7 +33,7 @@ jobs:
         working-directory: ./playwright-tests/python
 
       - name: Run pytest
-        run: pytest tests/e2e/ -v --tb=short
+        run: pytest tests/e2e/ -v --tb=short --browser ${{ matrix.browser }}
         working-directory: ./playwright-tests/python
         env:
           SAUCE_DEMO_USERNAME: standard_user
