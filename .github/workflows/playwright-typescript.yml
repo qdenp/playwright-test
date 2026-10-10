@@ -1,0 +1,157 @@
+name: Playwright Tests (TypeScript)
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'playwright-tests/typescript/**'
+      - '.github/workflows/playwright-typescript.yml'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - 'playwright-tests/typescript/**'
+      - '.github/workflows/playwright-typescript.yml'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        id: cache-node
+        with:
+          path: playwright-tests/typescript/node_modules
+          key: ts-node-${{ runner.os }}-${{ hashFiles('playwright-tests/typescript/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm install
+        working-directory: ./playwright-tests/typescript
+
+      - name: Run TypeScript type check
+        run: npx tsc --noEmit
+        working-directory: ./playwright-tests/typescript
+
+  test-chromium:
+    name: Tests (Chromium)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: playwright-tests/typescript/node_modules
+          key: ts-node-${{ runner.os }}-${{ hashFiles('playwright-tests/typescript/package-lock.json') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: cache-browser
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/Library/Caches/ms-playwright
+            ~/AppData/Local/ms-playwright
+          key: ts-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/typescript/package.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm install
+        working-directory: ./playwright-tests/typescript
+
+      - name: Install Playwright browsers
+        if: steps.cache-browser.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+        working-directory: ./playwright-tests/typescript
+
+      - name: Run Playwright tests on Chromium
+        run: npx playwright test --project=chromium --reporter=list
+        working-directory: ./playwright-tests/typescript
+        env:
+          SAUCE_DEMO_USERNAME: standard_user
+          SAUCE_DEMO_PASSWORD: secret_sauce
+          SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+
+  test-full:
+    name: Tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    needs: test-chromium
+    if: success() || failure()
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: playwright-tests/typescript/node_modules
+          key: ts-node-${{ runner.os }}-${{ hashFiles('playwright-tests/typescript/package-lock.json') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/Library/Caches/ms-playwright
+            ~/AppData/Local/ms-playwright
+          key: ts-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/typescript/package.json') }}
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./playwright-tests/typescript
+        if: steps.cache-node.outputs.cache-hit != 'true'
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        working-directory: ./playwright-tests/typescript
+        if: steps.cache-browser.outputs.cache-hit != 'true'
+
+      - name: Run Playwright tests on ${{ matrix.browser }}
+        run: npx playwright test --project=${{ matrix.browser }} --reporter=list
+        working-directory: ./playwright-tests/typescript
+        env:
+          SAUCE_DEMO_USERNAME: standard_user
+          SAUCE_DEMO_PASSWORD: secret_sauce
+          SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+
+  upload-report:
+    name: Upload Test Reports
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [test-chromium, test-full]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-typescript-all
+          path: playwright-tests/typescript/test-results/
+          retention-days: 30
