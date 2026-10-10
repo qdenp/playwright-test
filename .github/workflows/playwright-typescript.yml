@@ -89,6 +89,15 @@ jobs:
           SAUCE_DEMO_PASSWORD: secret_sauce
           SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
 
+      - name: Upload Chromium test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-chromium
+          path: playwright-tests/typescript/test-results/
+          retention-days: 30
+          if-no-files-found: ignore
+
   test-full:
     name: Tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
@@ -140,19 +149,11 @@ jobs:
           SAUCE_DEMO_PASSWORD: secret_sauce
           SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
 
-  upload-report:
-    name: Upload Test Reports
-    runs-on: ubuntu-latest
-    if: always()
-    needs: [test-chromium, test-full]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Upload combined report
+      - name: Upload ${{ matrix.browser }} test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-typescript-all
+          name: playwright-report-${{ matrix.browser }}
           path: playwright-tests/typescript/test-results/
           retention-days: 30
           if-no-files-found: ignore
