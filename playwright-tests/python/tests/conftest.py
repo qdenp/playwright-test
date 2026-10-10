@@ -8,7 +8,7 @@ import pytest
 def authenticated_page(page):
     """Автоматически авторизованная страница"""
     from page_objects.login_page import LoginPage
-    from tests.page_objects.inventory_page import InventoryPage
+    from page_objects.inventory_page import InventoryPage
 
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
