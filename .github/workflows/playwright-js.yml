@@ -3,8 +3,14 @@ name: Playwright Tests (JS)
 on:
   push:
     branches: [ master, main ]
+    paths:
+      - 'js/**'
+      - '.github/workflows/playwright-js.yml'
   pull_request:
     branches: [ master, main ]
+    paths:
+      - 'js/**'
+      - '.github/workflows/playwright-js.yml'
   workflow_dispatch:
 
 jobs:
