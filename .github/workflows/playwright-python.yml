@@ -25,7 +25,8 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install -r playwright-tests/python/requirements.txt
+        run: pip install -r requirements.txt
+        working-directory: ./playwright-tests/python
 
       - name: Install Playwright browsers
         run: playwright install --with-deps
