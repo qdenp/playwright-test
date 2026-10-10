@@ -1,0 +1,49 @@
+name: Playwright Tests (JS)
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./playwright-tests/js
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        working-directory: ./playwright-tests/js
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=list
+        working-directory: ./playwright-tests/js
+        env:
+          SAUCE_DEMO_USERNAME: standard_user
+          SAUCE_DEMO_PASSWORD: secret_sauce
+          SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+
+      - name: Upload report on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-tests/js/reports/
+          retention-days: 7
