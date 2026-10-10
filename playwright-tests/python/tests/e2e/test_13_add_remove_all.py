@@ -1,6 +1,7 @@
 """
 Тест 13: Добавление и удаление всех товаров
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage
@@ -31,12 +32,12 @@ def test_add_remove_all(page):
 
     # Удаляем все товары
     for i in range(product_count):
-        first_item = page.locator('.cart_item').first
-        first_item.get_by_role('button', name='Remove').click()
-        assert page.locator('.cart_item').count() == product_count - 1 - i
+        first_item = page.locator(".cart_item").first
+        first_item.get_by_role("button", name="Remove").click()
+        assert page.locator(".cart_item").count() == product_count - 1 - i
 
     # Корзина пуста
     assert cart_page.get_cart_item_count() == 0
 
     page.reload()
-    assert not page.locator('.shopping_cart_badge').is_visible()
+    assert not page.locator(".shopping_cart_badge").is_visible()

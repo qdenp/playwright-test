@@ -1,6 +1,7 @@
 """
 Тест 11: Валидация формы checkout — пустые поля
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage
@@ -29,4 +30,4 @@ def test_checkout_validation_empty_fields(page):
     checkout_page.click_continue()
 
     # Ожидаем ошибки валидации
-    assert page.locator('.error-message-container').is_visible()
+    assert page.locator(".error-message-container").is_visible()

@@ -1,6 +1,7 @@
 """
 Тест 15: Hamburger меню — открытие и закрытие
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 

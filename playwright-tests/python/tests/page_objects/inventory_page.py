@@ -1,19 +1,20 @@
 """
 Page Object для страницы товаров (Inventory)
 """
+
 from playwright.sync_api import Page, expect
 
 
 class InventoryPage:
     def __init__(self, page: Page):
         self.page = page
-        self.products = page.locator('.inventory_item')
-        self.sort_dropdown = page.locator('.product_sort_container')
-        self.cart_badge = page.locator('.shopping_cart_link')
-        self.header_title = page.locator('.title')
+        self.products = page.locator(".inventory_item")
+        self.sort_dropdown = page.locator(".product_sort_container")
+        self.cart_badge = page.locator(".shopping_cart_link")
+        self.header_title = page.locator(".title")
 
     def wait_for_page_load(self):
-        self.header_title.wait_for(state='visible', timeout=10000)
+        self.header_title.wait_for(state="visible", timeout=10000)
 
     def get_product_count(self) -> int:
         return self.products.count()
@@ -23,23 +24,23 @@ class InventoryPage:
 
     def add_product_to_cart(self, index: int):
         product = self.products.nth(index)
-        product.locator('.btn.btn_primary.btn_small.btn_inventory').click()
+        product.locator(".btn.btn_primary.btn_small.btn_inventory").click()
 
     def add_product_by_name(self, product_name: str):
         product = self.page.locator(f'.inventory_item:has-text("{product_name}")')
-        product.locator('.btn.btn_primary.btn_small.btn_inventory').click()
+        product.locator(".btn.btn_primary.btn_small.btn_inventory").click()
 
     def get_product_price(self, index: int) -> float:
         product = self.products.nth(index)
-        price_text = product.locator('.inventory_item_price').text_content()
-        return float(price_text.replace('$', ''))
+        price_text = product.locator(".inventory_item_price").text_content()
+        return float(price_text.replace("$", ""))
 
     def get_product_title(self, index: int) -> str:
         product = self.products.nth(index)
-        return product.locator('.inventory_item_name').text_content()
+        return product.locator(".inventory_item_name").text_content()
 
     def get_cart_badge_count(self) -> int:
-        badge = self.cart_badge.locator('.shopping_cart_badge')
+        badge = self.cart_badge.locator(".shopping_cart_badge")
         text = badge.text_content()
         return int(text) if text else 0
 
@@ -47,16 +48,16 @@ class InventoryPage:
         self.cart_badge.click()
 
     def sort_by_price_low_to_high(self):
-        self.sort_dropdown.select_option('Price (low to high)')
+        self.sort_dropdown.select_option("Price (low to high)")
 
     def sort_by_price_high_to_low(self):
-        self.sort_dropdown.select_option('Price (high to low)')
+        self.sort_dropdown.select_option("Price (high to low)")
 
     def sort_by_name_a_to_z(self):
-        self.sort_dropdown.select_option('Name (A to Z)')
+        self.sort_dropdown.select_option("Name (A to Z)")
 
     def sort_by_name_z_to_a(self):
-        self.sort_dropdown.select_option('Name (Z to A)')
+        self.sort_dropdown.select_option("Name (Z to A)")
 
     def is_products_visible(self) -> bool:
         return self.products.first.is_visible()

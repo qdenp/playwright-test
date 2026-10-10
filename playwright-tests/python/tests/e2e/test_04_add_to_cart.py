@@ -1,6 +1,7 @@
 """
 Тест 4: Добавление товара в корзину
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage

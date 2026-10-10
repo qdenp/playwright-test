@@ -1,23 +1,23 @@
 """
 Page Object для страницы логина
 """
+
 import os
 from playwright.sync_api import Page, expect
 
-
 # Credentials из environment variables (с дефолтными значениями)
-DEFAULT_USERNAME = os.getenv('SAUCE_DEMO_USERNAME', 'standard_user')
-DEFAULT_PASSWORD = os.getenv('SAUCE_DEMO_PASSWORD', 'secret_sauce')
+DEFAULT_USERNAME = os.getenv("SAUCE_DEMO_USERNAME", "standard_user")
+DEFAULT_PASSWORD = os.getenv("SAUCE_DEMO_PASSWORD", "secret_sauce")
 
 
 def get_all_credentials():
     """Возвращает словарь всех пользователей и их паролей из SAUCE_DEMO_PASSWORDS"""
-    passwords_str = os.getenv('SAUCE_DEMO_PASSWORDS', '')
+    passwords_str = os.getenv("SAUCE_DEMO_PASSWORDS", "")
     if not passwords_str:
         return {}
     credentials = {}
-    for pair in passwords_str.split(','):
-        username, password = pair.split(':')
+    for pair in passwords_str.split(","):
+        username, password = pair.split(":")
         credentials[username] = password
     return credentials
 
@@ -32,35 +32,35 @@ def get_login_params(index=None):
     valid_users = list(all_creds.keys())
 
     params = [
-        ('standard_user', 'secret_sauce', True, 'Products', None),
-        ('problem_user', 'secret_sauce', True, 'Products', None),
-        ('performance_glitch_user', 'secret_sauce', True, 'Products', None),
-        ('error_user', 'secret_sauce', True, 'Products', None),
-        ('visual_user', 'secret_sauce', True, 'Products', None),
-        ('locked_out_user', 'secret_sauce', False, None, 'locked out'),
-        ('standard_user', 'wrong_password', False, None, 'do not match'),
-        ('', 'secret_sauce', True, 'Products', None),
+        ("standard_user", "secret_sauce", True, "Products", None),
+        ("problem_user", "secret_sauce", True, "Products", None),
+        ("performance_glitch_user", "secret_sauce", True, "Products", None),
+        ("error_user", "secret_sauce", True, "Products", None),
+        ("visual_user", "secret_sauce", True, "Products", None),
+        ("locked_out_user", "secret_sauce", False, None, "locked out"),
+        ("standard_user", "wrong_password", False, None, "do not match"),
+        ("", "secret_sauce", True, "Products", None),
     ]
 
     if index is not None and index < len(params):
         return params[index]
-    return (DEFAULT_USERNAME, DEFAULT_PASSWORD, True, 'Products', None)
+    return (DEFAULT_USERNAME, DEFAULT_PASSWORD, True, "Products", None)
 
 
 class LoginPage:
     def __init__(self, page: Page):
         self.page = page
-        self.username_input = page.locator('#user-name')
-        self.password_input = page.locator('#password')
-        self.login_button = page.locator('#login-button')
-        self.error_message = page.locator('.error-message-container')
-        self.error_banner = page.get_by_role('alert')
-        self.hamburger_menu = page.locator('.bm-burger-button')
-        self.close_menu = page.locator('.bm-cross-button')
+        self.username_input = page.locator("#user-name")
+        self.password_input = page.locator("#password")
+        self.login_button = page.locator("#login-button")
+        self.error_message = page.locator(".error-message-container")
+        self.error_banner = page.get_by_role("alert")
+        self.hamburger_menu = page.locator(".bm-burger-button")
+        self.close_menu = page.locator(".bm-cross-button")
 
     def go_to(self):
-        base_url = os.getenv('SAUCE_DEMO_BASE_URL', 'https://www.saucedemo.com')
-        self.page.goto(base_url, wait_until='domcontentloaded', timeout=60000)
+        base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
+        self.page.goto(base_url, wait_until="domcontentloaded", timeout=60000)
 
     def enter_username(self, username: str):
         self.username_input.clear()
@@ -89,7 +89,7 @@ class LoginPage:
 
     def is_error_message_visible(self) -> bool:
         try:
-            self.error_message.wait_for(state='visible', timeout=1000)
+            self.error_message.wait_for(state="visible", timeout=1000)
             return True
         except Exception:
             return False
@@ -113,7 +113,7 @@ class LoginPage:
         return self.close_menu.is_visible()
 
     def click_back_to_products(self):
-        self.page.get_by_text('Back to Products').click()
+        self.page.get_by_text("Back to Products").click()
 
     def click_logout(self):
-        self.page.get_by_role('menuitem', name='Logout').click()
+        self.page.get_by_role("menuitem", name="Logout").click()

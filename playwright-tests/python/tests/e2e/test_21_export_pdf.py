@@ -1,6 +1,7 @@
 """
 Тест 21: Экспорт PDF заказа
 """
+
 import pytest
 from playwright.sync_api import expect
 from page_objects.login_page import LoginPage
@@ -32,27 +33,27 @@ def test_export_pdf_order(page, tmp_path):
     cart_page.checkout()
     checkout_page.wait_for_page_load()
 
-    checkout_page.fill_info('Иван', 'Иванов', '100000')
+    checkout_page.fill_info("Иван", "Иванов", "100000")
     checkout_page.click_continue()
 
     # Ожидаем перехода на checkout-step-two (Firefox/WebKit медленнее)
-    page.wait_for_url('**/checkout-step-two.html', timeout=15000)
+    page.wait_for_url("**/checkout-step-two.html", timeout=15000)
 
     # Нажимаем Finish
     checkout_page.click_finish()
 
     # Ждём страницу подтверждения
-    page.wait_for_url('**/checkout-complete.html', timeout=10000)
+    page.wait_for_url("**/checkout-complete.html", timeout=10000)
 
     # Проверяем что кнопка Generate PDF видна
-    expect(page.get_by_role('button', name='Generate PDF')).to_be_visible(timeout=5000)
+    expect(page.get_by_role("button", name="Generate PDF")).to_be_visible(timeout=5000)
 
     # Сохраняем PDF в папку тестов
-    pdf_path = tmp_path / 'order.pdf'
+    pdf_path = tmp_path / "order.pdf"
 
     # Кликаем Generate PDF и ждём скачивания
     with page.expect_download() as download_info:
-        page.get_by_role('button', name='Generate PDF').click()
+        page.get_by_role("button", name="Generate PDF").click()
 
     download = download_info.value
     download.save_as(pdf_path)

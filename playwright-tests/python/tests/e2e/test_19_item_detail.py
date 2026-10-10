@@ -1,6 +1,7 @@
 """
 Тест 19: Item detail — просмотр и возврат
 """
+
 import pytest
 from playwright.sync_api import expect
 from page_objects.login_page import LoginPage
@@ -19,22 +20,26 @@ def test_item_detail(page):
     page.locator('[data-test="inventory-item-name"]').first.click()
 
     # Detail panel появляется inline — проверяем что description видно
-    expect(page.get_by_text('carry.allTheThings()')).to_be_visible(timeout=5000)
+    expect(page.get_by_text("carry.allTheThings()")).to_be_visible(timeout=5000)
 
     # Проверяем что есть кнопка "Back to Products"
-    expect(page.get_by_text('Back to Products')).to_be_visible(timeout=5000)
+    expect(page.get_by_text("Back to Products")).to_be_visible(timeout=5000)
 
     # Возвращаемся на Products
-    page.get_by_text('Back to Products').click()
-    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(timeout=5000)
+    page.get_by_text("Back to Products").click()
+    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(
+        timeout=5000
+    )
 
     # Открываем детали второго товара
     page.locator('[data-test="inventory-item-name"]').nth(1).click()
 
     # Проверяем detail второго товара
-    expect(page.get_by_text('carry.allTheThings()')).not_to_be_visible(timeout=5000)
-    expect(page.get_by_text('Back to Products')).to_be_visible(timeout=5000)
+    expect(page.get_by_text("carry.allTheThings()")).not_to_be_visible(timeout=5000)
+    expect(page.get_by_text("Back to Products")).to_be_visible(timeout=5000)
 
     # Возвращаемся на Products
-    page.get_by_text('Back to Products').click()
-    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(timeout=5000)
+    page.get_by_text("Back to Products").click()
+    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(
+        timeout=5000
+    )

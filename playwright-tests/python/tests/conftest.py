@@ -1,6 +1,7 @@
 """
 Фикстуры для pytest-playwright
 """
+
 import sys
 import os
 
@@ -23,4 +24,4 @@ def authenticated_page(page):
     login_page.login()  # Без аргументов — использует credentials из env vars
     inventory_page.wait_for_page_load()
 
-    return {'page': page, 'login_page': login_page, 'inventory_page': inventory_page}
+    return {"page": page, "login_page": login_page, "inventory_page": inventory_page}

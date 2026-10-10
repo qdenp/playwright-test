@@ -154,5 +154,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-js-all
-          path: playwright-tests/js/reports/
+          path: playwright-tests/js/test-results/
           retention-days: 30
+          if-no-files-found: ignore

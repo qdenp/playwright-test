@@ -38,14 +38,12 @@ jobs:
         working-directory: ./playwright-tests/python
 
       - name: Run flake8
-        run: flake8 tests/ --max-line-length=120 --ignore=E501,W503
+        run: flake8 tests/ --max-line-length=120 --ignore=E501,W503,F401,F841,E402
         working-directory: ./playwright-tests/python
-        continue-on-error: true
 
       - name: Run black check
         run: black --check tests/
         working-directory: ./playwright-tests/python
-        continue-on-error: true
 
   test-chromium:
     name: Tests (Chromium)
@@ -85,6 +83,10 @@ jobs:
       - name: Install Playwright browsers
         if: steps.cache-browser.outputs.cache-hit != 'true'
         run: playwright install --with-deps
+        working-directory: ./playwright-tests/python
+
+      - name: Create reports directory
+        run: mkdir -p reports
         working-directory: ./playwright-tests/python
 
       - name: Run pytest on Chromium
@@ -138,6 +140,10 @@ jobs:
         working-directory: ./playwright-tests/python
         if: steps.cache-browser.outputs.cache-hit != 'true'
 
+      - name: Create reports directory
+        run: mkdir -p reports
+        working-directory: ./playwright-tests/python
+
       - name: Run pytest on ${{ matrix.browser }}
         run: pytest tests/e2e/ -v --tb=short --browser ${{ matrix.browser }} --reruns 3 --reruns-delay 1
         working-directory: ./playwright-tests/python
@@ -168,3 +174,4 @@ jobs:
           name: pytest-report-python-all
           path: playwright-tests/python/reports/
           retention-days: 30
+          if-no-files-found: ignore

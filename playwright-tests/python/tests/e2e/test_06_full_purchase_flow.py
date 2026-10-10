@@ -1,6 +1,7 @@
 """
 Тест 6: Полный flow покупки (E2E)
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage
@@ -29,11 +30,11 @@ def test_full_purchase_flow(page):
     cart_page.checkout()
     checkout_page.wait_for_page_load()
 
-    checkout_page.fill_info('Иван', 'Иванов', '100000')
+    checkout_page.fill_info("Иван", "Иванов", "100000")
     checkout_page.click_continue()
 
     # Переход на страницу сводки (checkout-step-two) и нажатие Finish
-    checkout_page.finish_button.wait_for(state='visible', timeout=10000)
+    checkout_page.finish_button.wait_for(state="visible", timeout=10000)
     checkout_page.click_finish()
 
     # Ожидаем страницу подтверждения

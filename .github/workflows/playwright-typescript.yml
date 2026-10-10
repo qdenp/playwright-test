@@ -155,3 +155,4 @@ jobs:
           name: playwright-report-typescript-all
           path: playwright-tests/typescript/test-results/
           retention-days: 30
+          if-no-files-found: ignore

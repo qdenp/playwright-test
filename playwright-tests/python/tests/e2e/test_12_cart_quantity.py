@@ -1,6 +1,7 @@
 """
 Тест 12: Изменение количества товара в корзине
 """
+
 import pytest
 from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage
@@ -22,5 +23,7 @@ def test_cart_quantity(page):
 
     assert cart_page.get_cart_item_count() == 1
 
-    product_name = cart_page.cart_items.first.locator('[data-test="inventory-item-name"]').text_content()
+    product_name = cart_page.cart_items.first.locator(
+        '[data-test="inventory-item-name"]'
+    ).text_content()
     assert product_name

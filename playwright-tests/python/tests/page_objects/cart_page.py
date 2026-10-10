@@ -1,25 +1,30 @@
 """
 Page Object для корзины
 """
+
 from playwright.sync_api import Page, expect
 
 
 class CartPage:
     def __init__(self, page: Page):
         self.page = page
-        self.cart_items = page.locator('.cart_item')
+        self.cart_items = page.locator(".cart_item")
         self.remove_buttons = page.locator('button:has-text("Remove")')
-        self.checkout_button = page.locator('.checkout_button')
-        self.total_price = page.locator('.summary_total_label')
+        self.checkout_button = page.locator(".checkout_button")
+        self.total_price = page.locator(".summary_total_label")
 
     def wait_for_page_load(self):
-        self.cart_items.first.wait_for(state='visible', timeout=10000)
+        self.cart_items.first.wait_for(state="visible", timeout=10000)
 
     def get_cart_item_names(self) -> list:
         names = []
         count = self.cart_items.count()
         for i in range(count):
-            name = self.cart_items.nth(i).locator('[data-test="inventory-item-name"]').text_content()
+            name = (
+                self.cart_items.nth(i)
+                .locator('[data-test="inventory-item-name"]')
+                .text_content()
+            )
             names.append(name)
         return names
 
@@ -28,7 +33,8 @@ class CartPage:
         qty_text = item.locator('[data-test="quantity"]').text_content()
         # Parse "Qty (1)" -> 1
         import re
-        match = re.search(r'(\d+)', qty_text)
+
+        match = re.search(r"(\d+)", qty_text)
         return int(match.group(1)) if match else 0
 
     def change_item_quantity(self, index: int, quantity: int):
@@ -40,9 +46,9 @@ class CartPage:
 
     def remove_item(self, index: int):
         cart_item = self.cart_items.nth(index)
-        remove_button = cart_item.get_by_role('button', name='Remove')
+        remove_button = cart_item.get_by_role("button", name="Remove")
         remove_button.click()
-        cart_item.wait_for(state='detached', timeout=10000)
+        cart_item.wait_for(state="detached", timeout=10000)
 
     def checkout(self):
         self.checkout_button.click()
