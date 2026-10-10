@@ -8,7 +8,7 @@ import { loginTests, LoginTestParams } from '../config.js';
  */
 loginTests.forEach(({ username, password, shouldLogin, expectedTitle, expectedError }: LoginTestParams) => {
   const status = shouldLogin ? 'success' : 'failure';
-  test(`Тест входа: ${username} — ${status}`, { timeout: 60000 }, async ({ page }) => {
+  test(`Тест входа: ${username} — ${status}`, async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
