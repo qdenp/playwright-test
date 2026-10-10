@@ -1,4 +1,4 @@
-import { test as base, Page, expect as playwrightExpect } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { LoginPage } from './page-objects/LoginPage.js';
 import { InventoryPage } from './page-objects/InventoryPage.js';
 import { CartPage } from './page-objects/CartPage.js';
@@ -10,16 +10,8 @@ export { expect } from '@playwright/test';
  * Custom fixture: автоматически авторизованная страница
  * Используется через: async ({ authenticatedPage }, test) => { ... }
  */
-export const test = base.extend<{
-  authenticatedPage: {
-    page: Page;
-    loginPage: LoginPage;
-    inventoryPage: InventoryPage;
-    cartPage: CartPage;
-    checkoutPage: CheckoutPage;
-  };
-}>({
-  authenticatedPage: [async ({ page }, use) => {
+export const test = base.extend({
+  authenticatedPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -30,5 +22,13 @@ export const test = base.extend<{
     await inventoryPage.waitForPageLoad();
 
     await use({ page, loginPage, inventoryPage, cartPage, checkoutPage });
-  }, { auto: true }],
+  },
 });
+
+export type AuthenticatedPageFixture = {
+  page: ReturnType<typeof base.page>;
+  loginPage: LoginPage;
+  inventoryPage: InventoryPage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
+};
