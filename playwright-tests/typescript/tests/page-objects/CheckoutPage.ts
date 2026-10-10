@@ -83,4 +83,14 @@ export class CheckoutPage {
     await this.fillZipCode(zipCode);
     await this.clickContinue();
   }
+
+  async fillInfo(firstName: string, lastName: string, zipCode: string): Promise<void> {
+    await this.fillFirstName(firstName);
+    await this.fillLastName(lastName);
+    await this.fillZipCode(zipCode);
+  }
+
+  get completeText(): ReturnType<Page['locator']> {
+    return this.completeTitle;
+  }
 }
