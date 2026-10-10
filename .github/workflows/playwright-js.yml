@@ -4,24 +4,19 @@ on:
   push:
     branches: [ master, main ]
     paths:
-      - 'js/**'
+      - 'playwright-tests/js/**'
       - '.github/workflows/playwright-js.yml'
   pull_request:
     branches: [ master, main ]
     paths:
-      - 'js/**'
+      - 'playwright-tests/js/**'
       - '.github/workflows/playwright-js.yml'
   workflow_dispatch:
 
 jobs:
-  test:
+  lint:
+    name: Lint & Format Check
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,22 +30,129 @@ jobs:
         run: npm install
         working-directory: ./playwright-tests/js
 
+      - name: Run ESLint
+        run: npx eslint tests/ --max-warnings=0
+        working-directory: ./playwright-tests/js
+        continue-on-error: true
+
+  test-chromium:
+    name: Tests (Chromium)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        id: cache-node
+        with:
+          path: playwright-tests/js/node_modules
+          key: js-node-${{ runner.os }}-${{ hashFiles('playwright-tests/js/package-lock.json') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: cache-browser
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/Library/Caches/ms-playwright
+            ~/AppData/Local/ms-playwright
+          key: js-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/js/package.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm install
+        working-directory: ./playwright-tests/js
+
       - name: Install Playwright browsers
+        if: steps.cache-browser.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
         working-directory: ./playwright-tests/js
 
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=list
+      - name: Run Playwright tests on Chromium
+        run: npx playwright test --project=chromium --reporter=list
         working-directory: ./playwright-tests/js
         env:
           SAUCE_DEMO_USERNAME: standard_user
           SAUCE_DEMO_PASSWORD: secret_sauce
           SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
 
-      - name: Upload report on failure
-        uses: actions/upload-artifact@v4
+  test-full:
+    name: Tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    needs: test-chromium
+    if: success() || failure()
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: playwright-tests/js/node_modules
+          key: js-node-${{ runner.os }}-${{ hashFiles('playwright-tests/js/package-lock.json') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/Library/Caches/ms-playwright
+            ~/AppData/Local/ms-playwright
+          key: js-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/js/package.json') }}
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./playwright-tests/js
+        if: steps.cache-node.outputs.cache-hit != 'true'
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        working-directory: ./playwright-tests/js
+        if: steps.cache-browser.outputs.cache-hit != 'true'
+
+      - name: Run Playwright tests on ${{ matrix.browser }}
+        run: npx playwright test --project=${{ matrix.browser }} --reporter=list
+        working-directory: ./playwright-tests/js
+        env:
+          SAUCE_DEMO_USERNAME: standard_user
+          SAUCE_DEMO_PASSWORD: secret_sauce
+          SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+
+  upload-report:
+    name: Upload Test Reports
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [test-chromium, test-full]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download JS reports on failure
+        uses: actions/download-artifact@v4
         if: failure()
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report-js
           path: playwright-tests/js/reports/
-          retention-days: 7
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-js-all
+          path: playwright-tests/js/reports/
+          retention-days: 30

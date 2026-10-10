@@ -38,24 +38,24 @@ export class CheckoutPage {
   }
 
   async getErrorMessage() {
-    return this.errorMessage.textContent();
+    return await this.errorMessage.textContent();
   }
 
   async isErrorMessageVisible() {
-    return await this.errorMessage.count() > 0;
+    return await this.errorMessage.isVisible();
   }
 
   async getThankYouMessage() {
-    return this.thankYouMessage.textContent();
+    return await this.thankYouMessage.textContent();
   }
 
   async isCompleteHeaderVisible() {
     await this.thankYouMessage.waitFor({ state: 'attached', timeout: 10000 });
-    return await this.thankYouMessage.count() > 0;
+    return await this.thankYouMessage.isVisible();
   }
 
   async getCompleteText() {
-    return this.completeText.textContent();
+    return await this.completeText.textContent();
   }
 
   async clickBackToHome() {

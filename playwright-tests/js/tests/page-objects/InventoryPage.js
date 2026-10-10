@@ -71,7 +71,7 @@ export class InventoryPage {
   }
 
   async isProductsVisible() {
-    return await this.products.first().count() > 0;
+    return await this.products.count() > 0;
   }
 
   async getTitleText() {

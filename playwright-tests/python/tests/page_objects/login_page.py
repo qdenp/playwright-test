@@ -88,18 +88,20 @@ class LoginPage:
         return self.error_message.inner_text()
 
     def is_error_message_visible(self) -> bool:
-        return self.error_message.count() > 0
+        try:
+            self.error_message.wait_for(state='visible', timeout=1000)
+            return True
+        except Exception:
+            return False
 
     def wait_for_error_message(self, timeout: int = 10000):
         """Явное ожидание появления сообщения об ошибке с auto-retry"""
         # Пробуем error_banner (для empty username), потом error_message
         try:
             expect(self.error_banner).to_be_visible(timeout=3000)
-        except:
+        except Exception:
             pass
         expect(self.error_message).to_be_visible(timeout=timeout)
-        # Небольшая пауза для появления текста
-        self.page.wait_for_timeout(300)
 
     def open_hamburger_menu(self):
         self.hamburger_menu.click()

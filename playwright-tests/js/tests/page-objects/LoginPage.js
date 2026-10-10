@@ -44,7 +44,7 @@ export class LoginPage {
   }
 
   async isErrorMessageVisible() {
-    return await this.errorMessage.count() > 0;
+    return await this.errorMessage.isVisible();
   }
 
   async waitForErrorMessage(timeout = 10000) {

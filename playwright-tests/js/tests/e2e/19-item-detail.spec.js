@@ -31,6 +31,7 @@ test('Тест 19: Item detail — просмотр и возврат', async ({
 
   // Проверяем detail второго товара
   await expect(page.getByText('carry.allTheThings()')).not.toBeVisible({ timeout: 5000 });
+  await expect(page.getByText('A red light isn\'t the desired state')).toBeVisible({ timeout: 5000 });
   await expect(page.getByText('Back to Products')).toBeVisible({ timeout: 5000 });
 
   // Возвращаемся на Products
