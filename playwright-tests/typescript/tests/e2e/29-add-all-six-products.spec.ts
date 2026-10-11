@@ -3,7 +3,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Test 30: Add all 6 products and verify
+ * Test 29: Add all 6 products and verify
  */
 test.describe("Add All 6 Products", () => {
   test("01 - should add all 6 products and verify cart", async ({ page }) => {

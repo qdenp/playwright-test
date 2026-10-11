@@ -3,7 +3,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Test 39: Performance - verify page load times
+ * Test 34: Performance - verify page load times
  */
 test.describe("Reset App State", () => {
   test("01 - should reset cart via Reset App State in hamburger menu", async ({ page }) => {

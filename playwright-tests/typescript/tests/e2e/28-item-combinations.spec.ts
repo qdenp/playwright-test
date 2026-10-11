@@ -4,7 +4,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 29: Specific item combinations (3 of 6 products)
+ * Test 28: Specific item combinations (3 of 6 products)
  */
 test.describe("Item Combinations", () => {
   test("01 - should add cheapest 3 products and verify cart", async ({

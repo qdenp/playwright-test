@@ -3,7 +3,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Test 40: Social Media Links
+ * Test 35: Social Media Links
  * Проверка footer и структуры страницы
  */
 test.describe("Social Media Links", () => {

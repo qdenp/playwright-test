@@ -1,5 +1,5 @@
 /**
- * Test 34: Performance budget tests
+ * Test 33: Performance budget tests
  */
 import { test, expect } from '../fixtures.js';
 import { LoginPage } from '../page-objects/LoginPage.js';

@@ -4,7 +4,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 28: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
+ * Test 27: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
  */
 test.describe("Quantity and Race Conditions", () => {
   test("01 - should verify each item quantity stays at 1 (no editing in cart)", async ({
