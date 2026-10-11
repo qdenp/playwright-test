@@ -90,7 +90,7 @@ jobs:
         working-directory: ./playwright-tests/python
 
       - name: Run pytest on Chromium
-        run: pytest tests/e2e/ -v --tb=short --browser chromium --workers 3 --reruns 3 --reruns-delay 1
+        run: pytest tests/e2e/ -v --tb=short --browser chromium -n 3 --reruns 3 --reruns-delay 1
         working-directory: ./playwright-tests/python
         env:
           SAUCE_DEMO_USERNAME: standard_user
@@ -154,7 +154,7 @@ jobs:
         working-directory: ./playwright-tests/python
 
       - name: Run pytest on ${{ matrix.browser }}
-        run: pytest tests/e2e/ -v --tb=short --browser ${{ matrix.browser }} --workers 3 --reruns 3 --reruns-delay 1
+        run: pytest tests/e2e/ -v --tb=short --browser ${{ matrix.browser }} -n 3 --reruns 3 --reruns-delay 1
         working-directory: ./playwright-tests/python
         env:
           SAUCE_DEMO_USERNAME: standard_user

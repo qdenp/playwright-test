@@ -3,3 +3,4 @@ playwright
 pytest-playwright
 pytest-html
 pytest-rerunfailures
+pytest-xdist
