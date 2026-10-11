@@ -23,12 +23,10 @@ test("Удаление товара из корзины", async ({ page }) => {
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(2);
 
-  const firstCartItem = page.locator('[data-test="inventory-item"]').first();
-  await firstCartItem.getByRole("button", { name: "Remove" }).click();
-
-  await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(1);
+  await cartPage.removeItem(0);
+  await expect(cartPage.cartItems).toHaveCount(1);
 
   await page.reload();
   await cartPage.waitForPageLoad();
-  await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
+  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(1);
 });

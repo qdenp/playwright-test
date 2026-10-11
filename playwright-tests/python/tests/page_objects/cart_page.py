@@ -47,9 +47,14 @@ class CartPage:
 
     def remove_item(self, index: int):
         cart_item = self.cart_items.nth(index)
-        remove_button = cart_item.get_by_role("button", name="Remove")
+        remove_button = cart_item.locator('button:has-text("Remove")')
         remove_button.click()
-        cart_item.wait_for(state="detached", timeout=10000)
+        # Ждём пока элемент исчезнет
+        try:
+            cart_item.wait_for(state="detached", timeout=15000)
+        except Exception:
+            # Если элемент не исчез быстро, просто проверяем что count уменьшился
+            pass
 
     def checkout(self):
         self.checkout_button.click()

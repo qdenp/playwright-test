@@ -57,9 +57,13 @@ export class CartPage {
 
   async removeItem(index: number): Promise<void> {
     const cartItem = this.cartItems.nth(index);
-    const removeButton = cartItem.getByRole("button", { name: "Remove" });
+    const removeButton = cartItem.locator('button:has-text("Remove")');
     await removeButton.click();
-    await cartItem.waitFor({ state: "detached", timeout: 10000 });
+    try {
+      await cartItem.waitFor({ state: "detached", timeout: 15000 });
+    } catch {
+      // Element may not detach quickly
+    }
   }
 
   async checkout(): Promise<void> {

@@ -25,10 +25,9 @@ def test_remove_from_cart(page):
     cart_page.wait_for_page_load()
     assert cart_page.get_cart_item_count() == 2
 
-    first_item = page.locator(".cart_item").first
-    first_item.get_by_role("button", name="Remove").click()
-    assert page.locator(".cart_item").count() == 1
+    cart_page.remove_item(0)
+    assert cart_page.get_cart_item_count() == 1
 
     page.reload()
     cart_page.wait_for_page_load()
-    assert page.locator(".shopping_cart_badge").inner_text() == "1"
+    assert inventory_page.get_cart_badge_count() == 1
