@@ -30,4 +30,4 @@ def test_checkout_validation_empty_fields(page):
     checkout_page.click_continue()
 
     # Ожидаем ошибки валидации
-    assert page.locator(".error-message-container").is_visible()
+    assert checkout_page.is_error_message_visible()
