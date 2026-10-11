@@ -32,12 +32,11 @@ def test_add_remove_all(page):
 
     # Удаляем все товары
     for i in range(product_count):
-        first_item = page.locator(".cart_item").first
-        first_item.get_by_role("button", name="Remove").click()
-        assert page.locator(".cart_item").count() == product_count - 1 - i
+        cart_page.remove_item(0)
+        assert cart_page.get_cart_item_count() == product_count - 1 - i
 
     # Корзина пуста
     assert cart_page.get_cart_item_count() == 0
 
     page.reload()
-    assert not page.locator(".shopping_cart_badge").is_visible()
+    assert inventory_page.get_cart_badge_count() == 0

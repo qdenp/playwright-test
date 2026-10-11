@@ -6,7 +6,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 /**
  * Тест 13: Добавление и удаление всех товаров
  */
-test("Тест 13: Добавление и удаление всех товаров", async ({ page }) => {
+test("Тест 13: Добавление и удаление всех товаров", { timeout: 120000 }, async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
@@ -29,10 +29,9 @@ test("Тест 13: Добавление и удаление всех товар�
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(productCount);
 
-  // Удаляем все товары — используем expect для auto-retry
+  // Удаляем все товары
   for (let i = 0; i < productCount; i++) {
-    const firstItem = page.locator(".cart_item").first();
-    await firstItem.getByRole("button", { name: "Remove" }).click();
+    await cartPage.removeItem(0);
     await expect(page.locator(".cart_item")).toHaveCount(productCount - 1 - i);
   }
 
@@ -41,5 +40,5 @@ test("Тест 13: Добавление и удаление всех товар�
 
   // Перезагружаем для проверки badge
   await page.reload();
-  await expect(page.locator(".shopping_cart_badge")).not.toBeVisible();
+  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(0);
 });

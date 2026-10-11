@@ -42,11 +42,8 @@ export class CartPage {
     const cartItem = this.cartItems.nth(index);
     const removeButton = cartItem.locator('button:has-text("Remove")');
     await removeButton.click();
-    try {
-      await cartItem.waitFor({ state: "detached", timeout: 15000 });
-    } catch {
-      // Element may not detach quickly
-    }
+    // Не ждём detached — просто даём время на обновление
+    await this.page.waitForTimeout(500);
   }
 
   async checkout() {
