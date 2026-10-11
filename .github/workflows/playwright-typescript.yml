@@ -82,7 +82,7 @@ jobs:
         working-directory: ./playwright-tests/typescript
 
       - name: Run Playwright tests on Chromium
-        run: npx playwright test --project=chromium --reporter=list
+        run: npx playwright test --project=chromium --reporter=list,html
         working-directory: ./playwright-tests/typescript
         env:
           SAUCE_DEMO_USERNAME: standard_user
@@ -94,9 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-chromium
-          path: |
-            playwright-tests/typescript/test-results/
-            playwright-tests/typescript/reports/
+          path: playwright-tests/typescript/reports/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -144,7 +142,7 @@ jobs:
         if: steps.cache-browser.outputs.cache-hit != 'true'
 
       - name: Run Playwright tests on ${{ matrix.browser }}
-        run: npx playwright test --project=${{ matrix.browser }} --reporter=list
+        run: npx playwright test --project=${{ matrix.browser }} --reporter=list,html
         working-directory: ./playwright-tests/typescript
         env:
           SAUCE_DEMO_USERNAME: standard_user
@@ -156,8 +154,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.browser }}
-          path: |
-            playwright-tests/typescript/test-results/
-            playwright-tests/typescript/reports/
+          path: playwright-tests/typescript/reports/
           retention-days: 30
           if-no-files-found: ignore

@@ -1,0 +1,51 @@
+name: Deploy Playwright Reports
+
+on:
+  workflow_run:
+    workflows: ["Playwright Tests (JS)", "Playwright Tests (TypeScript)"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download JS report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report-chromium
+          path: playwright-tests/js/reports/
+          run-id: ${{ github.event.workflow_run.id }}
+          run-debug: ${{ github.event.workflow_run.conclusion == 'success' }}
+        continue-on-error: true
+
+      - name: Download TS report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report-chromium
+          path: playwright-tests/typescript/reports/
+          run-id: ${{ github.event.workflow_run.id }}
+          run-debug: ${{ github.event.workflow_run.conclusion == 'success' }}
+        continue-on-error: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload report
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: playwright-tests/js/reports/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
