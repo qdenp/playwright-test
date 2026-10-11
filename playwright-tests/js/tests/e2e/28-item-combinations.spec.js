@@ -1,12 +1,12 @@
 /**
- * Test 29: Specific item combinations (3 of 6 products)
+ * Test 28: Specific item combinations (3 of 6 products)
  */
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 test.describe("Item Combinations", () => {
-  test("01 - should add cheapest 3 products and verify cart", async ({
+  test("28 - should add cheapest 3 products and verify cart", async ({
     page,
   }) => {
     // Login
@@ -40,7 +40,7 @@ test.describe("Item Combinations", () => {
     expect(cartItems).toContain("Test.allTheThings() T-Shirt (Red)");
   });
 
-  test("02 - should add most expensive 3 products and verify cart", async ({
+  test("29 - should add most expensive 3 products and verify cart", async ({
     page,
   }) => {
     // Login
@@ -74,7 +74,7 @@ test.describe("Item Combinations", () => {
     expect(cartItems).toContain("Sauce Labs Bolt T-Shirt");
   });
 
-  test("03 - should add alternating products (1st, 3rd, 5th)", async ({
+  test("30 - should add alternating products (1st, 3rd, 5th)", async ({
     page,
   }) => {
     // Login

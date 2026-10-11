@@ -1,5 +1,5 @@
 /**
- * Test 31: API intercept - verify API responses
+ * Test 30: API intercept - verify API responses
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
@@ -8,7 +8,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
 test.describe("API Intercept Tests", () => {
-  test("01 - should intercept and verify inventory API response", async ({
+  test("30 - should intercept and verify inventory API response", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -33,7 +33,7 @@ test.describe("API Intercept Tests", () => {
     await expect(page).toHaveURL(/.*saucedemo/);
   });
 
-  test("02 - should verify product data structure from API", async ({
+  test("31 - should verify product data structure from API", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -59,7 +59,7 @@ test.describe("API Intercept Tests", () => {
     }
   });
 
-  test("03 - should verify all 6 products have valid data", async ({
+  test("32 - should verify all 6 products have valid data", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -80,7 +80,7 @@ test.describe("API Intercept Tests", () => {
     }
   });
 
-  test("04 - should intercept API during checkout flow", async ({ page }) => {
+  test("33 - should intercept API during checkout flow", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);

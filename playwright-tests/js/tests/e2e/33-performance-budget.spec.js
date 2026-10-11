@@ -1,5 +1,5 @@
 /**
- * Test 34: Performance budget tests
+ * Test 33: Performance budget tests
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
@@ -7,7 +7,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 test.describe("Performance Budget", () => {
-  test("01 - should load login page within 2 seconds", async ({ page }) => {
+  test("33 - should load login page within 2 seconds", async ({ page }) => {
     const startTime = Date.now();
     await page.goto("https://www.saucedemo.com/");
     const loadTime = Date.now() - startTime;
@@ -17,7 +17,7 @@ test.describe("Performance Budget", () => {
     console.log(`Login page loaded in ${loadTime}ms`);
   });
 
-  test("02 - should load inventory page within 3 seconds after login", async ({
+  test("34 - should load inventory page within 3 seconds after login", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -33,7 +33,7 @@ test.describe("Performance Budget", () => {
     console.log(`Inventory page loaded in ${loadTime}ms`);
   });
 
-  test("03 - should load all 6 products within performance budget", async ({
+  test("35 - should load all 6 products within performance budget", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -51,7 +51,7 @@ test.describe("Performance Budget", () => {
     console.log(`All 6 products loaded in ${loadTime}ms`);
   });
 
-  test("04 - should load cart page within 2 seconds", async ({ page }) => {
+  test("36 - should load cart page within 2 seconds", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -69,7 +69,7 @@ test.describe("Performance Budget", () => {
     console.log(`Cart page loaded in ${loadTime}ms`);
   });
 
-  test("05 - should verify page load consistency (3 runs)", async ({
+  test("37 - should verify page load consistency (3 runs)", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -89,7 +89,7 @@ test.describe("Performance Budget", () => {
     expect(avgLoadTime).toBeLessThan(5000);
   });
 
-  test("06 - should verify product images load within budget", async ({
+  test("38 - should verify product images load within budget", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);

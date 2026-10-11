@@ -1,5 +1,5 @@
 /**
- * Test 32: Responsive design tests
+ * Test 31: Responsive design tests
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
@@ -8,7 +8,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
 test.describe("Responsive Design", () => {
-  test("01 - should work on mobile viewport (375x667)", async ({ page }) => {
+  test("31 - should work on mobile viewport (375x667)", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const loginPage = new LoginPage(page);
@@ -26,7 +26,7 @@ test.describe("Responsive Design", () => {
     await loginPage.closeHamburgerMenu();
   });
 
-  test("02 - should work on tablet viewport (768x1024)", async ({ page }) => {
+  test("32 - should work on tablet viewport (768x1024)", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const loginPage = new LoginPage(page);
@@ -40,7 +40,7 @@ test.describe("Responsive Design", () => {
     expect(productCount).toBe(6);
   });
 
-  test("03 - should handle viewport resize during interaction", async ({
+  test("33 - should handle viewport resize during interaction", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -61,7 +61,7 @@ test.describe("Responsive Design", () => {
     ).toHaveText("1");
   });
 
-  test("04 - should add to cart on mobile viewport", async ({ page }) => {
+  test("34 - should add to cart on mobile viewport", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const loginPage = new LoginPage(page);
@@ -79,7 +79,7 @@ test.describe("Responsive Design", () => {
     ).toHaveText("2");
   });
 
-  test("05 - should checkout on tablet viewport", async ({ page }) => {
+  test("35 - should checkout on tablet viewport", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const loginPage = new LoginPage(page);

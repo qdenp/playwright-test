@@ -1,12 +1,12 @@
 /**
- * Test 30: Add all 6 products and verify
+ * Test 29: Add all 6 products and verify
  */
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 test.describe("Add All 6 Products", () => {
-  test("01 - should add all 6 products and verify cart", async ({ page }) => {
+  test("29 - should add all 6 products and verify cart", async ({ page }) => {
     // Login
     await page.goto("/");
     await page.locator("#user-name").fill("standard_user");
@@ -36,7 +36,7 @@ test.describe("Add All 6 Products", () => {
     expect(await cartPage.getCartItemCount()).toBe(6);
   });
 
-  test("02 - should verify product count and prices", async ({ page }) => {
+  test("30 - should verify product count and prices", async ({ page }) => {
     // Login
     await page.goto("/");
     await page.locator("#user-name").fill("standard_user");
@@ -58,7 +58,7 @@ test.describe("Add All 6 Products", () => {
     }
   });
 
-  test("03 - should add all 6 products and verify product names", async ({
+  test("31 - should add all 6 products and verify product names", async ({
     page,
   }) => {
     // Login

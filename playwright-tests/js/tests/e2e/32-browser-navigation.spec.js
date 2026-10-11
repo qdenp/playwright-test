@@ -1,5 +1,5 @@
 /**
- * Test 33: Browser navigation tests
+ * Test 32: Browser navigation tests
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
@@ -8,7 +8,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
 test.describe("Browser Navigation", () => {
-  test("01 - should handle browser back button from cart to inventory", async ({
+  test("32 - should handle browser back button from cart to inventory", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -31,7 +31,7 @@ test.describe("Browser Navigation", () => {
     await expect(inventoryPage.headerTitle).toContainText("Products");
   });
 
-  test("02 - should handle browser forward button after back", async ({
+  test("33 - should handle browser forward button after back", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -57,7 +57,7 @@ test.describe("Browser Navigation", () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test("03 - should handle back from checkout to cart", async ({ page }) => {
+  test("34 - should handle back from checkout to cart", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -81,7 +81,7 @@ test.describe("Browser Navigation", () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test("04 - should preserve cart state after multiple back/forward", async ({
+  test("35 - should preserve cart state after multiple back/forward", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
