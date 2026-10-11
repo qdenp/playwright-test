@@ -94,7 +94,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-chromium
-          path: playwright-tests/typescript/test-results/
+          path: |
+            playwright-tests/typescript/test-results/
+            playwright-tests/typescript/reports/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -154,6 +156,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.browser }}
-          path: playwright-tests/typescript/test-results/
+          path: |
+            playwright-tests/typescript/test-results/
+            playwright-tests/typescript/reports/
           retention-days: 30
           if-no-files-found: ignore

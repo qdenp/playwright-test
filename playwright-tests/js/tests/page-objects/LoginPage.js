@@ -12,10 +12,11 @@ export class LoginPage {
     this.errorMessage = page.locator('.error-message-container');
     this.hamburgerMenu = page.locator('.bm-burger-button');
     this.closeMenu = page.locator('.bm-cross-button');
+    this.menuOverlay = page.locator('.bm-menu');
   }
 
   async goTo() {
-    await this.page.goto(config.baseUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await this.page.goto(config.baseUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
   }
 
   async enterUsername(username) {

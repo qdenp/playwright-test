@@ -26,9 +26,9 @@ export default defineConfig({
     baseURL: 'https://www.saucedemo.com',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
-    video: 'retain-on-failure',
+    video: 'off',
     actionTimeout: 10000,
-    navigationTimeout: 60000,
+    navigationTimeout: 15000,
     // Visual regression
     screenshot: 'only-on-failure',
   },

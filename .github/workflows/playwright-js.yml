@@ -88,7 +88,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-chromium
-          path: playwright-tests/js/test-results/
+          path: |
+            playwright-tests/js/test-results/
+            playwright-tests/js/reports/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -148,6 +150,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.browser }}
-          path: playwright-tests/js/test-results/
+          path: |
+            playwright-tests/js/test-results/
+            playwright-tests/js/reports/
           retention-days: 30
           if-no-files-found: ignore

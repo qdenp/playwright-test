@@ -44,8 +44,17 @@ export class InventoryPage {
     return await product.locator('.inventory_item_name').textContent();
   }
 
+  async getProductDescription(index) {
+    const product = this.products.nth(index);
+    return await product.locator('.inventory_item_desc').textContent();
+  }
+
   async getCartBadgeCount() {
     const badge = this.cartBadge.locator('.shopping_cart_badge');
+    const isVisible = await badge.isVisible();
+    if (!isVisible) {
+      return 0;
+    }
     const text = await badge.textContent();
     return parseInt(text, 10) || 0;
   }
@@ -94,5 +103,21 @@ export class InventoryPage {
       prices.push(await this.getProductPrice(i));
     }
     return prices;
+  }
+
+  async openHamburgerMenu() {
+    await this.page.locator('.bm-burger-button').click();
+  }
+
+  async clickResetAppState() {
+    await this.page.getByText('Reset App State').click();
+  }
+
+  async clickLogout() {
+    await this.page.getByText('Logout').click();
+  }
+
+  async clickBackToProducts() {
+    await this.page.getByText('Back to Products').click();
   }
 }
