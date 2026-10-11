@@ -12,6 +12,7 @@ class CartPage:
         self.remove_buttons = page.locator('button:has-text("Remove")')
         self.checkout_button = page.locator(".checkout_button")
         self.total_price = page.locator(".summary_subtotal_label")
+        self.continue_shopping_button = page.locator('[data-test="continue-shopping"]')
 
     def wait_for_page_load(self):
         self.cart_items.first.wait_for(state="visible", timeout=10000)

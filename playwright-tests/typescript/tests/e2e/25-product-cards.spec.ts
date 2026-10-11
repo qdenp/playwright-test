@@ -1,11 +1,11 @@
 /**
- * Test 25: Verify inventory item details
+ * Тест 25: Проверка карточек товаров на главной
  */
 import { test, expect } from '../fixtures.js';
 import { LoginPage } from '../page-objects/LoginPage.js';
 import { InventoryPage } from '../page-objects/InventoryPage.js';
 
-test('25 - should display all inventory item details', async ({ page }) => {
+test('Проверка карточек товаров на главной', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

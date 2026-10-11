@@ -1,5 +1,5 @@
 """
-Test 25: Verify inventory item details
+Тест 25: Проверка карточек товаров на главной
 """
 
 import pytest
@@ -8,10 +8,7 @@ from page_objects.inventory_page import InventoryPage
 from page_objects.login_page import LoginPage
 
 
-class TestInventoryDetails:
-    """Тесты для проверки деталей товаров"""
-
-    def test_01_should_display_all_inventory_item_details(self, page):
+def test_product_cards(page):
         """Проверить что все детали товаров отображаются"""
         login_page = LoginPage(page)
         inventory_page = InventoryPage(page)

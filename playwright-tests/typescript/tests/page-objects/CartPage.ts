@@ -23,7 +23,7 @@ export class CartPage {
     this.removeItemButtons = this.page.locator('button:has-text("Remove")');
     this.checkoutButton = this.page.locator(".checkout_button");
     this.continueShoppingButton = this.page.locator(
-      ".btn.btn_action.btn_small",
+      '[data-test="continue-shopping"]',
     );
     this.totalPrice = this.page.locator(".summary_total_label");
     this.quantityInput = this.page.locator('[data-test="quantity"]');
