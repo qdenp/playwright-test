@@ -33,6 +33,8 @@ class InventoryPage:
     def get_product_price(self, index: int) -> float:
         product = self.products.nth(index)
         price_text = product.locator(".inventory_item_price").text_content()
+        if price_text is None:
+            return 0.0
         return float(price_text.replace("$", ""))
 
     def get_product_title(self, index: int) -> str:

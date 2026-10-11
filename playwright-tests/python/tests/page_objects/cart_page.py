@@ -11,7 +11,7 @@ class CartPage:
         self.cart_items = page.locator(".cart_item")
         self.remove_buttons = page.locator('button:has-text("Remove")')
         self.checkout_button = page.locator(".checkout_button")
-        self.total_price = page.locator(".summary_total_label")
+        self.total_price = page.locator(".summary_subtotal_label")
 
     def wait_for_page_load(self):
         self.cart_items.first.wait_for(state="visible", timeout=10000)
@@ -54,7 +54,8 @@ class CartPage:
         self.checkout_button.click()
 
     def get_total_price(self) -> str:
-        return self.total_price.text_content()
+        text = self.total_price.text_content()
+        return text if text is not None else "$0.00"
 
     def get_cart_item_count(self) -> int:
         return self.cart_items.count()
