@@ -5,8 +5,8 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Test 39: Performance - verify page load times
  */
-test.describe("Performance Tests", () => {
-  test("01 - should load products page quickly", async ({ page }) => {
+test.describe("Reset App State", () => {
+  test("01 - should reset cart via Reset App State in hamburger menu", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
@@ -19,7 +19,7 @@ test.describe("Performance Tests", () => {
     expect(loadTime).toBeLessThan(10000);
   });
 
-  test("02 - should add products to cart quickly", async ({ page }) => {
+  test("02 - should reset app state and verify complete reset", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 

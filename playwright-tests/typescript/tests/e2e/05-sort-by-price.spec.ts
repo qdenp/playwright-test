@@ -5,8 +5,8 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Test 05: Сортировка товаров по цене
  */
-test.describe("Sort by Price", () => {
-  test("05a - should sort products by price low to high", async ({ page }) => {
+test.describe("Тест 5: Сортировка товаров по цене", () => {
+  test("Тест 5a: Сортировка товаров по цене (low → high)", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
@@ -24,7 +24,7 @@ test.describe("Sort by Price", () => {
     }
   });
 
-  test("05b - should sort products by price high to low", async ({ page }) => {
+  test("Тест 5b: Сортировка товаров по цене (high → low)", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 

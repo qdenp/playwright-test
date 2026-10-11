@@ -5,7 +5,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Test 01: Успешный логин — стандартный пользователь
  */
-test("01 - should login successfully with standard_user", async ({ page }) => {
+test("Успешный логин — стандартный пользователь", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

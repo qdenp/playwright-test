@@ -6,7 +6,7 @@ import { test as base, expect } from "@playwright/test";
  */
 const test = base;
 
-test("18 - should navigate to about page from hamburger menu", async ({
+test("Тест 18: About page — переход из hamburger меню", async ({
   page,
 }) => {
   // Login directly without fixture

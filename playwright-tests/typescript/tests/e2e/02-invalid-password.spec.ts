@@ -4,7 +4,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 /**
  * Test 02: Неверный пароль — ошибка авторизации
  */
-test("02 - should show error with invalid password", async ({ page }) => {
+test("Неверный пароль — ошибка авторизации", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.goTo();

@@ -5,7 +5,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Test 04: Добавление товара в корзину
  */
-test("04 - should add product to cart", async ({ page }) => {
+test("Добавление товара в корзину", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

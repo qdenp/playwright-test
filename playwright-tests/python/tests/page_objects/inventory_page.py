@@ -37,12 +37,18 @@ class InventoryPage:
             return 0.0
         return float(price_text.replace("$", ""))
 
+    def get_product_description(self, index: int) -> str:
+        product = self.products.nth(index)
+        return product.locator(".inventory_item_desc").text_content()
+
     def get_product_title(self, index: int) -> str:
         product = self.products.nth(index)
         return product.locator(".inventory_item_name").text_content()
 
     def get_cart_badge_count(self) -> int:
         badge = self.cart_badge.locator(".shopping_cart_badge")
+        if not badge.is_visible():
+            return 0
         text = badge.text_content()
         return int(text) if text else 0
 
@@ -66,6 +72,12 @@ class InventoryPage:
 
     def get_title_text(self) -> str:
         return self.header_title.text_content()
+
+    def open_hamburger_menu(self):
+        self.page.locator(".bm-burger-button").click()
+
+    def click_reset_app_state(self):
+        self.page.get_by_text("Reset App State").click()
 
     def get_all_product_names(self) -> list:
         names = []

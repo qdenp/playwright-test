@@ -32,6 +32,9 @@ class CheckoutPage:
     def click_continue(self):
         self.continue_button.click()
 
+    def checkout(self):
+        self.continue_button.click()
+
     def click_finish(self):
         self.finish_button.click()
 

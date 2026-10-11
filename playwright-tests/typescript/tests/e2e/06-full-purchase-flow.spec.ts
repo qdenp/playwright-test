@@ -7,7 +7,7 @@ import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 /**
  * Test 06: Полный flow покупки (E2E)
  */
-test("06 - should complete full purchase flow", async ({ page }) => {
+test("Полный flow покупки (E2E)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);

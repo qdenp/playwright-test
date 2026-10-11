@@ -57,6 +57,7 @@ class LoginPage:
         self.error_banner = page.get_by_role("alert")
         self.hamburger_menu = page.locator(".bm-burger-button")
         self.close_menu = page.locator(".bm-cross-button")
+        self.menu_overlay = page.locator(".bm-cover")
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")

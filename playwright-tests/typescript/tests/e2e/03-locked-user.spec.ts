@@ -4,7 +4,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 /**
  * Test 03: Блокированный пользователь — locked_out_user
  */
-test("03 - should show error for locked_out_user", async ({ page }) => {
+test("Блокированный пользователь — locked_out_user", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.goTo();
