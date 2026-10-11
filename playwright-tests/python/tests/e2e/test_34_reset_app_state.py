@@ -1,5 +1,5 @@
 """
-Test 39: Reset App State tests
+Test 34: Reset App State tests
 """
 
 import pytest

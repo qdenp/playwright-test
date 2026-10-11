@@ -1,5 +1,5 @@
 """
-Test 31: API intercept - verify API responses
+Test 30: API intercept - verify API responses
 """
 
 import pytest

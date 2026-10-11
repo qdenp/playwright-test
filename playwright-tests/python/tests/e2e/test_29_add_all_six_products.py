@@ -1,5 +1,5 @@
 """
-Test 30: Add all 6 products and verify total price
+Test 29: Add all 6 products and verify total price
 Sauce Demo имеет ровно 6 товаров — добавляем все и проверяем итоговую сумму
 """
 

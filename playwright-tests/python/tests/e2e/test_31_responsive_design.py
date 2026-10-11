@@ -1,5 +1,5 @@
 """
-Test 32: Responsive design tests
+Test 31: Responsive design tests
 """
 
 import pytest

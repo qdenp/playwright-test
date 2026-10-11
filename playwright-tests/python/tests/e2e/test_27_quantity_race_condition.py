@@ -1,5 +1,5 @@
 """
-Test 28: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
+Test 27: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
 """
 
 import pytest
@@ -8,7 +8,7 @@ from page_objects.cart_page import CartPage
 from page_objects.inventory_page import InventoryPage
 
 
-class TestQuantityAndRaceConditions:
+class TestQuantityRaceCondition:
     """Тесты для количества и race conditions"""
 
     def test_01_should_verify_each_item_quantity_stays_at_1(self, authenticated_page):
