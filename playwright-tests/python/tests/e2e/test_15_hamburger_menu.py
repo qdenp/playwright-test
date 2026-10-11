@@ -17,13 +17,12 @@ def test_hamburger_menu(page):
     assert login_page.close_menu.is_visible()
 
     # Проверяем количество элементов меню (5 штук)
-    menu_items = page.locator(".bm-item-list a")
-    assert menu_items.count() == 5
+    assert login_page.get_menu_item_count() == 5
 
     # Проверяем наличие элементов меню
-    assert page.locator('[data-test="inventory-sidebar-link"]').is_visible()
-    assert page.locator('[data-test="about-sidebar-link"]').is_visible()
-    assert page.locator('[data-test="logout-sidebar-link"]').is_visible()
+    assert login_page.is_inventory_link_visible()
+    assert login_page.is_about_link_visible()
+    assert login_page.is_logout_link_visible()
 
     # Закрываем меню
     login_page.close_hamburger_menu()

@@ -118,3 +118,18 @@ class LoginPage:
 
     def click_logout(self):
         self.page.get_by_role("menuitem", name="Logout").click()
+
+    def get_menu_items_locator(self):
+        return self.page.locator(".bm-item-list a")
+
+    def get_menu_item_count(self) -> int:
+        return self.get_menu_items_locator().count()
+
+    def is_inventory_link_visible(self) -> bool:
+        return self.page.locator('[data-test="inventory-sidebar-link"]').is_visible()
+
+    def is_about_link_visible(self) -> bool:
+        return self.page.locator('[data-test="about-sidebar-link"]').is_visible()
+
+    def is_logout_link_visible(self) -> bool:
+        return self.page.locator('[data-test="logout-sidebar-link"]').is_visible()
