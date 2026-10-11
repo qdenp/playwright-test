@@ -17,7 +17,7 @@ export default defineConfig({
 
   // Отчёты
   reporter: [
-    ['html', { outputFolder: 'reports' }],
+    ['html', { open: 'never' }],
     ['list']
   ],
 

@@ -85,8 +85,8 @@ jobs:
         run: playwright install --with-deps
         working-directory: ./playwright-tests/python
 
-      - name: Create reports directory
-        run: mkdir -p reports
+      - name: Create playwright-report directory
+        run: mkdir -p playwright-report
         working-directory: ./playwright-tests/python
 
       - name: Run pytest on Chromium
@@ -102,7 +102,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report-chromium
-          path: playwright-tests/python/reports/
+          path: playwright-tests/python/playwright-report/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -149,8 +149,8 @@ jobs:
         working-directory: ./playwright-tests/python
         if: steps.cache-browser.outputs.cache-hit != 'true'
 
-      - name: Create reports directory
-        run: mkdir -p reports
+      - name: Create playwright-report directory
+        run: mkdir -p playwright-report
         working-directory: ./playwright-tests/python
 
       - name: Run pytest on ${{ matrix.browser }}
@@ -166,6 +166,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report-${{ matrix.browser }}
-          path: playwright-tests/python/reports/
+          path: playwright-tests/python/playwright-report/
           retention-days: 30
           if-no-files-found: ignore
