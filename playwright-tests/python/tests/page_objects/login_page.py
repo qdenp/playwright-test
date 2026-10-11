@@ -117,7 +117,7 @@ class LoginPage:
         self.page.get_by_text("Back to Products").click()
 
     def click_logout(self):
-        self.page.get_by_role("menuitem", name="Logout").click()
+        self.page.locator('[data-test="logout-sidebar-link"]').click()
 
     def get_menu_items_locator(self):
         return self.page.locator(".bm-item-list a")

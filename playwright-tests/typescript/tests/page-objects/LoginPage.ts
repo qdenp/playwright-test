@@ -78,7 +78,7 @@ export class LoginPage {
   }
 
   async clickLogout(): Promise<void> {
-    await this.logoutMenuItem.click();
+    await this.page.locator('[data-test="logout-sidebar-link"]').click();
   }
 
   async clickAbout(): Promise<void> {

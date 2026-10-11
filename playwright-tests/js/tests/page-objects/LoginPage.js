@@ -72,7 +72,7 @@ export class LoginPage {
   }
 
   async clickLogout() {
-    await this.page.getByRole("menuitem", { name: "Logout" }).click();
+    await this.page.locator('[data-test="logout-sidebar-link"]').click();
   }
 
   getMenuItemsLocator() {
