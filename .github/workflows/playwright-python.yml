@@ -102,9 +102,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report-chromium
-          path: |
-            playwright-tests/python/reports/
-            playwright-tests/python/test-results/
+          path: playwright-tests/python/reports/
           retention-days: 30
           if-no-files-found: ignore
 
@@ -168,8 +166,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report-${{ matrix.browser }}
-          path: |
-            playwright-tests/python/reports/
-            playwright-tests/python/test-results/
+          path: playwright-tests/python/reports/
           retention-days: 30
           if-no-files-found: ignore
