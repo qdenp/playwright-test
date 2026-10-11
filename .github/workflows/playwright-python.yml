@@ -76,7 +76,6 @@ jobs:
           key: py-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/python/requirements.txt') }}
 
       - name: Install dependencies
-        if: steps.cache-pip-deps.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt
         working-directory: ./playwright-tests/python
 
@@ -142,7 +141,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./playwright-tests/python
-        if: steps.cache-pip-deps.outputs.cache-hit != 'true'
 
       - name: Install Playwright browsers
         run: playwright install --with-deps
