@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page } from "@playwright/test";
 
 export interface UserCredentials {
   username: string;
@@ -17,39 +17,41 @@ export class LoginPage {
   private page: Page;
 
   // Locators - инициализируются в constructor
-  usernameInput: ReturnType<Page['locator']>;
-  passwordInput: ReturnType<Page['locator']>;
-  loginButton: ReturnType<Page['locator']>;
-  errorMessage: ReturnType<Page['locator']>;
-  hamburgerMenu: ReturnType<Page['locator']>;
-  menuOverlay: ReturnType<Page['locator']>;
-  closeButton: ReturnType<Page['locator']>;
-  logoutMenuItem: ReturnType<Page['locator']>;
-  aboutMenuItem: ReturnType<Page['locator']>;
+  usernameInput: ReturnType<Page["locator"]>;
+  passwordInput: ReturnType<Page["locator"]>;
+  loginButton: ReturnType<Page["locator"]>;
+  errorMessage: ReturnType<Page["locator"]>;
+  hamburgerMenu: ReturnType<Page["locator"]>;
+  menuOverlay: ReturnType<Page["locator"]>;
+  closeButton: ReturnType<Page["locator"]>;
+  logoutMenuItem: ReturnType<Page["locator"]>;
+  aboutMenuItem: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = this.page.locator('#user-name');
-    this.passwordInput = this.page.locator('#password');
-    this.loginButton = this.page.locator('#login-button');
-    this.errorMessage = this.page.locator('.error-message-container');
-    this.hamburgerMenu = this.page.locator('.bm-burger-button');
-    this.menuOverlay = this.page.locator('.bm-menu-wrap');
-    this.closeButton = this.page.locator('.bm-cross-button');
-    this.logoutMenuItem = this.page.locator('.bm-item-list a:has-text("Logout")');
+    this.usernameInput = this.page.locator("#user-name");
+    this.passwordInput = this.page.locator("#password");
+    this.loginButton = this.page.locator("#login-button");
+    this.errorMessage = this.page.locator(".error-message-container");
+    this.hamburgerMenu = this.page.locator(".bm-burger-button");
+    this.menuOverlay = this.page.locator(".bm-menu-wrap");
+    this.closeButton = this.page.locator(".bm-cross-button");
+    this.logoutMenuItem = this.page.locator(
+      '.bm-item-list a:has-text("Logout")',
+    );
     this.aboutMenuItem = this.page.locator('.bm-item-list a:has-text("About")');
   }
 
-  async goTo(url: string = '/'): Promise<void> {
+  async goTo(url: string = "/"): Promise<void> {
     await this.page.goto(url);
   }
 
-  async enterUsername(username: string = 'standard_user'): Promise<void> {
+  async enterUsername(username: string = "standard_user"): Promise<void> {
     await this.usernameInput.clear();
     await this.usernameInput.fill(username);
   }
 
-  async enterPassword(password: string = 'secret_sauce'): Promise<void> {
+  async enterPassword(password: string = "secret_sauce"): Promise<void> {
     await this.passwordInput.clear();
     await this.passwordInput.fill(password);
   }
@@ -58,7 +60,10 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async login(username: string = 'standard_user', password: string = 'secret_sauce'): Promise<void> {
+  async login(
+    username: string = "standard_user",
+    password: string = "secret_sauce",
+  ): Promise<void> {
     await this.enterUsername(username);
     await this.enterPassword(password);
     await this.clickLogin();
@@ -89,12 +94,14 @@ export class LoginPage {
   }
 
   async waitForErrorMessage(): Promise<void> {
-    await this.errorMessage.waitFor({ state: 'visible', timeout: 10000 });
+    await this.errorMessage.waitFor({ state: "visible", timeout: 10000 });
   }
 
   async getMenuItemItems(): Promise<string[]> {
-    const menuItems = await this.page.locator('.bm-item-list a').allTextContents();
-    return menuItems.map(item => item.trim());
+    const menuItems = await this.page
+      .locator(".bm-item-list a")
+      .allTextContents();
+    return menuItems.map((item) => item.trim());
   }
 
   async isMenuOpen(): Promise<boolean> {

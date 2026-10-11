@@ -1,11 +1,11 @@
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Test 04: Добавление товара в корзину
  */
-test('04 - should add product to cart', async ({ page }) => {
+test("04 - should add product to cart", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -17,5 +17,7 @@ test('04 - should add product to cart', async ({ page }) => {
   await inventoryPage.addProductToCart(0);
 
   // Verify badge shows 1
-  await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('1');
+  await expect(
+    inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+  ).toHaveText("1");
 });

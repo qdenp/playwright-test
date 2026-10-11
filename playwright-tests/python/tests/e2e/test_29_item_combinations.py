@@ -11,7 +11,9 @@ from page_objects.inventory_page import InventoryPage
 class TestItemCombinations:
     """Тесты для различных комбинаций товаров"""
 
-    def test_01_should_add_cheapest_3_products_and_verify_cart(self, authenticated_page):
+    def test_01_should_add_cheapest_3_products_and_verify_cart(
+        self, authenticated_page
+    ):
         """Добавить 3 самых дешёвых товара и проверить корзину"""
         page = authenticated_page["page"]
         inventory_page = authenticated_page["inventory_page"]
@@ -35,7 +37,9 @@ class TestItemCombinations:
         assert "Sauce Labs Bike Light" in cart_items
         assert "Test.allTheThings() T-Shirt (Red)" in cart_items
 
-    def test_02_should_add_most_expensive_3_products_and_verify_cart(self, authenticated_page):
+    def test_02_should_add_most_expensive_3_products_and_verify_cart(
+        self, authenticated_page
+    ):
         """Добавить 3 самых дорогих товара и проверить корзину"""
         page = authenticated_page["page"]
         inventory_page = authenticated_page["inventory_page"]

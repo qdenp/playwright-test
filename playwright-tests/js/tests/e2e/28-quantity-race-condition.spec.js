@@ -1,18 +1,20 @@
 /**
  * Test 28: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
  */
-import { test, expect } from '../fixtures';
-import { CartPage } from '../page-objects/CartPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { CartPage } from "../page-objects/CartPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
-test.describe('Quantity and Race Conditions', () => {
-  test('01 - should verify each item quantity stays at 1 (no editing in cart)', async ({ page }) => {
+test.describe("Quantity and Race Conditions", () => {
+  test("01 - should verify each item quantity stays at 1 (no editing in cart)", async ({
+    page,
+  }) => {
     // Login
-    await page.goto('/');
-    await page.locator('#user-name').fill('standard_user');
-    await page.locator('#password').fill('secret_sauce');
-    await page.locator('#login-button').click();
-    
+    await page.goto("/");
+    await page.locator("#user-name").fill("standard_user");
+    await page.locator("#password").fill("secret_sauce");
+    await page.locator("#login-button").click();
+
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.waitForPageLoad();
 
@@ -22,7 +24,9 @@ test.describe('Quantity and Race Conditions', () => {
     await inventoryPage.addProductToCart(4); // Onesie
 
     // Verify badge shows 3
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('3');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("3");
 
     // Open cart
     await inventoryPage.openCart();
@@ -35,13 +39,13 @@ test.describe('Quantity and Race Conditions', () => {
     expect(itemCount).toBe(3);
   });
 
-  test('02 - should handle rapid add multiple products', async ({ page }) => {
+  test("02 - should handle rapid add multiple products", async ({ page }) => {
     // Login
-    await page.goto('/');
-    await page.locator('#user-name').fill('standard_user');
-    await page.locator('#password').fill('secret_sauce');
-    await page.locator('#login-button').click();
-    
+    await page.goto("/");
+    await page.locator("#user-name").fill("standard_user");
+    await page.locator("#password").fill("secret_sauce");
+    await page.locator("#login-button").click();
+
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.waitForPageLoad();
 
@@ -51,7 +55,9 @@ test.describe('Quantity and Race Conditions', () => {
     }
 
     // All 3 should be added successfully
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('3');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("3");
 
     // Verify cart has exactly 3 items
     await inventoryPage.openCart();

@@ -1,11 +1,11 @@
-import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Кросс-браузерная проверка — авторизация
  */
-test('Кросс-браузерная проверка — авторизация', async ({ page }) => {
+test("Кросс-браузерная проверка — авторизация", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -16,7 +16,7 @@ test('Кросс-браузерная проверка — авторизаци�
   await inventoryPage.waitForPageLoad();
 
   const title = await inventoryPage.getTitleText();
-  expect(title).toBe('Products');
+  expect(title).toBe("Products");
 
   const productsVisible = await inventoryPage.isProductsVisible();
   expect(productsVisible).toBe(true);

@@ -1,10 +1,10 @@
-import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
+import { test, expect } from "../fixtures.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
 
 /**
  * Тест 18: About page — переход из hamburger меню
  */
-test('Тест 18: About page — переход из hamburger меню', async ({ page }) => {
+test("Тест 18: About page — переход из hamburger меню", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.goTo();
@@ -14,12 +14,12 @@ test('Тест 18: About page — переход из hamburger меню', async
   await loginPage.openHamburgerMenu();
 
   // Переходим по ссылке About
-  await page.getByText('About').click();
+  await page.getByText("About").click();
 
   // Sauce Demo — SPA, About page может вернуть 403
   // Проверяем что страница загрузилась (любым способом)
   try {
-    await expect(page.locator('.title')).toBeVisible({ timeout: 3000 });
+    await expect(page.locator(".title")).toBeVisible({ timeout: 3000 });
   } catch {
     // About page может не загрузиться (403), это нормально для Sauce Demo
   }
@@ -32,6 +32,8 @@ test('Тест 18: About page — переход из hamburger меню', async
   }
 
   // Возвращаемся на Products используя relative URL
-  await page.goto('inventory.html');
-  await expect(page.locator('.title')).toContainText('Products', { timeout: 5000 });
+  await page.goto("inventory.html");
+  await expect(page.locator(".title")).toContainText("Products", {
+    timeout: 5000,
+  });
 });

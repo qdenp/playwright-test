@@ -4,15 +4,15 @@
 export class InventoryPage {
   constructor(page) {
     this.page = page;
-    this.products = page.locator('.inventory_item');
-    this.sortDropdown = page.locator('.product_sort_container');
-    this.cartBadge = page.locator('.shopping_cart_link');
-    this.cartIcon = page.locator('.shopping_cart_link');
-    this.headerTitle = page.locator('.title');
+    this.products = page.locator(".inventory_item");
+    this.sortDropdown = page.locator(".product_sort_container");
+    this.cartBadge = page.locator(".shopping_cart_link");
+    this.cartIcon = page.locator(".shopping_cart_link");
+    this.headerTitle = page.locator(".title");
   }
 
   async waitForPageLoad() {
-    await this.headerTitle.waitFor({ state: 'visible', timeout: 10000 });
+    await this.headerTitle.waitFor({ state: "visible", timeout: 10000 });
   }
 
   async getProductCount() {
@@ -25,32 +25,36 @@ export class InventoryPage {
 
   async addProductToCart(index) {
     const product = this.products.nth(index);
-    await product.locator('.btn.btn_primary.btn_small.btn_inventory').click();
+    await product.locator(".btn.btn_primary.btn_small.btn_inventory").click();
   }
 
   async addProductByName(productName) {
-    const product = this.page.locator(`.inventory_item:has-text("${productName}")`);
-    await product.locator('.btn.btn_primary.btn_small.btn_inventory').click();
+    const product = this.page.locator(
+      `.inventory_item:has-text("${productName}")`,
+    );
+    await product.locator(".btn.btn_primary.btn_small.btn_inventory").click();
   }
 
   async getProductPrice(index) {
     const product = this.products.nth(index);
-    const priceText = await product.locator('.inventory_item_price').textContent();
-    return parseFloat(priceText.replace('$', ''));
+    const priceText = await product
+      .locator(".inventory_item_price")
+      .textContent();
+    return parseFloat(priceText.replace("$", ""));
   }
 
   async getProductTitle(index) {
     const product = this.products.nth(index);
-    return await product.locator('.inventory_item_name').textContent();
+    return await product.locator(".inventory_item_name").textContent();
   }
 
   async getProductDescription(index) {
     const product = this.products.nth(index);
-    return await product.locator('.inventory_item_desc').textContent();
+    return await product.locator(".inventory_item_desc").textContent();
   }
 
   async getCartBadgeCount() {
-    const badge = this.cartBadge.locator('.shopping_cart_badge');
+    const badge = this.cartBadge.locator(".shopping_cart_badge");
     const isVisible = await badge.isVisible();
     if (!isVisible) {
       return 0;
@@ -64,23 +68,23 @@ export class InventoryPage {
   }
 
   async sortByPriceLowToHigh() {
-    await this.sortDropdown.selectOption('Price (low to high)');
+    await this.sortDropdown.selectOption("Price (low to high)");
   }
 
   async sortByPriceHighToLow() {
-    await this.sortDropdown.selectOption('Price (high to low)');
+    await this.sortDropdown.selectOption("Price (high to low)");
   }
 
   async sortByAlphaAtoZ() {
-    await this.sortDropdown.selectOption('Name (A to Z)');
+    await this.sortDropdown.selectOption("Name (A to Z)");
   }
 
   async sortByAlphaZtoA() {
-    await this.sortDropdown.selectOption('Name (Z to A)');
+    await this.sortDropdown.selectOption("Name (Z to A)");
   }
 
   async isProductsVisible() {
-    return await this.products.count() > 0;
+    return (await this.products.count()) > 0;
   }
 
   async getTitleText() {
@@ -106,18 +110,18 @@ export class InventoryPage {
   }
 
   async openHamburgerMenu() {
-    await this.page.locator('.bm-burger-button').click();
+    await this.page.locator(".bm-burger-button").click();
   }
 
   async clickResetAppState() {
-    await this.page.getByText('Reset App State').click();
+    await this.page.getByText("Reset App State").click();
   }
 
   async clickLogout() {
-    await this.page.getByText('Logout').click();
+    await this.page.getByText("Logout").click();
   }
 
   async clickBackToProducts() {
-    await this.page.getByText('Back to Products').click();
+    await this.page.getByText("Back to Products").click();
   }
 }

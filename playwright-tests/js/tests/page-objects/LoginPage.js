@@ -1,22 +1,25 @@
 /**
  * Page Object для страницы логина
  */
-import { config } from '../config.js';
+import { config } from "../config.js";
 
 export class LoginPage {
   constructor(page) {
     this.page = page;
-    this.usernameInput = page.locator('#user-name');
-    this.passwordInput = page.locator('#password');
-    this.loginButton = page.locator('#login-button');
-    this.errorMessage = page.locator('.error-message-container');
-    this.hamburgerMenu = page.locator('.bm-burger-button');
-    this.closeMenu = page.locator('.bm-cross-button');
-    this.menuOverlay = page.locator('.bm-menu');
+    this.usernameInput = page.locator("#user-name");
+    this.passwordInput = page.locator("#password");
+    this.loginButton = page.locator("#login-button");
+    this.errorMessage = page.locator(".error-message-container");
+    this.hamburgerMenu = page.locator(".bm-burger-button");
+    this.closeMenu = page.locator(".bm-cross-button");
+    this.menuOverlay = page.locator(".bm-menu");
   }
 
   async goTo() {
-    await this.page.goto(config.baseUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await this.page.goto(config.baseUrl, {
+      waitUntil: "domcontentloaded",
+      timeout: 15000,
+    });
   }
 
   async enterUsername(username) {
@@ -49,7 +52,7 @@ export class LoginPage {
   }
 
   async waitForErrorMessage(timeout = 10000) {
-    await this.errorMessage.waitFor({ state: 'visible', timeout });
+    await this.errorMessage.waitFor({ state: "visible", timeout });
   }
 
   async openHamburgerMenu() {
@@ -65,10 +68,10 @@ export class LoginPage {
   }
 
   async clickBackToProducts() {
-    await this.page.getByRole('link', { name: 'Back to Products' }).click();
+    await this.page.getByRole("link", { name: "Back to Products" }).click();
   }
 
   async clickLogout() {
-    await this.page.getByRole('menuitem', { name: 'Logout' }).click();
+    await this.page.getByRole("menuitem", { name: "Logout" }).click();
   }
 }

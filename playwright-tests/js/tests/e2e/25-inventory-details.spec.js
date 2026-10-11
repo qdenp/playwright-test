@@ -1,11 +1,11 @@
 /**
  * Test 25: Verify inventory item details
  */
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
-test('25 - should display all inventory item details', async ({ page }) => {
+test("25 - should display all inventory item details", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -19,22 +19,24 @@ test('25 - should display all inventory item details', async ({ page }) => {
 
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
-    
+
     // Verify product has name
-    const name = await product.locator('.inventory_item_name').textContent();
+    const name = await product.locator(".inventory_item_name").textContent();
     expect(name).toBeTruthy();
     expect(name.length).toBeGreaterThan(0);
 
     // Verify product has description
-    const desc = await product.locator('.inventory_item_desc').textContent();
+    const desc = await product.locator(".inventory_item_desc").textContent();
     expect(desc).toBeTruthy();
 
     // Verify product has price
-    const price = await product.locator('.inventory_item_price').textContent();
+    const price = await product.locator(".inventory_item_price").textContent();
     expect(price).toBeTruthy();
-    expect(price).toContain('$');
+    expect(price).toContain("$");
 
     // Verify add to cart button is visible
-    await expect(product.locator('.btn.btn_primary.btn_small.btn_inventory')).toBeVisible();
+    await expect(
+      product.locator(".btn.btn_primary.btn_small.btn_inventory"),
+    ).toBeVisible();
   }
 });

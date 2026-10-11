@@ -38,9 +38,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'off',
 
-    /* Increase timeout for slow networks */
-    navigationTimeout: 60000,
-    timeout: 60000,
+    /* Increase timeout for CI environment */
+    actionTimeout: 60000,
+    timeout: 120000,
   },
 
   /* Configure projects for major browsers */

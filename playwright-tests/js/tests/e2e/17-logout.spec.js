@@ -1,11 +1,11 @@
-import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Тест 17: Logout — выход из аккаунта
  */
-test('Тест 17: Logout — выход из аккаунта', async ({ page }) => {
+test("Тест 17: Logout — выход из аккаунта", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -18,7 +18,7 @@ test('Тест 17: Logout — выход из аккаунта', async ({ page }
 
   // Открываем меню и нажимаем Logout
   await loginPage.openHamburgerMenu();
-  await page.getByText('Logout').click();
+  await page.getByText("Logout").click();
 
   // Проверяем что попали на страницу логина (SPA — URL не меняется, но появляются поля логина)
   await expect(loginPage.usernameInput).toBeVisible({ timeout: 10000 });

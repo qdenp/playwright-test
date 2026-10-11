@@ -1,13 +1,13 @@
-import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
-import { CheckoutPage } from '../page-objects/CheckoutPage.js';
+import { test, expect } from "../fixtures.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { CartPage } from "../page-objects/CartPage.js";
+import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
 /**
  * Полный flow покупки (E2E)
  */
-test('Полный flow покупки (E2E)', { timeout: 60000 }, async ({ page }) => {
+test("Полный flow покупки (E2E)", { timeout: 60000 }, async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
@@ -28,7 +28,7 @@ test('Полный flow покупки (E2E)', { timeout: 60000 }, async ({ page
   await cartPage.checkout();
   await checkoutPage.waitForPageLoad();
 
-  await checkoutPage.fillInfo('Иван', 'Иванов', '100000');
+  await checkoutPage.fillInfo("Иван", "Иванов", "100000");
   await checkoutPage.clickContinue();
 
   // Ожидаем кнопку Finish
@@ -37,5 +37,5 @@ test('Полный flow покупки (E2E)', { timeout: 60000 }, async ({ page
   await checkoutPage.clickFinish();
 
   await expect(checkoutPage.thankYouMessage).toBeVisible({ timeout: 10000 });
-  await expect(checkoutPage.completeText).toContainText('Your order has been');
+  await expect(checkoutPage.completeText).toContainText("Your order has been");
 });

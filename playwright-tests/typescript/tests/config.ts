@@ -15,21 +15,21 @@ export interface LoginTestParams {
  * Configuration from environment variables
  */
 export const config = {
-  username: process.env.SAUCE_DEMO_USERNAME ?? 'standard_user',
-  password: process.env.SAUCE_DEMO_PASSWORD ?? 'secret_sauce',
-  baseUrl: process.env.SAUCE_DEMO_BASE_URL ?? 'https://www.saucedemo.com',
+  username: process.env.SAUCE_DEMO_USERNAME ?? "standard_user",
+  password: process.env.SAUCE_DEMO_PASSWORD ?? "secret_sauce",
+  baseUrl: process.env.SAUCE_DEMO_BASE_URL ?? "https://www.saucedemo.com",
 };
 
 /**
  * All available users
  */
 export const users: User[] = [
-  { username: 'standard_user', password: 'secret_sauce' },
-  { username: 'problem_user', password: 'secret_sauce' },
-  { username: 'performance_glitch_user', password: 'secret_sauce' },
-  { username: 'error_user', password: 'secret_sauce' },
-  { username: 'visual_user', password: 'secret_sauce' },
-  { username: 'locked_out_user', password: 'secret_sauce' },
+  { username: "standard_user", password: "secret_sauce" },
+  { username: "problem_user", password: "secret_sauce" },
+  { username: "performance_glitch_user", password: "secret_sauce" },
+  { username: "error_user", password: "secret_sauce" },
+  { username: "visual_user", password: "secret_sauce" },
+  { username: "locked_out_user", password: "secret_sauce" },
 ];
 
 /**
@@ -37,48 +37,48 @@ export const users: User[] = [
  */
 export const loginTests: LoginTestParams[] = [
   {
-    username: 'standard_user',
-    password: 'secret_sauce',
+    username: "standard_user",
+    password: "secret_sauce",
     shouldLogin: true,
-    expectedTitle: 'Products',
+    expectedTitle: "Products",
   },
   {
-    username: 'problem_user',
-    password: 'secret_sauce',
+    username: "problem_user",
+    password: "secret_sauce",
     shouldLogin: true,
-    expectedTitle: 'Products',
+    expectedTitle: "Products",
   },
   {
-    username: 'performance_glitch_user',
-    password: 'secret_sauce',
+    username: "performance_glitch_user",
+    password: "secret_sauce",
     shouldLogin: true,
-    expectedTitle: 'Products',
+    expectedTitle: "Products",
   },
   {
-    username: 'error_user',
-    password: 'secret_sauce',
+    username: "error_user",
+    password: "secret_sauce",
     shouldLogin: true,
-    expectedTitle: 'Products',
+    expectedTitle: "Products",
   },
   {
-    username: 'visual_user',
-    password: 'secret_sauce',
+    username: "visual_user",
+    password: "secret_sauce",
     shouldLogin: true,
-    expectedTitle: 'Products',
+    expectedTitle: "Products",
   },
   {
-    username: 'locked_out_user',
-    password: 'secret_sauce',
+    username: "locked_out_user",
+    password: "secret_sauce",
     shouldLogin: false,
-    expectedTitle: 'Products',
-    expectedError: 'locked out',
+    expectedTitle: "Products",
+    expectedError: "locked out",
   },
   {
-    username: 'standard_user',
-    password: 'wrong_password',
+    username: "standard_user",
+    password: "wrong_password",
     shouldLogin: false,
-    expectedTitle: 'Products',
-    expectedError: 'Username and password do not match',
+    expectedTitle: "Products",
+    expectedError: "Username and password do not match",
   },
 ];
 

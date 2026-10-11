@@ -1,21 +1,21 @@
-import { test, expect } from '../fixtures';
-import { CartPage } from '../page-objects/CartPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { CartPage } from "../page-objects/CartPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Test 30: Add all 6 products and verify
  */
-test.describe('Add All 6 Products', () => {
-  test('01 - should add all 6 products and verify cart', async ({ page }) => {
+test.describe("Add All 6 Products", () => {
+  test("01 - should add all 6 products and verify cart", async ({ page }) => {
     // Login
-    await page.goto('/');
-    await page.locator('#user-name').fill('standard_user');
-    await page.locator('#password').fill('secret_sauce');
-    await page.locator('#login-button').click();
-    
+    await page.goto("/");
+    await page.locator("#user-name").fill("standard_user");
+    await page.locator("#password").fill("secret_sauce");
+    await page.locator("#login-button").click();
+
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.waitForPageLoad();
-    
+
     const cartPage = new CartPage(page);
 
     // Add all 6 products (indices 0-5)
@@ -24,7 +24,9 @@ test.describe('Add All 6 Products', () => {
     }
 
     // Verify cart badge shows 6
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('6');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("6");
 
     // Open cart
     await inventoryPage.openCart();
@@ -34,13 +36,13 @@ test.describe('Add All 6 Products', () => {
     expect(await cartPage.getCartItemCount()).toBe(6);
   });
 
-  test('02 - should verify product count and prices', async ({ page }) => {
+  test("02 - should verify product count and prices", async ({ page }) => {
     // Login
-    await page.goto('/');
-    await page.locator('#user-name').fill('standard_user');
-    await page.locator('#password').fill('secret_sauce');
-    await page.locator('#login-button').click();
-    
+    await page.goto("/");
+    await page.locator("#user-name").fill("standard_user");
+    await page.locator("#password").fill("secret_sauce");
+    await page.locator("#login-button").click();
+
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.waitForPageLoad();
 
@@ -56,16 +58,18 @@ test.describe('Add All 6 Products', () => {
     }
   });
 
-  test('03 - should add all 6 products and verify product names', async ({ page }) => {
+  test("03 - should add all 6 products and verify product names", async ({
+    page,
+  }) => {
     // Login
-    await page.goto('/');
-    await page.locator('#user-name').fill('standard_user');
-    await page.locator('#password').fill('secret_sauce');
-    await page.locator('#login-button').click();
-    
+    await page.goto("/");
+    await page.locator("#user-name").fill("standard_user");
+    await page.locator("#password").fill("secret_sauce");
+    await page.locator("#login-button").click();
+
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.waitForPageLoad();
-    
+
     const cartPage = new CartPage(page);
 
     // Add all 6 products
@@ -79,12 +83,12 @@ test.describe('Add All 6 Products', () => {
 
     // Verify specific product names
     const expectedNames = [
-      'Sauce Labs Backpack',
-      'Sauce Labs Bike Light',
-      'Sauce Labs Bolt T-Shirt',
-      'Sauce Labs Fleece Jacket',
-      'Sauce Labs Onesie',
-      'Test.allTheThings() T-Shirt (Red)'
+      "Sauce Labs Backpack",
+      "Sauce Labs Bike Light",
+      "Sauce Labs Bolt T-Shirt",
+      "Sauce Labs Fleece Jacket",
+      "Sauce Labs Onesie",
+      "Test.allTheThings() T-Shirt (Red)",
     ];
 
     const cartItems = await cartPage.getCartItemNames();

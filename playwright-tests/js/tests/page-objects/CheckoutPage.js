@@ -4,23 +4,23 @@
 export class CheckoutPage {
   constructor(page) {
     this.page = page;
-    this.firstNameInput = page.locator('#first-name');
-    this.lastNameInput = page.locator('#last-name');
-    this.zipCodeInput = page.locator('#postal-code');
-    this.continueButton = page.locator('#continue');
-    this.errorMessage = page.locator('.error-message-container.error');
-    this.orderSummary = page.locator('.summary_subtotal_label');
-    this.finishButton = page.locator('#finish');
-    this.thankYouMessage = page.locator('text=Thank you for your order!');
-    this.completeText = page.locator('.complete-text');
-    this.backToHomeButton = page.locator('.btn_action');
-    this.itemsInOrder = page.locator('.cart_item');
-    this.itemPrices = page.locator('.inventory_item_price');
-    this.itemTotals = page.locator('.summary_total_label');
+    this.firstNameInput = page.locator("#first-name");
+    this.lastNameInput = page.locator("#last-name");
+    this.zipCodeInput = page.locator("#postal-code");
+    this.continueButton = page.locator("#continue");
+    this.errorMessage = page.locator(".error-message-container.error");
+    this.orderSummary = page.locator(".summary_subtotal_label");
+    this.finishButton = page.locator("#finish");
+    this.thankYouMessage = page.locator("text=Thank you for your order!");
+    this.completeText = page.locator(".complete-text");
+    this.backToHomeButton = page.locator(".btn_action");
+    this.itemsInOrder = page.locator(".cart_item");
+    this.itemPrices = page.locator(".inventory_item_price");
+    this.itemTotals = page.locator(".summary_total_label");
   }
 
   async waitForPageLoad() {
-    await this.firstNameInput.waitFor({ state: 'visible', timeout: 10000 });
+    await this.firstNameInput.waitFor({ state: "visible", timeout: 10000 });
   }
 
   async fillInfo(firstName, lastName, zipCode) {
@@ -50,7 +50,7 @@ export class CheckoutPage {
   }
 
   async isCompleteHeaderVisible() {
-    await this.thankYouMessage.waitFor({ state: 'attached', timeout: 10000 });
+    await this.thankYouMessage.waitFor({ state: "attached", timeout: 10000 });
     return await this.thankYouMessage.isVisible();
   }
 

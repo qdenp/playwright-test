@@ -1,15 +1,15 @@
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Test 39: Performance - verify page load times
  */
-test.describe('Performance Tests', () => {
-  test('01 - should load products page quickly', async ({ page }) => {
+test.describe("Performance Tests", () => {
+  test("01 - should load products page quickly", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
-    
+
     const startTime = Date.now();
     await loginPage.goTo();
     await loginPage.login();
@@ -19,7 +19,7 @@ test.describe('Performance Tests', () => {
     expect(loadTime).toBeLessThan(10000);
   });
 
-  test('02 - should add products to cart quickly', async ({ page }) => {
+  test("02 - should add products to cart quickly", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 

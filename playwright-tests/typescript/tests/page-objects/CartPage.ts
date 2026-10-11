@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page } from "@playwright/test";
 
 export interface CartItem {
   name: string;
@@ -10,33 +10,38 @@ export class CartPage {
   private page: Page;
 
   // Locators - инициализируются в constructor
-  cartItems: ReturnType<Page['locator']>;
-  removeItemButtons: ReturnType<Page['locator']>;
-  checkoutButton: ReturnType<Page['locator']>;
-  continueShoppingButton: ReturnType<Page['locator']>;
-  totalPrice: ReturnType<Page['locator']>;
-  quantityInput: ReturnType<Page['locator']>;
+  cartItems: ReturnType<Page["locator"]>;
+  removeItemButtons: ReturnType<Page["locator"]>;
+  checkoutButton: ReturnType<Page["locator"]>;
+  continueShoppingButton: ReturnType<Page["locator"]>;
+  totalPrice: ReturnType<Page["locator"]>;
+  quantityInput: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
     this.page = page;
-    this.cartItems = this.page.locator('.cart_item');
+    this.cartItems = this.page.locator(".cart_item");
     this.removeItemButtons = this.page.locator('button:has-text("Remove")');
-    this.checkoutButton = this.page.locator('.checkout_button');
-    this.continueShoppingButton = this.page.locator('.btn.btn_action.btn_small');
-    this.totalPrice = this.page.locator('.summary_total_label');
+    this.checkoutButton = this.page.locator(".checkout_button");
+    this.continueShoppingButton = this.page.locator(
+      ".btn.btn_action.btn_small",
+    );
+    this.totalPrice = this.page.locator(".summary_total_label");
     this.quantityInput = this.page.locator('[data-test="quantity"]');
   }
 
   async waitForPageLoad(): Promise<void> {
-    await this.cartItems.first().waitFor({ state: 'visible', timeout: 10000 });
+    await this.cartItems.first().waitFor({ state: "visible", timeout: 10000 });
   }
 
   async getCartItemNames(): Promise<string[]> {
     const names: string[] = [];
     const count = await this.cartItems.count();
     for (let i = 0; i < count; i++) {
-      const name = await this.cartItems.nth(i).locator('[data-test="inventory-item-name"]').textContent();
-      names.push(name ?? '');
+      const name = await this.cartItems
+        .nth(i)
+        .locator('[data-test="inventory-item-name"]')
+        .textContent();
+      names.push(name ?? "");
     }
     return names;
   }
@@ -52,9 +57,9 @@ export class CartPage {
 
   async removeItem(index: number): Promise<void> {
     const cartItem = this.cartItems.nth(index);
-    const removeButton = cartItem.getByRole('button', { name: 'Remove' });
+    const removeButton = cartItem.getByRole("button", { name: "Remove" });
     await removeButton.click();
-    await cartItem.waitFor({ state: 'detached', timeout: 10000 });
+    await cartItem.waitFor({ state: "detached", timeout: 10000 });
   }
 
   async checkout(): Promise<void> {
@@ -63,7 +68,7 @@ export class CartPage {
 
   async getTotalPrice(): Promise<string> {
     const price = await this.totalPrice.textContent();
-    return price ?? '';
+    return price ?? "";
   }
 
   async continueShopping(): Promise<void> {

@@ -1,11 +1,11 @@
-import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Тест 5a: Сортировка товаров по цене (low → high)
  */
-test('Тест 5a: Сортировка товаров по цене (low → high)', async ({ page }) => {
+test("Тест 5a: Сортировка товаров по цене (low → high)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -26,7 +26,7 @@ test('Тест 5a: Сортировка товаров по цене (low → hi
 /**
  * Тест 5b: Сортировка товаров по цене (high → low)
  */
-test('Тест 5b: Сортировка товаров по цене (high → low)', async ({ page }) => {
+test("Тест 5b: Сортировка товаров по цене (high → low)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

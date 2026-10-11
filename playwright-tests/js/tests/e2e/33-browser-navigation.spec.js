@@ -1,14 +1,16 @@
 /**
  * Test 33: Browser navigation tests
  */
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
-import { CheckoutPage } from '../page-objects/CheckoutPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { CartPage } from "../page-objects/CartPage.js";
+import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
-test.describe('Browser Navigation', () => {
-  test('01 - should handle browser back button from cart to inventory', async ({ page }) => {
+test.describe("Browser Navigation", () => {
+  test("01 - should handle browser back button from cart to inventory", async ({
+    page,
+  }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -26,10 +28,12 @@ test.describe('Browser Navigation', () => {
     await inventoryPage.waitForPageLoad();
 
     await expect(page).toHaveURL(/.*inventory/);
-    await expect(inventoryPage.headerTitle).toContainText('Products');
+    await expect(inventoryPage.headerTitle).toContainText("Products");
   });
 
-  test('02 - should handle browser forward button after back', async ({ page }) => {
+  test("02 - should handle browser forward button after back", async ({
+    page,
+  }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -53,7 +57,7 @@ test.describe('Browser Navigation', () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test('03 - should handle back from checkout to cart', async ({ page }) => {
+  test("03 - should handle back from checkout to cart", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -77,7 +81,9 @@ test.describe('Browser Navigation', () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test('04 - should preserve cart state after multiple back/forward', async ({ page }) => {
+  test("04 - should preserve cart state after multiple back/forward", async ({
+    page,
+  }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -88,7 +94,9 @@ test.describe('Browser Navigation', () => {
 
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('2');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("2");
 
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
@@ -100,6 +108,8 @@ test.describe('Browser Navigation', () => {
     await cartPage.waitForPageLoad();
 
     // Cart should still have 2 items
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('2');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("2");
   });
 });

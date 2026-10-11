@@ -1,13 +1,15 @@
 /**
  * Test 39: Reset App State tests
  */
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { CartPage } from "../page-objects/CartPage.js";
 
-test.describe('Reset App State', () => {
-  test('01 - should reset cart via Reset App State in hamburger menu', async ({ page }) => {
+test.describe("Reset App State", () => {
+  test("01 - should reset cart via Reset App State in hamburger menu", async ({
+    page,
+  }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -19,7 +21,9 @@ test.describe('Reset App State', () => {
     // Add products to cart
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('2');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("2");
 
     // Reset app state via hamburger menu
     await inventoryPage.openHamburgerMenu();
@@ -33,7 +37,9 @@ test.describe('Reset App State', () => {
     expect(badgeCount).toBe(0);
   });
 
-  test('02 - should reset app state and verify complete reset', async ({ page }) => {
+  test("02 - should reset app state and verify complete reset", async ({
+    page,
+  }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);

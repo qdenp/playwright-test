@@ -1,13 +1,15 @@
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { CartPage } from "../page-objects/CartPage.js";
 
 /**
  * Test 29: Specific item combinations (3 of 6 products)
  */
-test.describe('Item Combinations', () => {
-  test('01 - should add cheapest 3 products and verify cart', async ({ page }) => {
+test.describe("Item Combinations", () => {
+  test("01 - should add cheapest 3 products and verify cart", async ({
+    page,
+  }) => {
     // Login
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
@@ -23,19 +25,23 @@ test.describe('Item Combinations', () => {
     await inventoryPage.addProductToCart(5); // Red T-Shirt - $15.99
 
     // Verify badge
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('3');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("3");
 
     // Open cart and verify items
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
     const cartItems = await cartPage.getCartItemNames();
-    expect(cartItems).toContain('Sauce Labs Onesie');
-    expect(cartItems).toContain('Sauce Labs Bike Light');
-    expect(cartItems).toContain('Test.allTheThings() T-Shirt (Red)');
+    expect(cartItems).toContain("Sauce Labs Onesie");
+    expect(cartItems).toContain("Sauce Labs Bike Light");
+    expect(cartItems).toContain("Test.allTheThings() T-Shirt (Red)");
   });
 
-  test('02 - should add most expensive 3 products and verify cart', async ({ page }) => {
+  test("02 - should add most expensive 3 products and verify cart", async ({
+    page,
+  }) => {
     // Login
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
@@ -51,19 +57,23 @@ test.describe('Item Combinations', () => {
     await inventoryPage.addProductToCart(2); // Bolt T-Shirt - $24.99
 
     // Verify badge
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('3');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("3");
 
     // Open cart and verify items
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
     const cartItems = await cartPage.getCartItemNames();
-    expect(cartItems).toContain('Sauce Labs Fleece Jacket');
-    expect(cartItems).toContain('Sauce Labs Backpack');
-    expect(cartItems).toContain('Sauce Labs Bolt T-Shirt');
+    expect(cartItems).toContain("Sauce Labs Fleece Jacket");
+    expect(cartItems).toContain("Sauce Labs Backpack");
+    expect(cartItems).toContain("Sauce Labs Bolt T-Shirt");
   });
 
-  test('03 - should add alternating products (1st, 3rd, 5th)', async ({ page }) => {
+  test("03 - should add alternating products (1st, 3rd, 5th)", async ({
+    page,
+  }) => {
     // Login
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
@@ -78,14 +88,16 @@ test.describe('Item Combinations', () => {
     await inventoryPage.addProductToCart(2);
     await inventoryPage.addProductToCart(4);
 
-    await expect(inventoryPage.cartBadge.locator('.shopping_cart_badge')).toHaveText('3');
+    await expect(
+      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
+    ).toHaveText("3");
 
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
     const cartItems = await cartPage.getCartItemNames();
-    expect(cartItems).toContain('Sauce Labs Backpack');
-    expect(cartItems).toContain('Sauce Labs Bolt T-Shirt');
-    expect(cartItems).toContain('Sauce Labs Onesie');
+    expect(cartItems).toContain("Sauce Labs Backpack");
+    expect(cartItems).toContain("Sauce Labs Bolt T-Shirt");
+    expect(cartItems).toContain("Sauce Labs Onesie");
   });
 });

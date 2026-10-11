@@ -1,12 +1,12 @@
-import { test, expect } from '../fixtures';
-import { LoginPage } from '../page-objects/LoginPage.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
+import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Test 05: Сортировка товаров по цене
  */
-test.describe('Sort by Price', () => {
-  test('05a - should sort products by price low to high', async ({ page }) => {
+test.describe("Sort by Price", () => {
+  test("05a - should sort products by price low to high", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
@@ -24,7 +24,7 @@ test.describe('Sort by Price', () => {
     }
   });
 
-  test('05b - should sort products by price high to low', async ({ page }) => {
+  test("05b - should sort products by price high to low", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 

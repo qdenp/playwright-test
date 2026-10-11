@@ -1,9 +1,9 @@
-import { test as base } from '@playwright/test';
-import { LoginPage } from './page-objects/LoginPage.js';
-import { InventoryPage } from './page-objects/InventoryPage.js';
-import { config } from './config.js';
+import { test as base } from "@playwright/test";
+import { LoginPage } from "./page-objects/LoginPage.js";
+import { InventoryPage } from "./page-objects/InventoryPage.js";
+import { config } from "./config.js";
 
-export { expect } from '@playwright/test';
+export { expect } from "@playwright/test";
 
 /**
  * Custom fixture: автоматически авторизованная страница
