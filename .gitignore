@@ -4,3 +4,9 @@ obj/
 *.user
 .idea/
 TestResults/
+
+# Playwright / pytest generated output
+playwright-report/
+playwright-tests/playwright-report/
+.pytest_cache/
+**/__pycache__/
