@@ -1,8 +1,3 @@
-export interface User {
-  username: string;
-  password: string;
-}
-
 export interface LoginTestParams {
   username: string;
   password: string;
@@ -32,18 +27,6 @@ export const timeouts = {
 
 /** Ожидаемое число товаров на странице каталога */
 export const EXPECTED_PRODUCT_COUNT = 6;
-
-/**
- * All available users
- */
-export const users: User[] = [
-  { username: "standard_user", password: "secret_sauce" },
-  { username: "problem_user", password: "secret_sauce" },
-  { username: "performance_glitch_user", password: "secret_sauce" },
-  { username: "error_user", password: "secret_sauce" },
-  { username: "visual_user", password: "secret_sauce" },
-  { username: "locked_out_user", password: "secret_sauce" },
-];
 
 /**
  * Parameterized login test cases
@@ -93,22 +76,12 @@ export const loginTests: LoginTestParams[] = [
     expectedTitle: "Products",
     expectedError: "Username and password do not match",
   },
+  {
+    username: "",
+    password: "secret_sauce",
+    shouldLogin: false,
+    expectedTitle: "Products",
+    expectedError: "Username is required",
+  },
 ];
 
-/**
- * Get all credentials from environment or defaults
- */
-export function getAllCredentials(): Map<string, string> {
-  const credentials = new Map<string, string>();
-  for (const user of users) {
-    credentials.set(user.username, user.password);
-  }
-  return credentials;
-}
-
-/**
- * Get login parameters for parameterized test
- */
-export function getLoginParams(index: number): LoginTestParams {
-  return loginTests[index];
-}

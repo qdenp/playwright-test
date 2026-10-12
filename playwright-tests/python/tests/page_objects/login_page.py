@@ -30,8 +30,7 @@ class LoginPage:
 
     def enter_username(self, username: str):
         self.username_input.clear()
-        if username:
-            self.username_input.fill(username)
+        self.username_input.fill(username)
 
     def enter_password(self, password: str):
         self.password_input.fill(password)
@@ -40,9 +39,13 @@ class LoginPage:
         self.login_button.click()
 
     def login(self, username: str = None, password: str = None):
-        """Логин с credentials из env vars по умолчанию"""
-        user = username or DEFAULT_USERNAME
-        pwd = password or DEFAULT_PASSWORD
+        """Логин с credentials из env vars по умолчанию.
+
+        Именно `is not None`, а не `or`: пустая строка — валидный ввод для кейса
+        "пустой username", и `or` подменил бы её дефолтом.
+        """
+        user = username if username is not None else DEFAULT_USERNAME
+        pwd = password if password is not None else DEFAULT_PASSWORD
         self.enter_username(user)
         self.enter_password(pwd)
         self.click_login()

@@ -35,9 +35,11 @@ export class LoginPage {
   }
 
   async login(username = null, password = null) {
-    /** Логин с credentials из config по умолчанию */
-    const user = username || config.username;
-    const pwd = password || config.password;
+    /** Логин с credentials из config по умолчанию.
+     *  Именно `??`, а не `||`: пустая строка — валидный ввод для кейса
+     *  "пустой username", и `||` подменил бы её дефолтом. */
+    const user = username ?? config.username;
+    const pwd = password ?? config.password;
     await this.enterUsername(user);
     await this.enterPassword(pwd);
     await this.clickLogin();

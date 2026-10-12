@@ -37,4 +37,20 @@ test.describe("Social Media Links", () => {
     await expect(inventoryPage.sortDropdown).toBeVisible();
     await expect(inventoryPage.cartBadge).toBeVisible();
   });
+
+  test("37 - should verify all products are loaded and visible", async ({
+    page,
+  }) => {
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+
+    // Login
+    await loginPage.goTo();
+    await loginPage.login();
+    await inventoryPage.waitForPageLoad();
+
+    // Verify all products are present
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
+    await expect(inventoryPage.products.first()).toBeVisible();
+  });
 });

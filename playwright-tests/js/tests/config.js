@@ -106,8 +106,8 @@ export const loginTests = [
   {
     username: "",
     password: "secret_sauce",
-    shouldLogin: true,
-    expectedTitle: "Products",
-    expectedError: null,
+    shouldLogin: false,
+    expectedTitle: null,
+    expectedError: "Username is required",
   },
 ];

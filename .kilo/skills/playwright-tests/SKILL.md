@@ -74,6 +74,21 @@ Python — `--reruns 3 --reruns-delay 1`.
 | Дубль локаторов `cartBadge` / `cartIcon` | `typescript/tests/page-objects/InventoryPage.ts` | **Закрыта 2026-10-12:** `cartIcon` удалён, добавлен `cartBadgeCount` = `.shopping_cart_badge` (единый селектор для web-first проверок) |
 | `page.waitForTimeout(500)` в `CartPage.removeItem()` | все три реализации | **Закрыта 2026-10-12:** sleep убран, синхронизация через web-first `toHaveCount` в тесте |
 | `CartPage.waitForPageLoad()` ждал `.cart_item.first()` — на пустой корзине зависал до таймаута | все три реализации | **Закрыта 2026-10-12:** ожидание URL `cart.html`. Проверено: 37 мс вместо зависания |
+| `LoginPage.login()` в JS/Python подменял пустой username дефолтом (`\|\|`) → кейс «пустой username» был falsely green | JS и Python | **Закрыта 2026-10-12:** `??` / `is not None`. Кейс исправлен на `shouldLogin: false` + «Username is required», в TS кейс добавлен. Все три набора гоняют 8 кейсов |
+| Мёртвый код в `typescript/config.ts`: `User`, `users`, `getAllCredentials()`, `getLoginParams()` | TS | **Закрыта 2026-10-12:** удалены. В Python те же имена живые (используются тестами 03, 08, 20) — не путать |
+
+### Паритет числа тестов
+
+| Набор | Собрано (chromium) |
+|---|---|
+| TypeScript | 57 (56 passed + 1 skipped) |
+| JavaScript | 57 (56 passed + 1 skipped) |
+| Python | 61 (60 passed + 1 skipped) |
+
+TS и JS паритны. Python на 4 теста больше из-за параметризации теста 20 по
+5 пользователям, тогда как TS/JS делают тот же перебор циклом внутри одного теста.
+Это осознанная разница реализации, не дефект. Число тестов в файлах:
+TS 49 / JS 49 / Python 50 (в `18` у всех один `skip`).
 | `reset_app_state` описание устарело: метод добавлен в три реализации за долго до текущей сессии | — | Информационная строка |
 | `remove-from-cart` / `reset-app-state` обращаются к `page` / локальным локаторам вместо PO | `typescript/tests/e2e/07,34` | Расхождение реализаций |
 | Паритет числа тестов: TS 55, JS 55, Python 61: параметры логина не покрыты там же, где каталог | `config.ts` vs `config.js` / `conftest.py` | Расхождение реализаций |

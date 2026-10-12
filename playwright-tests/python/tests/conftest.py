@@ -26,12 +26,8 @@ def get_all_credentials():
 def get_login_params(index=None):
     """
     Возвращает параметры для параметризованного теста.
-    Если index=None — возвращает стандартные credentials.
-    Если index — возвращает credentials из списка пользователей.
+    Если index — возвращает кейс по номеру, иначе стандартные credentials.
     """
-    all_creds = get_all_credentials()
-    valid_users = list(all_creds.keys())
-
     params = [
         ("standard_user", "secret_sauce", True, "Products", None),
         ("problem_user", "secret_sauce", True, "Products", None),
@@ -40,7 +36,7 @@ def get_login_params(index=None):
         ("visual_user", "secret_sauce", True, "Products", None),
         ("locked_out_user", "secret_sauce", False, None, "locked out"),
         ("standard_user", "wrong_password", False, None, "do not match"),
-        ("", "secret_sauce", True, "Products", None),
+        ("", "secret_sauce", False, None, "Username is required"),
     ]
 
     if index is not None and index < len(params):
