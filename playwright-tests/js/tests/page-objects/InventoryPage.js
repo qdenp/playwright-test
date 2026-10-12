@@ -23,11 +23,11 @@ export class InventoryPage {
     await this.page.locator('[data-test="about-sidebar-link"]').click();
   }
 
-  async getProductCount() {
+  getProductCount() {
     return this.products.count();
   }
 
-  async getProductElement(index) {
+  getProductElement(index) {
     return this.products.nth(index);
   }
 
@@ -117,6 +117,27 @@ export class InventoryPage {
     return prices;
   }
 
+  // Методы для работы с detail panel товаров
+  async clickProductName(index) {
+    await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
+  }
+
+  async clickBackToProducts() {
+    await this.page.getByText("Back to Products").click();
+  }
+
+  getDetailDescriptionLocator(text) {
+    return this.page.getByText(text);
+  }
+
+  getBackToProductsLocator() {
+    return this.page.getByText("Back to Products");
+  }
+
+  getProductNameLocator(index) {
+    return this.products.nth(index).locator('[data-test="inventory-item-name"]');
+  }
+
   async openHamburgerMenu() {
     await this.page.locator(".bm-burger-button").click();
   }
@@ -127,9 +148,5 @@ export class InventoryPage {
 
   async clickLogout() {
     await this.page.getByText("Logout").click();
-  }
-
-  async clickBackToProducts() {
-    await this.page.getByText("Back to Products").click();
   }
 }

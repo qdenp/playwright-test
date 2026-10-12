@@ -144,4 +144,25 @@ export class InventoryPage {
     }
     return products;
   }
+
+  // Методы для работы с detail panel товаров
+  async clickProductName(index: number): Promise<void> {
+    await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
+  }
+
+  async clickBackToProducts(): Promise<void> {
+    await this.page.getByText("Back to Products").click();
+  }
+
+  getDetailDescriptionLocator(text: string) {
+    return this.page.getByText(text);
+  }
+
+  getBackToProductsLocator() {
+    return this.page.getByText("Back to Products");
+  }
+
+  getProductNameLocator(index: number) {
+    return this.products.nth(index).locator('[data-test="inventory-item-name"]');
+  }
 }

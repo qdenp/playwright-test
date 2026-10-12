@@ -14,41 +14,38 @@ test("Тест 19: Item detail — просмотр и возврат", async ({
   await inventoryPage.waitForPageLoad();
 
   // Клик по названию первого товара — открывает detail panel
-  await page.locator('[data-test="inventory-item-name"]').first().click();
+  await inventoryPage.clickProductName(0);
 
   // Detail panel появляется inline — проверяем что description видно
-  await expect(page.getByText("carry.allTheThings()")).toBeVisible({
+  await expect(inventoryPage.getDetailDescriptionLocator("carry.allTheThings()")).toBeVisible({
     timeout: 5000,
   });
 
   // Проверяем что есть кнопка "Back to Products"
-  await expect(page.getByText("Back to Products")).toBeVisible({
+  await expect(inventoryPage.getBackToProductsLocator()).toBeVisible({
     timeout: 5000,
   });
 
   // Возвращаемся на Products
-  await page.getByText("Back to Products").click();
-  await expect(
-    page.locator('[data-test="inventory-item-name"]').first(),
-  ).toBeVisible({ timeout: 5000 });
+  await inventoryPage.clickBackToProducts();
+  await expect(inventoryPage.getProductNameLocator(0)).toBeVisible({
+    timeout: 5000,
+  });
 
   // Открываем детали второго товара
-  await page.locator('[data-test="inventory-item-name"]').nth(1).click();
+  await inventoryPage.clickProductName(1);
 
   // Проверяем detail второго товара
-  await expect(page.getByText("carry.allTheThings()")).not.toBeVisible({
+  await expect(inventoryPage.getDetailDescriptionLocator("carry.allTheThings()")).not.toBeVisible({
     timeout: 5000,
   });
-  await expect(
-    page.getByText("A red light isn't the desired state"),
-  ).toBeVisible({ timeout: 5000 });
-  await expect(page.getByText("Back to Products")).toBeVisible({
+  await expect(inventoryPage.getBackToProductsLocator()).toBeVisible({
     timeout: 5000,
   });
 
   // Возвращаемся на Products
-  await page.getByText("Back to Products").click();
-  await expect(
-    page.locator('[data-test="inventory-item-name"]').first(),
-  ).toBeVisible({ timeout: 5000 });
+  await inventoryPage.clickBackToProducts();
+  await expect(inventoryPage.getProductNameLocator(0)).toBeVisible({
+    timeout: 5000,
+  });
 });

@@ -17,29 +17,25 @@ def test_item_detail(page):
     inventory_page.wait_for_page_load()
 
     # Клик по названию первого товара — открывает detail panel
-    page.locator('[data-test="inventory-item-name"]').first.click()
+    inventory_page.click_product_name(0)
 
     # Detail panel появляется inline — проверяем что description видно
-    expect(page.get_by_text("carry.allTheThings()")).to_be_visible(timeout=5000)
+    expect(inventory_page.get_detail_description_locator("carry.allTheThings()")).to_be_visible(timeout=5000)
 
     # Проверяем что есть кнопка "Back to Products"
-    expect(page.get_by_text("Back to Products")).to_be_visible(timeout=5000)
+    expect(inventory_page.get_back_to_products_locator()).to_be_visible(timeout=5000)
 
     # Возвращаемся на Products
-    page.get_by_text("Back to Products").click()
-    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(
-        timeout=5000
-    )
+    inventory_page.click_back_to_products()
+    expect(inventory_page.get_product_name_locator(0)).to_be_visible(timeout=5000)
 
     # Открываем детали второго товара
-    page.locator('[data-test="inventory-item-name"]').nth(1).click()
+    inventory_page.click_product_name(1)
 
     # Проверяем detail второго товара
-    expect(page.get_by_text("carry.allTheThings()")).not_to_be_visible(timeout=5000)
-    expect(page.get_by_text("Back to Products")).to_be_visible(timeout=5000)
+    expect(inventory_page.get_detail_description_locator("carry.allTheThings()")).not_to_be_visible(timeout=5000)
+    expect(inventory_page.get_back_to_products_locator()).to_be_visible(timeout=5000)
 
     # Возвращаемся на Products
-    page.get_by_text("Back to Products").click()
-    expect(page.locator('[data-test="inventory-item-name"]').first).to_be_visible(
-        timeout=5000
-    )
+    inventory_page.click_back_to_products()
+    expect(inventory_page.get_product_name_locator(0)).to_be_visible(timeout=5000)

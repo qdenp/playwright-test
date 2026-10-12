@@ -100,3 +100,24 @@ class InventoryPage:
         for i in range(count):
             prices.append(self.get_product_price(i))
         return prices
+
+    # Методы для работы с detail panel товаров
+    def click_product_name(self, index: int):
+        """Клик по названию товара - открывает detail panel"""
+        self.products.nth(index).locator('[data-test="inventory-item-name"]').click()
+
+    def click_back_to_products(self):
+        """Клик Back to Products - возвращает на Products страницу"""
+        self.page.get_by_text("Back to Products").click()
+
+    def get_detail_description_locator(self, text: str):
+        """Возвращает locator для описания товара в detail panel"""
+        return self.page.get_by_text(text)
+
+    def get_back_to_products_locator(self):
+        """Возвращает locator для кнопки Back to Products"""
+        return self.page.get_by_text("Back to Products")
+
+    def get_product_name_locator(self, index: int):
+        """Возвращает locator для названия товара"""
+        return self.products.nth(index).locator('[data-test="inventory-item-name"]')
