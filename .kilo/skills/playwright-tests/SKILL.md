@@ -20,11 +20,31 @@ description: Работа с e2e-тестами SauceDemo в playwright-tests/ (
 Общие элементы TS/JS:
 
 - Фикстура `authenticatedPage` (`tests/fixtures.ts`) — предустановленный логин.
-  **Внимание:** объявлена с `{ auto: true }`, из-за чего логин выполняется в каждом тесте.
-  Это известная проблема, см. чек-лист.
-- Данные пользователей и параметры логина — `tests/config.ts` (`users`, `loginTests`).
+  Запрашивается явно, `auto` снят: тесты, которым страница логина не нужна,
+  используют `page`. В JS-фикстуре отдаются только `page`, `loginPage`,
+  `inventoryPage` — `CartPage`/`CheckoutPage` там создают вручную.
+- Параметры логина — `tests/config.ts` (`loginTests`). Пользователи из `users`
+  удалены из TS вместе с `getAllCredentials()`; в Python `get_all_credentials` жив.
 - Page Objects: `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage`.
-- Playwright projects: `chromium`, `firefox`, `webkit` (активны только chromium/firefox/webkit).
+- Playwright projects: `chromium`, `firefox`, `webkit`.
+
+---
+
+## Нумерация файлов (сгруппировано по функционалу)
+
+Номер есть **только** в префиксе имени файла. В заголовках `test(...)`,
+`test.describe(...)`, `test.skip(...)` и doc-комментариях номеров быть не должно.
+
+| Диапазон | Группа | Файлы |
+|---|---|---|
+| 01–06 | Логин и доступы | login, invalid-password, locked-user, parameterized-login, logout, logout-from-pages |
+| 07–12 | Каталог | sort-by-price, sort-by-name, item-detail, multiple-users-catalog, product-images, product-cards |
+| 13–19 | Корзина | add-to-cart, remove-from-cart, cart-quantity, add-remove-all, quantity-race-condition, item-combinations, add-all-six-products |
+| 20–22 | Чекаут | full-purchase-flow, checkout-validation, export-pdf |
+| 23–26 | Навигация и UI | hamburger-menu, about-page, responsive-design, browser-navigation |
+| 27–29 | Прочее | performance-budget, reset-app-state, social-media-links |
+
+Одинаковые номера во всех трёх реализациях. Python-файлы: `test-NN-topic.py`.
 
 ---
 
@@ -35,7 +55,7 @@ description: Работа с e2e-тестами SauceDemo в playwright-tests/ (
 cd playwright-tests\typescript
 npx tsc --noEmit                              # типы (в CI — джоба lint)
 npx playwright test --project=chromium        # все тесты
-npx playwright test 04-add-to-cart            # один файл
+npx playwright test 13-add-to-cart            # один файл
 npx playwright test -g "purchase"             # по имени
 npx playwright test --ui                      # интерактивный режим
 npx playwright show-report                    # HTML-отчёт
@@ -47,7 +67,7 @@ npx playwright test --project=chromium
 # Python
 cd playwright-tests\python
 pytest                                        # все
-pytest tests/e2e/test-06-full-purchase-flow.py
+pytest tests/e2e/test-20-full-purchase-flow.py
 pytest -k login -v
 ```
 
@@ -60,8 +80,8 @@ Python — `--reruns 3 --reruns-delay 1`.
 
 | Проблема | Где | Статус |
 |---|---|---|
-| `npx tsc --noEmit` падал: `timeout` в 3-м аргументе `test()` | `typescript/tests/e2e/13-add-remove-all.spec.ts` | **Закрыта 2026-10-12:** лишний аргумент `{ timeout }` убран |
-| `npx tsc --noEmit` падал: `test()` со строкой вместо колбэка | `typescript/tests/e2e/18-about-page.spec.ts` | **Закрыта 2026-10-12:** тест переписан в корректный `test.skip` с причиной |
+| `npx tsc --noEmit` падал: `timeout` в 3-м аргументе `test()` | `typescript/tests/e2e/16-add-remove-all.spec.ts` | **Закрыта 2026-10-12:** лишний аргумент `{ timeout }` убран |
+| `npx tsc --noEmit` падал: `test()` со строкой вместо колбэка | `typescript/tests/e2e/24-about-page.spec.ts` | **Закрыта 2026-10-12:** тест переписан в корректный `test.skip` с причиной |
 | Тест `16-visual-screenshot` ничего не проверял: скриншот не сравнивался ни с чем | все три реализации | **Закрыта:** удалён из TS, JS и Python. Если понадобится визуальная проверка — только через `toHaveScreenshot` со снапшотом в `git` |
 | Тест-таймаут не применялся: `timeout` лежал в `use`, где Playwright его молча игнорирует (фактически 30с вместо 120с) | `playwright.config.ts` | **Закрыта 2026-10-12:** `timeout` вынесен на верхний уровень |
 | `LoginPage.goTo()` в TS ждал `load` со всеми картинками → навигации зависали на 30с под нагрузкой | `typescript/.../LoginPage.ts` | **Закрыта 2026-10-12:** `waitUntil: "domcontentloaded"` + `timeouts.NAVIGATION`, как в JS и Python |
@@ -69,7 +89,7 @@ Python — `--reruns 3 --reruns-delay 1`.
 | TS-набор запускался на 6 воркерах, и saucedemo.com троттлил параллельные подключения | `playwright.config.ts` | **Закрыта 2026-10-12:** `workers: 3` локально (как в JS-наборе) |
 | API-intercept тест заведомо падал (пустой массив responses) | все три реализации | **Закрыта:** удалён из TS, JS и Python |
 | `authenticatedPage` была помечена `{ auto: true }` → логин в каждом тесте, даже там где не нужен | `typescript/tests/fixtures.ts` | **Закрыта 2026-10-12:** `auto` убран. Логин делают только 22 файла, которым он реально нужен; 7 файлов логинятся сами |
-| Тест `12-cart-quantity` не тестировал quantity: по факту add → count 1 | все три реализации | **Закрыта 2026-10-12:** переписан на реальную арифметику корзины: badge +1 при добавлении, −1 при удалении, отсутствие badge на пустой корзине |
+| Тест `15-cart-quantity` не тестировал quantity: по факту add → count 1 | все три реализации | **Закрыта 2026-10-12:** переписан на реальную арифметику корзины: badge +1 при добавлении, −1 при удалении, отсутствие badge на пустой корзине |
 | Мёртвый код в `CartPage`: `quantityInput`, `changeItemQuantity`, `totalPrice`, `getTotalPrice`, `getRemoveButtonCount`, интерфейс `CartItem` | все три реализации | **Закрыта 2026-10-12:** удалены; локальные локаторы `[data-test="quantity"]` и `.summary_total_label` на страницы не существуют |
 | Дубль локаторов `cartBadge` / `cartIcon` | `typescript/tests/page-objects/InventoryPage.ts` | **Закрыта 2026-10-12:** `cartIcon` удалён, добавлен `cartBadgeCount` = `.shopping_cart_badge` (единый селектор для web-first проверок) |
 | `page.waitForTimeout(500)` в `CartPage.removeItem()` | все три реализации | **Закрыта 2026-10-12:** sleep убран, синхронизация через web-first `toHaveCount` в тесте |

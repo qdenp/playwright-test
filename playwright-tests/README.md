@@ -61,14 +61,14 @@ playwright-tests/
 │   ├── tests/
 │   │   ├── config.js             # Пользователи и credentials из env vars
 │   │   ├── fixtures.js           # Base fixtures
-│   │   ├── e2e/                  # 21 тестовый файл (01-21)
+│   │   ├── e2e/                  # 29 тестовых файлов (01-29)
 │   │   └── page-objects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
 ├── python/
 │   ├── pytest.ini                # Конфиг pytest (retries, browsers)
 │   ├── requirements.txt
 │   └── tests/
 │       ├── conftest.py           # Shared fixtures
-│       ├── e2e/                  # 21 тестовый файл (01-21)
+│       ├── e2e/                  # 29 тестовых файлов (01-29)
 │       └── page_objects/         # Page Objects
 └── ENV_CONFIG.md                 # Документация по env vars
 ```
@@ -98,15 +98,21 @@ SAUCE_DEMO_BASE_URL=https://www.saucedemo.com
 - **Modern assertions** — Playwright assertions с auto-wait
 - **Cross-browser** — Chromium, Firefox, WebKit
 - **Credentials in env** — все учётные данные вынесены в переменные окружения
-- **Sequential numbering** — тесты пронумерованы 01-21 для удобства
+- **Sequential numbering** — тесты пронумерованы 01–29 и сгруппированы по функционалу:
+  логин (01–06), каталог (07–12), корзина (13–19), чекаут (20–22), навигация (23–26),
+  прочее (27–29)
 
 ## 📈 Результаты
 
-| Браузер | Статус |
-|---------|--------|
-| Chromium | ✅ 87/87 passed |
-| Firefox | ✅ 87/87 passed |
-| WebKit | ✅ 87/87 passed |
+Прогон на Chromium (октябрь 2026):
+
+| Реализация | Собрано | Passed | Skipped |
+|---|---|---|---|
+| TypeScript | 57 | 56 | 1 (`24-about-page`, баг SauceDemo) |
+| JavaScript | 57 | 56 | 1 (`24-about-page`, баг SauceDemo) |
+| Python | 61 | 60 | 1 (`24-about-page`, баг SauceDemo) |
+
+Firefox и WebKit сконфигурированы, но в последнем прогоне не проверялись.
 
 ## 🛠 Стек
 
