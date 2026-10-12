@@ -2,9 +2,8 @@
  * Test 31: Responsive design tests
  */
 import { test, expect } from '../fixtures.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
 import { CheckoutPage } from '../page-objects/CheckoutPage.js';
+import { EXPECTED_PRODUCT_COUNT } from '../config';
 
 test.describe('Responsive Design', () => {
   test('01 - should work on mobile viewport (375x667)', async ({ page, authenticatedPage }) => {
@@ -12,8 +11,7 @@ test.describe('Responsive Design', () => {
 
     const { loginPage, inventoryPage } = authenticatedPage;
 
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     await loginPage.openHamburgerMenu();
     await expect(loginPage.menuOverlay).toBeVisible();
@@ -25,8 +23,7 @@ test.describe('Responsive Design', () => {
 
     const { inventoryPage } = authenticatedPage;
 
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test('03 - should handle viewport resize during interaction', async ({

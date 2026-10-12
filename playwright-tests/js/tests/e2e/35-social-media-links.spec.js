@@ -5,6 +5,7 @@
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Social Media Links", () => {
   test("35 - should verify page loads correctly after login", async ({
@@ -19,8 +20,7 @@ test.describe("Social Media Links", () => {
     await inventoryPage.waitForPageLoad();
 
     // Verify inventory page loaded correctly
-    await expect(inventoryPage.products.first()).toBeVisible();
-    expect(await inventoryPage.getProductCount()).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test("36 - should verify page structure and elements", async ({ page }) => {
@@ -33,7 +33,7 @@ test.describe("Social Media Links", () => {
     await inventoryPage.waitForPageLoad();
 
     // Verify main page elements
-    await expect(page.locator(".title")).toContainText("Products");
+    await expect(inventoryPage.headerTitle).toContainText("Products");
     await expect(inventoryPage.sortDropdown).toBeVisible();
     await expect(inventoryPage.cartBadge).toBeVisible();
   });

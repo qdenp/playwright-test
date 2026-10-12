@@ -2,8 +2,8 @@
 Test 31: Responsive design tests
 """
 
-import pytest
 from playwright.sync_api import expect
+from constants import EXPECTED_PRODUCT_COUNT
 from page_objects.cart_page import CartPage
 from page_objects.checkout_page import CheckoutPage
 from page_objects.inventory_page import InventoryPage
@@ -21,8 +21,7 @@ def test_work_on_mobile_viewport(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    product_count = inventory_page.get_product_count()
-    assert product_count == 6
+    expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
 
     login_page.open_hamburger_menu()
     # Проверяем что меню открылось (кнопка закрытия видна)
@@ -41,8 +40,7 @@ def test_work_on_tablet_viewport(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    product_count = inventory_page.get_product_count()
-    assert product_count == 6
+    expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
 
 
 def test_handle_viewport_resize(page):
@@ -60,7 +58,7 @@ def test_handle_viewport_resize(page):
 
     # Изменить на планшет
     page.set_viewport_size({"width": 768, "height": 1024})
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("1")
 
 
@@ -78,7 +76,7 @@ def test_add_to_cart_on_mobile(page):
     inventory_page.add_product_to_cart(0)
     inventory_page.add_product_to_cart(1)
 
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("2")
 
 

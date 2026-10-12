@@ -4,6 +4,7 @@
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test("Проверка карточек товаров на главной", async ({ page }) => {
   const loginPage = new LoginPage(page);
@@ -13,30 +14,16 @@ test("Проверка карточек товаров на главной", asy
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
 
-  // Verify each product has name, description, price, and add to cart button
-  const products = await inventoryPage.products.all();
-  expect(products.length).toBe(6);
+  // На каждой карточке есть название, описание, цена и кнопка добавления в корзину
+  await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
+  await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
+  await expect(inventoryPage.productDescriptions).toHaveCount(EXPECTED_PRODUCT_COUNT);
+  await expect(inventoryPage.productPrices).toHaveCount(EXPECTED_PRODUCT_COUNT);
+  await expect(inventoryPage.addToCartButtons).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
-  for (let i = 0; i < products.length; i++) {
-    const product = products[i];
-
-    // Verify product has name
-    const name = await product.locator(".inventory_item_name").textContent();
-    expect(name).toBeTruthy();
-    expect(name.length).toBeGreaterThan(0);
-
-    // Verify product has description
-    const desc = await product.locator(".inventory_item_desc").textContent();
-    expect(desc).toBeTruthy();
-
-    // Verify product has price
-    const price = await product.locator(".inventory_item_price").textContent();
-    expect(price).toBeTruthy();
-    expect(price).toContain("$");
-
-    // Verify add to cart button is visible
-    await expect(
-      product.locator(".btn.btn_primary.btn_small.btn_inventory"),
-    ).toBeVisible();
-  }
+  // Все элементы непустые и видимые
+  await expect(inventoryPage.productNames.first()).not.toBeEmpty();
+  await expect(inventoryPage.productDescriptions.first()).not.toBeEmpty();
+  await expect(inventoryPage.productPrices.first()).toContainText("$");
+  await expect(inventoryPage.addToCartButtons.first()).toBeVisible();
 });

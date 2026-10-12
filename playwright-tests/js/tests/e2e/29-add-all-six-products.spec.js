@@ -4,76 +4,60 @@
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { LoginPage } from "../page-objects/LoginPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
+
+async function login(page) {
+  const loginPage = new LoginPage(page);
+  await loginPage.goTo();
+  await loginPage.login();
+  const inventoryPage = new InventoryPage(page);
+  await inventoryPage.waitForPageLoad();
+  return inventoryPage;
+}
 
 test.describe("Add All 6 Products", () => {
   test("29 - should add all 6 products and verify cart", async ({ page }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
+    const inventoryPage = await login(page);
     const cartPage = new CartPage(page);
 
     // Add all 6 products (indices 0-5)
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
       await inventoryPage.addProductToCart(i);
     }
 
     // Verify cart badge shows 6
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("6");
+    await expect(inventoryPage.cartBadgeCount).toHaveText(String(EXPECTED_PRODUCT_COUNT));
 
     // Open cart
     await inventoryPage.openCart();
 
     // Verify all 6 items in cart
     await cartPage.waitForPageLoad();
-    expect(await cartPage.getCartItemCount()).toBe(6);
+    await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test("30 - should verify product count and prices", async ({ page }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
+    const inventoryPage = await login(page);
 
     // Verify 6 products loaded
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     // Verify all prices are valid numbers > 0
-    for (let i = 0; i < productCount; i++) {
-      const price = await inventoryPage.getProductPrice(i);
+    const prices = await inventoryPage.getAllProductPrices();
+    expect(prices).toHaveLength(EXPECTED_PRODUCT_COUNT);
+    for (const price of prices) {
       expect(price).toBeGreaterThan(0);
       expect(price).toBeLessThanOrEqual(100);
     }
   });
 
-  test("31 - should add all 6 products and verify product names", async ({
-    page,
-  }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
+  test("31 - should add all 6 products and verify product names", async ({ page }) => {
+    const inventoryPage = await login(page);
     const cartPage = new CartPage(page);
 
     // Add all 6 products
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
       await inventoryPage.addProductToCart(i);
     }
 
@@ -92,7 +76,7 @@ test.describe("Add All 6 Products", () => {
     ];
 
     const cartItems = await cartPage.getCartItemNames();
-    expect(cartItems).toHaveLength(6);
+    expect(cartItems).toHaveLength(EXPECTED_PRODUCT_COUNT);
 
     for (const name of expectedNames) {
       expect(cartItems).toContain(name);

@@ -11,6 +11,14 @@ export class InventoryPage {
     this.cartBadge = page.locator(".shopping_cart_link");
     this.cartBadgeCount = page.locator(".shopping_cart_badge");
     this.headerTitle = page.locator(".title");
+    this.inventoryLink = page.locator('[data-test="inventory-sidebar-link"]');
+    this.aboutLink = page.locator('[data-test="about-sidebar-link"]');
+    this.logoutLink = page.locator('[data-test="logout-sidebar-link"]');
+    this.productNames = page.locator(".inventory_item_name");
+    this.productDescriptions = page.locator(".inventory_item_desc");
+    this.productPrices = page.locator(".inventory_item_price");
+    this.productImages = page.locator(".inventory_item img");
+    this.addToCartButtons = page.locator(".btn.btn_primary.btn_small.btn_inventory");
   }
 
   async waitForPageLoad() {

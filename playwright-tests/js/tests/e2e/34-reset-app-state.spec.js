@@ -5,6 +5,7 @@ import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Reset App State", () => {
   test("34 - should reset cart via Reset App State in hamburger menu", async ({
@@ -21,9 +22,7 @@ test.describe("Reset App State", () => {
     // Add products to cart
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("2");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
     // Reset app state via hamburger menu
     await inventoryPage.openHamburgerMenu();
@@ -33,8 +32,7 @@ test.describe("Reset App State", () => {
     await inventoryPage.waitForPageLoad();
 
     // Cart should be empty
-    const badgeCount = await inventoryPage.getCartBadgeCount();
-    expect(badgeCount).toBe(0);
+    await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 
   test("35 - should reset app state and verify complete reset", async ({
@@ -64,8 +62,7 @@ test.describe("Reset App State", () => {
     await inventoryPage.waitForPageLoad();
 
     // Verify complete reset
-    const badgeCount = await inventoryPage.getCartBadgeCount();
-    expect(badgeCount).toBe(0);
-    expect(await inventoryPage.getProductCount()).toBe(6);
+    await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 });

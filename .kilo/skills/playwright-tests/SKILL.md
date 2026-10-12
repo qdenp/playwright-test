@@ -74,9 +74,10 @@ Python — `--reruns 3 --reruns-delay 1`.
 | Дубль локаторов `cartBadge` / `cartIcon` | `typescript/tests/page-objects/InventoryPage.ts` | **Закрыта 2026-10-12:** `cartIcon` удалён, добавлен `cartBadgeCount` = `.shopping_cart_badge` (единый селектор для web-first проверок) |
 | `page.waitForTimeout(500)` в `CartPage.removeItem()` | все три реализации | **Закрыта 2026-10-12:** sleep убран, синхронизация через web-first `toHaveCount` в тесте |
 | `CartPage.waitForPageLoad()` ждёт `.first()`, а на пустой корзине его нет — повиснет | `typescript/.../CartPage.ts:34` | Незакрыта |
-| `reset_app_state` есть в Python, нет в TS | `python/.../inventory_page.py` vs TS | Расхождение реализаций |
-| `remove-from-cart` / `reset-app-state` обходят PO | `typescript/tests/e2e/07,34` | Расхождение реализаций |
-| Паритет числа тестов: TS 55, JS 56, Python 61 — из-за разной параметризации (`loginTests` в TS 7 кейсов, в JS/Python 8) | `config.ts` vs `config.js` / `conftest.py` | Расхождение реализаций |
+| `reset_app_state` описание устарело: метод добавлен в три реализации за долго до текущей сессии | — | Информационная строка |
+| `remove-from-cart` / `reset-app-state` обращаются к `page` / локальным локаторам вместо PO | `typescript/tests/e2e/07,34` | Расхождение реализаций |
+| Паритет числа тестов: TS 55, JS 55, Python 61: параметры логина не покрыты там же, где каталог | `config.ts` vs `config.js` / `conftest.py` | Расхождение реализаций |
+| Fetch-first ассерты вместо web-first (`expect(await x())`, `.resolves.toBe()`, `page.locator()` в спеках) | все три реализации | **Закрыта 2026-10-12:** счётчики, badge, видимость и содержимое переводятся на `toHaveCount` / `toHaveText` / `toBeVisible`. Замеры `loadTime` в тестах 33/34 и сравнение отсортированных массивов в 05/14 остались намеренно |
 
 ### Baseline на 2026-10-12 (chromium)
 

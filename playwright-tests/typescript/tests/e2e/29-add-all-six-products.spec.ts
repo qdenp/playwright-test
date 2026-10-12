@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
  * Test 29: Add all 6 products and verify
@@ -10,33 +10,31 @@ test.describe("Add All 6 Products", () => {
     const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add all 6 products (indices 0-5)
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
       await inventoryPage.addProductToCart(i);
     }
 
     // Verify cart badge shows 6
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("6");
+    await expect(inventoryPage.cartBadgeCount).toHaveText(String(EXPECTED_PRODUCT_COUNT));
 
     // Open cart
     await inventoryPage.openCart();
 
     // Verify all 6 items in cart
     await cartPage.waitForPageLoad();
-    expect(await cartPage.getCartItemCount()).toBe(6);
+    await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test("02 - should verify product count and prices", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     // Verify 6 products loaded
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     // Verify all prices are valid numbers > 0
-    for (let i = 0; i < productCount; i++) {
-      const price = await inventoryPage.getProductPrice(i);
+    const prices = await inventoryPage.getAllProductPrices();
+    expect(prices).toHaveLength(EXPECTED_PRODUCT_COUNT);
+    for (const price of prices) {
       expect(price).toBeGreaterThan(0);
       expect(price).toBeLessThanOrEqual(100);
     }

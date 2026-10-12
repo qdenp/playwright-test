@@ -2,6 +2,7 @@ import { test, expect } from "../fixtures.js";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
  * Тест 13: Добавление и удаление всех товаров
@@ -15,24 +16,24 @@ test("Тест 13: Добавление и удаление всех товар�
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
 
-  const productCount = await inventoryPage.getProductCount();
+  await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   // Добавляем все товары
-  for (let i = 0; i < productCount; i++) {
+  for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
     await inventoryPage.addProductToCart(i);
   }
 
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(productCount);
+  await expect(inventoryPage.cartBadgeCount).toHaveText(String(EXPECTED_PRODUCT_COUNT));
 
   // Переходим в корзину
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
-  await expect(cartPage.cartItems).toHaveCount(productCount);
+  await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   // Удаляем все товары
-  for (let i = 0; i < productCount; i++) {
+  for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
     await cartPage.removeItem(0);
-    await expect(page.locator(".cart_item")).toHaveCount(productCount - 1 - i);
+    await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT - 1 - i);
   }
 
   // Корзина должна быть пуста
@@ -40,5 +41,5 @@ test("Тест 13: Добавление и удаление всех товар�
 
   // Перезагружаем для проверки badge
   await page.reload();
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(0);
+  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 });

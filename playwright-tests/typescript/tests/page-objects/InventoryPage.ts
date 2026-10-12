@@ -16,6 +16,14 @@ export class InventoryPage {
   cartBadge: ReturnType<Page["locator"]>;
   cartBadgeCount: ReturnType<Page["locator"]>;
   headerTitle: ReturnType<Page["locator"]>;
+  inventoryLink: ReturnType<Page["locator"]>;
+  aboutLink: ReturnType<Page["locator"]>;
+  logoutLink: ReturnType<Page["locator"]>;
+  productNames: ReturnType<Page["locator"]>;
+  productDescriptions: ReturnType<Page["locator"]>;
+  productPrices: ReturnType<Page["locator"]>;
+  productImages: ReturnType<Page["locator"]>;
+  addToCartButtons: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
     this.page = page;
@@ -24,6 +32,14 @@ export class InventoryPage {
     this.cartBadge = this.page.locator(".shopping_cart_link");
     this.cartBadgeCount = this.page.locator(".shopping_cart_badge");
     this.headerTitle = this.page.locator(".title");
+    this.inventoryLink = this.page.locator('[data-test="inventory-sidebar-link"]');
+    this.aboutLink = this.page.locator('[data-test="about-sidebar-link"]');
+    this.logoutLink = this.page.locator('[data-test="logout-sidebar-link"]');
+    this.productNames = this.page.locator(".inventory_item_name");
+    this.productDescriptions = this.page.locator(".inventory_item_desc");
+    this.productPrices = this.page.locator(".inventory_item_price");
+    this.productImages = this.page.locator(".inventory_item img");
+    this.addToCartButtons = this.page.locator(".btn.btn_primary.btn_small.btn_inventory");
   }
 
   async goTo(): Promise<void> {
@@ -31,7 +47,7 @@ export class InventoryPage {
   }
 
   async clickAbout(): Promise<void> {
-    await this.page.locator('[data-test="about-sidebar-link"]').click();
+    await this.aboutLink.click();
   }
 
   async waitForPageLoad(): Promise<void> {
@@ -177,27 +193,20 @@ export class InventoryPage {
     await this.page.locator(".bm-burger-button").click();
   }
 
+  async closeHamburgerMenu(): Promise<void> {
+    await this.page.locator(".bm-cross-button").click();
+  }
+
+  /** Сброс состояния приложения (корзина) через hamburger меню */
+  async resetAppState(): Promise<void> {
+    await this.page.locator('[data-test="reset-sidebar-link"]').click();
+  }
+
   async clickLogout(): Promise<void> {
-    await this.page.locator('[data-test="logout-sidebar-link"]').click();
+    await this.logoutLink.click();
   }
 
   getMenuItemsLocator() {
     return this.page.locator(".bm-item-list a");
-  }
-
-  async getMenuItemCount(): Promise<number> {
-    return await this.getMenuItemsLocator().count();
-  }
-
-  async isInventoryLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="inventory-sidebar-link"]').isVisible();
-  }
-
-  async isAboutLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="about-sidebar-link"]').isVisible();
-  }
-
-  async isLogoutLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="logout-sidebar-link"]').isVisible();
   }
 }

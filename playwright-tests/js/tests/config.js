@@ -17,6 +17,9 @@ export const timeouts = {
   ASSERT: 5000,
 };
 
+/** Ожидаемое число товаров на странице каталога */
+export const EXPECTED_PRODUCT_COUNT = 6;
+
 /**
  * Все валидные пользователи и их пароли
  */

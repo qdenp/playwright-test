@@ -1,7 +1,5 @@
 import { test, expect } from "../fixtures";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { CartPage } from "../page-objects/CartPage.js";
-import { CheckoutPage } from "../page-objects/CheckoutPage.js";
+import { timeouts } from "../config";
 
 /**
  * Test 06: Полный flow покупки (E2E)
@@ -12,9 +10,7 @@ test("Полный flow покупки (E2E)", async ({ authenticatedPage }) => 
   // Add 2 products to cart
   await inventoryPage.addProductToCart(0);
   await inventoryPage.addProductToCart(1);
-  await expect(
-    inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-  ).toHaveText("2");
+  await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
   // Open cart
   await inventoryPage.openCart();
@@ -30,11 +26,28 @@ test("Полный flow покупки (E2E)", async ({ authenticatedPage }) => 
   await checkoutPage.clickContinue();
 
   // Complete order
-  await expect(checkoutPage.finishButton).toBeVisible({ timeout: 10000 });
+  await expect(checkoutPage.finishButton).toBeVisible({ timeout: timeouts.DEFAULT });
+
+  // Проверяем суммы заказа: item total = сумма цен товаров
+  const itemPrices = await checkoutPage.getSummaryItemPrices();
+  expect(itemPrices).toHaveLength(2);
+
+  const itemsSum = itemPrices.reduce((sum, price) => sum + price, 0);
+  const itemsTotal = await checkoutPage.getItemsTotal();
+  expect(itemsTotal).toBeCloseTo(itemsSum, 2);
+
+  // tax = 8% от item total
+  const tax = await checkoutPage.getTax();
+  expect(tax).toBeCloseTo(itemsTotal * 0.08, 2);
+
+  // total = item total + tax
+  const total = await checkoutPage.getTotal();
+  expect(total).toBeCloseTo(itemsTotal + tax, 2);
+
   await checkoutPage.clickFinish();
 
   // Verify success
-  await expect(checkoutPage.completeTitle).toBeVisible({ timeout: 10000 });
+  await expect(checkoutPage.completeTitle).toBeVisible({ timeout: timeouts.DEFAULT });
   await expect(checkoutPage.completeTitle).toContainText(
     "Thank you for your order",
   );

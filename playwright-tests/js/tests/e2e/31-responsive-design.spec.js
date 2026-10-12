@@ -6,6 +6,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
+import { timeouts, EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Responsive Design", () => {
   test("31 - should work on mobile viewport (375x667)", async ({ page }) => {
@@ -18,8 +19,7 @@ test.describe("Responsive Design", () => {
     await loginPage.login();
     await inventoryPage.waitForPageLoad();
 
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     await loginPage.openHamburgerMenu();
     await expect(loginPage.menuOverlay).toBeVisible();
@@ -36,8 +36,7 @@ test.describe("Responsive Design", () => {
     await loginPage.login();
     await inventoryPage.waitForPageLoad();
 
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test("33 - should handle viewport resize during interaction", async ({
@@ -56,9 +55,7 @@ test.describe("Responsive Design", () => {
 
     // Resize to tablet
     await page.setViewportSize({ width: 768, height: 1024 });
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("1");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("1");
   });
 
   test("34 - should add to cart on mobile viewport", async ({ page }) => {
@@ -74,9 +71,7 @@ test.describe("Responsive Design", () => {
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
 
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("2");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("2");
   });
 
   test("35 - should checkout on tablet viewport", async ({ page }) => {
@@ -101,6 +96,6 @@ test.describe("Responsive Design", () => {
     await checkoutPage.fillInfo("Test", "User", "12345");
     await checkoutPage.clickContinue();
 
-    await expect(checkoutPage.finishButton).toBeVisible({ timeout: 10000 });
+    await expect(checkoutPage.finishButton).toBeVisible({ timeout: timeouts.DEFAULT });
   });
 });

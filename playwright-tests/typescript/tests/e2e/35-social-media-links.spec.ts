@@ -1,5 +1,5 @@
 import { test, expect } from "../fixtures";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
  * Test 35: Social Media Links
@@ -12,8 +12,7 @@ test.describe("Social Media Links", () => {
     const { inventoryPage } = authenticatedPage;
 
     // Verify inventory page loaded correctly
-    await expect(inventoryPage.products.first()).toBeVisible();
-    expect(await inventoryPage.getProductCount()).toBe(6);
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
   test("02 - should verify page structure and elements", async ({

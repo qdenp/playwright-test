@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
  * Test 01: Успешный логин — стандартный пользователь
@@ -14,6 +15,6 @@ test("Успешный логин — стандартный пользоват�
   await inventoryPage.waitForPageLoad();
 
   // Verify we're on the products page
-  await expect(inventoryPage.headerTitle).toBeVisible();
-  expect(await inventoryPage.getProductCount()).toBe(6);
+  await expect(inventoryPage.headerTitle).toHaveText("Products");
+  await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 });

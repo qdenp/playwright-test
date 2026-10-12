@@ -20,7 +20,7 @@ def test_verify_each_item_quantity_stays_at_1(authenticated_page):
     inventory_page.add_product_to_cart(4)  # Onesie
 
     # Проверить badge = 3
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
     # Открыть корзину
@@ -42,7 +42,7 @@ def test_handle_rapid_add_multiple_products(authenticated_page):
         inventory_page.add_product_to_cart(i)
 
     # Все 3 должны быть добавлены успешно
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
     # Проверить что в корзине 3 товара

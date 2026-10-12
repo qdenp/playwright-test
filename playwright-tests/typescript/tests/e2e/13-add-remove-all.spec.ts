@@ -9,13 +9,14 @@ test("Тест 13: Добавление и удаление всех товар�
   const { inventoryPage, cartPage } = authenticatedPage;
 
   const productCount = await inventoryPage.getProductCount();
+  await expect(inventoryPage.products).toHaveCount(productCount);
 
   // Добавляем все товары
   for (let i = 0; i < productCount; i++) {
     await inventoryPage.addProductToCart(i);
   }
 
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(productCount);
+  await expect(inventoryPage.cartBadgeCount).toHaveText(String(productCount));
 
   // Переходим в корзину
   await inventoryPage.openCart();
@@ -25,7 +26,7 @@ test("Тест 13: Добавление и удаление всех товар�
   // Удаляем все товары
   for (let i = 0; i < productCount; i++) {
     await cartPage.removeItem(0);
-    await expect(authenticatedPage.page.locator(".cart_item")).toHaveCount(productCount - 1 - i);
+    await expect(cartPage.cartItems).toHaveCount(productCount - 1 - i);
   }
 
   // Корзина должна быть пуста
@@ -33,5 +34,5 @@ test("Тест 13: Добавление и удаление всех товар�
 
   // Перезагружаем для проверки badge
   await authenticatedPage.page.reload();
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(0);
+  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 });

@@ -20,7 +20,7 @@ def test_remove_from_cart(page):
 
     inventory_page.add_product_to_cart(0)
     inventory_page.add_product_to_cart(1)
-    expect(page.locator(".shopping_cart_badge")).to_have_text("2")
+    expect(inventory_page.cart_badge_count).to_have_text("2")
 
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
@@ -31,4 +31,4 @@ def test_remove_from_cart(page):
 
     page.reload()
     cart_page.wait_for_page_load()
-    expect(page.locator(".shopping_cart_badge")).to_have_text("1")
+    expect(inventory_page.cart_badge_count).to_have_text("1")

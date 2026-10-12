@@ -94,7 +94,7 @@ def test_preserve_cart_state_after_navigation(page):
 
     inventory_page.add_product_to_cart(0)
     inventory_page.add_product_to_cart(1)
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("2")
 
     inventory_page.open_cart()

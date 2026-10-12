@@ -20,7 +20,7 @@ def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
     inventory_page.add_product_to_cart(5)  # Red T-Shirt - $15.99
 
     # Проверить badge
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
     # Открыть корзину и проверить товары
@@ -45,7 +45,7 @@ def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
     inventory_page.add_product_to_cart(2)  # Bolt T-Shirt - $24.99
 
     # Проверить badge
-    badge = page.locator(".shopping_cart_badge")
+    badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
     # Открыть корзину и проверить товары
@@ -69,7 +69,7 @@ def test_add_alternating_products(authenticated_page):
     inventory_page.add_product_to_cart(2)
     inventory_page.add_product_to_cart(4)
 
-    expect(page.locator(".shopping_cart_badge")).to_have_text("3")
+    expect(inventory_page.cart_badge_count).to_have_text("3")
 
     inventory_page.open_cart()
     cart_page.wait_for_page_load()

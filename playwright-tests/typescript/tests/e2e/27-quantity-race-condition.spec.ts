@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
@@ -17,17 +16,14 @@ test.describe("Quantity and Race Conditions", () => {
     await inventoryPage.addProductToCart(4); // Onesie
 
     // Verify badge shows 3
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("3");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("3");
 
     // Open cart
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
     // Verify each item has quantity = 1 (default)
-    const itemCount = await cartPage.getCartItemCount();
-    expect(itemCount).toBe(3);
+    await expect(cartPage.cartItems).toHaveCount(3);
   });
 
   test("02 - should handle rapid add multiple products", async ({
@@ -41,14 +37,12 @@ test.describe("Quantity and Race Conditions", () => {
     }
 
     // All 3 should be added successfully
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("3");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("3");
 
     // Verify cart has exactly 3 items
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    expect(await cartPage.getCartItemCount()).toBe(3);
+    await expect(cartPage.cartItems).toHaveCount(3);
   });
 });

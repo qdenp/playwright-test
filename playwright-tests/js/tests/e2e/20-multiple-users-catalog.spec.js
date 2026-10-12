@@ -1,7 +1,7 @@
 import { test, expect } from "../fixtures.js";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { users } from "../config.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
  * Тест 20: Разные пользователи видят одинаковый каталог
@@ -12,20 +12,30 @@ test("Тест 20: Разные пользователи видят одинак
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
-  // Берём первых 5 пользователей
-  const testUsers = users.slice(0, 5);
+  const testUsers = [
+    { username: "standard_user", password: "secret_sauce" },
+    { username: "problem_user", password: "secret_sauce" },
+    { username: "performance_glitch_user", password: "secret_sauce" },
+    { username: "error_user", password: "secret_sauce" },
+    { username: "visual_user", password: "secret_sauce" },
+  ];
+
+  let baselineNames = null;
 
   for (const { username, password } of testUsers) {
     await loginPage.goTo();
     await loginPage.login(username, password);
     await inventoryPage.waitForPageLoad();
 
-    // Все пользователи видят 6 товаров
-    await expect(inventoryPage.products).toHaveCount(6);
+    // Все пользователи видят одинаковое число товаров с названиями
+    await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
-    // Все видят одинаковые названия товаров
     const names = await inventoryPage.getAllProductNames();
-    expect(names).toContain("Sauce Labs Backpack");
-    expect(names).toContain("Sauce Labs Bike Light");
+
+    if (baselineNames === null) {
+      baselineNames = names;
+    } else {
+      expect(names).toEqual(baselineNames);
+    }
   }
 });

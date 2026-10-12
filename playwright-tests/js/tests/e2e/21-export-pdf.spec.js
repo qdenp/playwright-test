@@ -3,6 +3,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
+import { timeouts } from "../config.js";
 import fs from "fs";
 
 /**
@@ -21,7 +22,7 @@ test("Тест 21: Экспорт PDF заказа", async ({ page }) => {
 
   await inventoryPage.addProductToCart(0);
   await inventoryPage.addProductToCart(1);
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(2);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
   // Переходим к оформлению
   await inventoryPage.openCart();
@@ -35,24 +36,20 @@ test("Тест 21: Экспорт PDF заказа", async ({ page }) => {
   await checkoutPage.clickContinue();
 
   // Ожидаем перехода на checkout-step-two (Firefox может работать медленнее)
-  await page.waitForURL(/.*checkout-step-two\.html/, { timeout: 15000 });
+  await expect(checkoutPage.finishButton).toBeVisible({
+    timeout: timeouts.NAVIGATION,
+  });
 
-  // Нажимаем Finish
+  // Нажимам Finish
   await checkoutPage.clickFinish();
 
   // Ждём страницу подтверждения
-  await page.waitForURL(/.*checkout-complete\.html/, { timeout: 10000 });
-
-  // Проверяем что кнопка Generate PDF видна
-  await expect(page.getByRole("button", { name: "Generate PDF" })).toBeVisible({
-    timeout: 5000,
+  await expect(checkoutPage.completeTitle).toBeVisible({
+    timeout: timeouts.NAVIGATION,
   });
 
   // Кликаем Generate PDF и ждём скачивания
-  const [download] = await Promise.all([
-    page.waitForEvent("download"),
-    page.getByRole("button", { name: "Generate PDF" }).click(),
-  ]);
+  const download = await checkoutPage.generatePdf();
 
   // Сохраняем PDF
   const pdfPath = await download.path();

@@ -4,6 +4,7 @@
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test("23 - should display all product images", async ({ page }) => {
   const loginPage = new LoginPage(page);
@@ -14,14 +15,11 @@ test("23 - should display all product images", async ({ page }) => {
   await inventoryPage.waitForPageLoad();
 
   // Verify all 6 product images are visible
-  const productImages = page.locator(".inventory_item img");
-  await expect(productImages).toHaveCount(6);
+  await expect(inventoryPage.productImages).toHaveCount(EXPECTED_PRODUCT_COUNT);
+  await expect(inventoryPage.productImages.first()).toBeVisible();
 
-  // Verify each image has src attribute
-  const images = await productImages.all();
-  for (const img of images) {
-    const src = await img.getAttribute("src");
-    expect(src).toBeTruthy();
-    expect(src.length).toBeGreaterThan(0);
+  // Verify each image has non-empty src attribute
+  for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
+    await expect(inventoryPage.productImages.nth(i)).toHaveAttribute("src", /^.{1,}$/);
   }
 });

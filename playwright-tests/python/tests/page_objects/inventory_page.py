@@ -17,6 +17,14 @@ class InventoryPage:
         self.cart_badge = page.locator(".shopping_cart_link")
         self.cart_badge_count = page.locator(".shopping_cart_badge")
         self.header_title = page.locator(".title")
+        self.inventory_link = page.locator('[data-test="inventory-sidebar-link"]')
+        self.about_link = page.locator('[data-test="about-sidebar-link"]')
+        self.logout_link = page.locator('[data-test="logout-sidebar-link"]')
+        self.product_names = page.locator(".inventory_item_name")
+        self.product_descriptions = page.locator(".inventory_item_desc")
+        self.product_prices = page.locator(".inventory_item_price")
+        self.product_images = page.locator(".inventory_item img")
+        self.add_to_cart_buttons = page.locator(".btn.btn_primary.btn_small.btn_inventory")
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")

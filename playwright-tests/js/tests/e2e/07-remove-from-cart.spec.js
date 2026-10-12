@@ -2,6 +2,7 @@ import { test, expect } from "../fixtures.js";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
+import { timeouts } from "../config.js";
 
 /**
  * Удаление товара из корзины
@@ -17,7 +18,7 @@ test("Удаление товара из корзины", async ({ page }) => {
 
   await inventoryPage.addProductToCart(0);
   await inventoryPage.addProductToCart(1);
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(2);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
@@ -28,5 +29,5 @@ test("Удаление товара из корзины", async ({ page }) => {
 
   await page.reload();
   await cartPage.waitForPageLoad();
-  await expect(inventoryPage.getCartBadgeCount()).resolves.toBe(1);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("1");
 });

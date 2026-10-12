@@ -6,29 +6,33 @@ import { timeouts } from "../config.js";
 export class CheckoutPage {
   constructor(page) {
     this.page = page;
-    this.firstNameInput = page.locator("#first-name");
-    this.lastNameInput = page.locator("#last-name");
-    this.zipCodeInput = page.locator("#postal-code");
-    this.continueButton = page.locator("#continue");
-    this.errorMessage = page.locator(".error-message-container.error");
-    this.orderSummary = page.locator(".summary_subtotal_label");
-    this.finishButton = page.locator("#finish");
-    this.thankYouMessage = page.locator("text=Thank you for your order!");
-    this.completeText = page.locator(".complete-text");
-    this.backToHomeButton = page.locator(".btn_action");
-    this.itemsInOrder = page.locator(".cart_item");
-    this.itemPrices = page.locator(".inventory_item_price");
-    this.itemTotals = page.locator(".summary_total_label");
+    this.firstNameInput = page.locator('[data-test="firstName"]');
+    this.lastNameInput = page.locator('[data-test="lastName"]');
+    this.zipCodeInput = page.locator('[data-test="postalCode"]');
+    this.zipInput = this.zipCodeInput;
+    this.continueButton = page.getByRole("button", { name: "Continue" });
+    this.finishButton = page.getByRole("button", { name: "Finish" });
+    this.cancelButton = page.locator(".button.btn_secondary.btn_small.btn_footer");
+    this.errorMessage = page.locator(".error-message-container");
+    this.completeTitle = page.locator(".complete-header");
+    this.backToProducts = page.locator(".btn.btn_action.btn_small");
+    this.generatePdfButton = page.getByRole("button", { name: "Generate PDF" });
+    this.itemsTotalLabel = page.locator(".summary_subtotal_label");
+    this.taxLabel = page.locator(".summary_tax_label");
+    this.totalLabel = page.locator(".summary_total_label");
+    this.summaryItemPrices = page.locator(".cart_item .inventory_item_price");
   }
 
-  async waitForPageLoad() {
-    await this.firstNameInput.waitFor({ state: "visible", timeout: 10000 });
-  }
-
-  async fillInfo(firstName, lastName, zipCode) {
+  async fillFirstName(firstName) {
     await this.firstNameInput.fill(firstName);
+  }
+
+  async fillLastName(lastName) {
     await this.lastNameInput.fill(lastName);
-    await this.zipCodeInput.fill(zipCode);
+  }
+
+  async fillZipCode(zipCode) {
+    await this.zipInput.fill(zipCode);
   }
 
   async clickContinue() {
@@ -39,51 +43,79 @@ export class CheckoutPage {
     await this.finishButton.click();
   }
 
-  async getErrorMessage() {
-    return await this.errorMessage.textContent();
+  async clickCancel() {
+    await this.cancelButton.click();
   }
 
-  async isErrorMessageVisible() {
-    return await this.errorMessage.isVisible();
+  async clickBackToProducts() {
+    await this.backToProducts.click();
   }
 
-  async getThankYouMessage() {
-    return await this.thankYouMessage.textContent();
+  getErrorMessage() {
+    return this.errorMessage.innerText();
   }
 
-  async isCompleteHeaderVisible() {
-    await this.thankYouMessage.waitFor({ state: "attached", timeout: timeouts.DEFAULT });
-    return await this.thankYouMessage.isVisible();
+  isErrorMessageVisible() {
+    return this.errorMessage.isVisible();
   }
 
-  async getCompleteText() {
-    return await this.completeText.textContent();
+  async waitForPageLoad() {
+    await this.firstNameInput.waitFor({ state: "visible", timeout: timeouts.DEFAULT });
   }
 
-  async clickBackToHome() {
-    await this.backToHomeButton.click();
+  async submitCheckoutForm(firstName, lastName, zipCode) {
+    await this.fillFirstName(firstName);
+    await this.fillLastName(lastName);
+    await this.fillZipCode(zipCode);
+    await this.clickContinue();
   }
 
-  async getOrderSummary() {
-    const summary = {};
-    summary.items = await this.itemsInOrder.allTextContents();
-    summary.prices = await this.itemPrices.allTextContents();
-    return summary;
+  async fillInfo(firstName, lastName, zipCode) {
+    await this.fillFirstName(firstName);
+    await this.fillLastName(lastName);
+    await this.fillZipCode(zipCode);
   }
 
-  async isContinueButtonDisabled() {
-    return await this.continueButton.isDisabled();
+  /** Экспорт заказа в PDF: клик по кнопке и ожидание скачивания */
+  async generatePdf() {
+    const [download] = await Promise.all([
+      this.page.waitForEvent("download"),
+      this.generatePdfButton.click(),
+    ]);
+    return download;
   }
 
-  async getFirstNameValue() {
-    return await this.firstNameInput.inputValue();
+  /**
+   * Сумма всех товаров из сводки чекаута ("Item total: $55.97").
+   */
+  async getItemsTotal() {
+    return CheckoutPage.parseMoney(await this.itemsTotalLabel.textContent());
   }
 
-  async getLastNameValue() {
-    return await this.lastNameInput.inputValue();
+  /** Налог из сводки чекаута ("Tax: $4.48"). */
+  async getTax() {
+    return CheckoutPage.parseMoney(await this.taxLabel.textContent());
   }
 
-  async getZipCodeValue() {
-    return await this.zipCodeInput.inputValue();
+  /** Итоговая сумма заказа ("Total: $60.45"). */
+  async getTotal() {
+    return CheckoutPage.parseMoney(await this.totalLabel.textContent());
+  }
+
+  /** Цены отдельных товаров из сводки чекаута, по порядку. */
+  async getSummaryItemPrices() {
+    const texts = await this.summaryItemPrices.allTextContents();
+    return texts.map((text) => CheckoutPage.parseMoney(text));
+  }
+
+  static parseMoney(text) {
+    if (text === null) {
+      throw new Error("Не найдена сумма в сводке чекаута");
+    }
+    const match = text.match(/\$\s*([\d,]+\.\d{2})/);
+    if (!match) {
+      throw new Error(`Не удалось разобрать сумму из "${text}"`);
+    }
+    return parseFloat(match[1].replace(/,/g, ""));
   }
 }

@@ -20,7 +20,7 @@ def test_add_to_cart(page):
 
     # Добавить первый товар
     inventory_page.add_product_to_cart(0)
-    expect(page.locator(".shopping_cart_badge")).to_have_text("1")
+    expect(inventory_page.cart_badge_count).to_have_text("1")
 
     # Открыть корзину и проверить первый товар
     inventory_page.open_cart()
@@ -35,7 +35,7 @@ def test_add_to_cart(page):
 
     # Добавить второй товар
     inventory_page.add_product_to_cart(1)
-    expect(page.locator(".shopping_cart_badge")).to_have_text("2")
+    expect(inventory_page.cart_badge_count).to_have_text("2")
 
     # Открыть корзину и проверить оба товара
     inventory_page.open_cart()

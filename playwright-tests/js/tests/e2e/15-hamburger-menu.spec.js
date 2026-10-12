@@ -17,12 +17,12 @@ test("Тест 15: Hamburger меню — открытие и закрытие",
   await expect(loginPage.closeMenu).toBeVisible();
 
   // Проверяем количество элементов меню (5 штук)
-  await expect(inventoryPage.getMenuItemCount()).resolves.toBe(5);
+  await expect(inventoryPage.getMenuItemsLocator()).toHaveCount(5);
 
   // Проверяем наличие элементов меню
-  await expect(inventoryPage.isInventoryLinkVisible()).resolves.toBe(true);
-  await expect(inventoryPage.isAboutLinkVisible()).resolves.toBe(true);
-  await expect(inventoryPage.isLogoutLinkVisible()).resolves.toBe(true);
+  await expect(inventoryPage.inventoryLink).toBeVisible();
+  await expect(inventoryPage.aboutLink).toBeVisible();
+  await expect(inventoryPage.logoutLink).toBeVisible();
 
   // Закрываем меню
   await loginPage.closeHamburgerMenu();
