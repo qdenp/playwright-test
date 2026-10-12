@@ -1,13 +1,15 @@
 /**
  * Page Object для страницы товаров (Inventory)
  */
+import { timeouts } from "../config.js";
+
 export class InventoryPage {
   constructor(page) {
     this.page = page;
     this.products = page.locator(".inventory_item");
     this.sortDropdown = page.locator(".product_sort_container");
     this.cartBadge = page.locator(".shopping_cart_link");
-    this.cartIcon = page.locator(".shopping_cart_link");
+    this.cartBadgeCount = page.locator(".shopping_cart_badge");
     this.headerTitle = page.locator(".title");
   }
 
@@ -16,7 +18,7 @@ export class InventoryPage {
   }
 
   async goTo() {
-    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: 15000 });
+    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: timeouts.NAVIGATION });
   }
 
   async clickAbout() {
@@ -62,7 +64,7 @@ export class InventoryPage {
   }
 
   async getCartBadgeCount() {
-    const badge = this.cartBadge.locator(".shopping_cart_badge");
+    const badge = this.cartBadgeCount;
     const isVisible = await badge.isVisible();
     if (!isVisible) {
       return 0;
@@ -73,6 +75,7 @@ export class InventoryPage {
 
   async openCart() {
     await this.cartBadge.click();
+    await this.page.waitForURL("**cart*", { timeout: timeouts.DEFAULT });
   }
 
   async sortByPriceLowToHigh() {

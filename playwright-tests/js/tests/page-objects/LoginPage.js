@@ -18,7 +18,7 @@ export class LoginPage {
   async goTo() {
     await this.page.goto(config.baseUrl, {
       waitUntil: "domcontentloaded",
-      timeout: timeouts.DEFAULT,
+      timeout: timeouts.NAVIGATION,
     });
   }
 

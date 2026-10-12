@@ -5,7 +5,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 /**
  * Тест 13: Добавление и удаление всех товаров
  */
-test("Тест 13: Добавление и удаление всех товаров", { timeout: 120000 }, async ({ authenticatedPage }) => {
+test("Тест 13: Добавление и удаление всех товаров", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;
 
   const productCount = await inventoryPage.getProductCount();

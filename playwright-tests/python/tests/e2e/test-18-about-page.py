@@ -1,6 +1,9 @@
 """
 Тест 18: About page — переход из hamburger меню
-SAUCE_DEMO_BUG: Ожидается 403 Forbidden на saucelabs.com
+
+SAUCE_DEMO_BUG: ссылка About ведёт на saucelabs.com, который отдаёт
+403 Forbidden. Проверить переход и содержимое страницы About невозможно,
+поэтому тест помечен как skip.
 """
 
 import pytest
@@ -9,7 +12,7 @@ from page_objects.login_page import LoginPage
 from page_objects.inventory_page import InventoryPage
 
 
-@pytest.mark.skip(reason="SAUCE_DEMO_BUG: About ссылка возвращает 403 Forbidden на saucelabs.com")
+@pytest.mark.skip(reason="SAUCE_DEMO_BUG: About ведёт на saucelabs.com, который отдаёт 403 Forbidden")
 def test_about_page(page):
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
@@ -17,23 +20,12 @@ def test_about_page(page):
     login_page.go_to()
     login_page.login()
 
-    # Открываем меню
+    # Открываем hamburger меню и переходим по ссылке About
     login_page.open_hamburger_menu()
-
-    # Переходим по ссылке About
     inventory_page.click_about()
 
-    # Sauce Demo перенаправляет на saucelabs.com — страница загружается (403)
-    # Проверяем что навигация произошла (URL изменился)
-    page.wait_for_timeout(2000)
-
-    # Закрываем меню если открыто
-    try:
-        login_page.close_hamburger_menu()
-    except Exception:
-        pass
-
-    # Возвращаемся на Products
+    # Переход проверить нельзя: saucelabs.com отдаёт 403 Forbidden.
+    # Возвращаемся на Products и убеждаемся, что приложение живо.
     inventory_page.go_to()
     inventory_page.wait_for_page_load()
     expect(inventory_page.header_title).to_contain_text("Products", timeout=5000)

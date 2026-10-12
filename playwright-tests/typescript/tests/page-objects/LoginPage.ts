@@ -38,7 +38,10 @@ export class LoginPage {
   }
 
   async goTo(url: string = "/"): Promise<void> {
-    await this.page.goto(url);
+    await this.page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: timeouts.NAVIGATION,
+    });
   }
 
   async enterUsername(username: string = "standard_user"): Promise<void> {

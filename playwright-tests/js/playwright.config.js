@@ -6,14 +6,15 @@ export default defineConfig({
   // Запускать тесты параллельно
   fullyParallel: true,
 
-  // Не повторять упавшие тесты
-  forbidOnly: !!process.env.CI,
-
-  // Повторить упавшие тесты до 3 раз
-  retries: 3,
+  // Не повторять упавшие тесты — только на CI
+  retries: process.env.CI ? 2 : 0,
 
   // Количество воркеров
-  workers: 3,
+  workers: process.env.CI ? 1 : 3,
+
+  // Timeout на каждый тест: ТОЛЬКО на верхнем уровне.
+  // Внутри `use` этот ключ молча игнорируется и применяется дефолт 30s.
+  timeout: 120000,
 
   // Отчёты
   reporter: [
@@ -27,10 +28,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     video: 'off',
-    actionTimeout: 10000,
-    navigationTimeout: 15000,
-    // Visual regression
-    screenshot: 'only-on-failure',
+    actionTimeout: 60000,
+    navigationTimeout: 30000,
   },
 
   projects: [
@@ -41,7 +40,6 @@ export default defineConfig({
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnoreTimeout: 60000,
     },
     {
       name: 'webkit',

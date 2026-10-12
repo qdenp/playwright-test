@@ -6,7 +6,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 /**
  * Тест 13: Добавление и удаление всех товаров
  */
-test("Тест 13: Добавление и удаление всех товаров", { timeout: 120000 }, async ({ page }) => {
+test("Тест 13: Добавление и удаление всех товаров", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);

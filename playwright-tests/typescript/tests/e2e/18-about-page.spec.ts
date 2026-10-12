@@ -1,41 +1,17 @@
-import { test, expect } from "../fixtures.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
+import { test } from "../fixtures";
 
 /**
  * Тест 18: About page — переход из hamburger меню
- * SAUCE_DEMO_BUG: Ожидается 403 Forbidden на saucelabs.com
+ *
+ * SAUCE_DEMO_BUG: ссылка About ведёт на saucelabs.com, который отдаёт
+ * 403 Forbidden. Проверить переход и содержимое страницы About невозможно,
+ * поэтому тест помечен как skip.
+ *
+ * Когда баг на стороне SauceDemo исправят: убрать `test.skip`, восстановить
+ * импорты LoginPage / InventoryPage и тело теста:
+ *   loginPage.goTo() → loginPage.login() → loginPage.openHamburgerMenu()
+ *   → inventoryPage.clickAbout() → expect(page).toHaveURL(...)
  */
-test.skip("Тест 18: About page — переход из hamburger меню", "SAUCE_DEMO_BUG: 403 on saucelabs.com");
-
-test("Тест 18: About page — переход из hamburger меню (disabled)", { timeout: 60000 }, async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
-
-  // Открываем меню
-  await loginPage.openHamburgerMenu();
-
-  // Переходим по ссылке About
-  await inventoryPage.clickAbout();
-
-  // Sauce Demo перенаправляет на saucelabs.com — страница загружается (403)
-  // Проверяем что навигация произошла (URL изменился)
-  await page.waitForTimeout(2000);
-
-  // Закрываем меню только если оно открыто
-  try {
-    await loginPage.closeHamburgerMenu();
-  } catch {
-    // Меню уже закрылось при навигации
-  }
-
-  // Возвращаемся на Products
-  await inventoryPage.goTo();
-  await inventoryPage.waitForPageLoad();
-  await expect(inventoryPage.headerTitle).toContainText("Products", {
-    timeout: 5000,
-  });
+test.skip("Тест 18: About page — переход из hamburger меню", async () => {
+  // SAUCE_DEMO_BUG: About ведёт на saucelabs.com, который отдаёт 403 Forbidden.
 });

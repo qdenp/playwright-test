@@ -14,7 +14,7 @@ export class InventoryPage {
   products: ReturnType<Page["locator"]>;
   sortDropdown: ReturnType<Page["locator"]>;
   cartBadge: ReturnType<Page["locator"]>;
-  cartIcon: ReturnType<Page["locator"]>;
+  cartBadgeCount: ReturnType<Page["locator"]>;
   headerTitle: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
@@ -22,12 +22,12 @@ export class InventoryPage {
     this.products = this.page.locator(".inventory_item");
     this.sortDropdown = this.page.locator(".product_sort_container");
     this.cartBadge = this.page.locator(".shopping_cart_link");
-    this.cartIcon = this.page.locator(".shopping_cart_link");
+    this.cartBadgeCount = this.page.locator(".shopping_cart_badge");
     this.headerTitle = this.page.locator(".title");
   }
 
   async goTo(): Promise<void> {
-    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: 15000 });
+    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: timeouts.NAVIGATION });
   }
 
   async clickAbout(): Promise<void> {
@@ -81,7 +81,7 @@ export class InventoryPage {
   }
 
   async getCartBadgeCount(): Promise<number> {
-    const badge = this.cartBadge.locator(".shopping_cart_badge");
+    const badge = this.cartBadgeCount;
     const isVisible = await badge.isVisible();
     if (!isVisible) {
       return 0;

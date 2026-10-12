@@ -6,7 +6,7 @@ import os
 
 from playwright.sync_api import Page, expect
 
-from constants import DEFAULT_TIMEOUT
+from constants import DEFAULT_TIMEOUT, NAVIGATION_TIMEOUT
 
 
 class InventoryPage:
@@ -15,11 +15,12 @@ class InventoryPage:
         self.products = page.locator(".inventory_item")
         self.sort_dropdown = page.locator(".product_sort_container")
         self.cart_badge = page.locator(".shopping_cart_link")
+        self.cart_badge_count = page.locator(".shopping_cart_badge")
         self.header_title = page.locator(".title")
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
-        self.page.goto(f"{base_url}/inventory.html", wait_until="domcontentloaded", timeout=15000)
+        self.page.goto(f"{base_url}/inventory.html", wait_until="domcontentloaded", timeout=NAVIGATION_TIMEOUT)
 
     def wait_for_page_load(self):
         self.header_title.wait_for(state="visible", timeout=DEFAULT_TIMEOUT)
@@ -54,7 +55,7 @@ class InventoryPage:
         return product.locator(".inventory_item_name").text_content()
 
     def get_cart_badge_count(self) -> int:
-        badge = self.cart_badge.locator(".shopping_cart_badge")
+        badge = self.cart_badge_count
         if not badge.is_visible():
             return 0
         text = badge.text_content()

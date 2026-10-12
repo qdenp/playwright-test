@@ -7,11 +7,8 @@ export class CartPage {
   constructor(page) {
     this.page = page;
     this.cartItems = page.locator(".cart_item");
-    this.removeItemButtons = page.locator('button:has-text("Remove")');
     this.checkoutButton = page.locator(".checkout_button");
     this.continueShoppingButton = page.locator('[data-test="continue-shopping"]');
-    this.totalPrice = page.locator(".summary_total_label");
-    this.quantityInput = page.locator('[data-test="quantity"]');
   }
 
   async waitForPageLoad() {
@@ -31,29 +28,14 @@ export class CartPage {
     return names;
   }
 
-  async changeItemQuantity(index, quantity) {
-    const item = this.cartItems.nth(index);
-    await item.locator('[data-test="quantity"]').fill(String(quantity));
-  }
-
-  async getRemoveButtonCount() {
-    return this.removeItemButtons.count();
-  }
-
   async removeItem(index) {
     const cartItem = this.cartItems.nth(index);
     const removeButton = cartItem.locator('button:has-text("Remove")');
     await removeButton.click();
-    // Не ждём detached — просто даём время на обновление
-    await this.page.waitForTimeout(500);
   }
 
   async checkout() {
     await this.checkoutButton.click();
-  }
-
-  async getTotalPrice() {
-    return this.totalPrice.textContent();
   }
 
   async continueShopping() {

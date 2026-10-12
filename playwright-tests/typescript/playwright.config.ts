@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { timeouts } from './tests/config';
 
 /**
  * Read environment variables from file.
@@ -16,14 +17,20 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
 
+  /* Timeout for each test: MUST be at top level.
+     Inside `use` this key is silently ignored and the default 30s applies. */
+  timeout: 120000,
+
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
 
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
 
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* Количество воркеров: по умолчанию Playwright берёт половину ядер,
+     но saucedemo.com троттлит параллельные подключения и часть навигаций
+     зависает на 30с. Ограничиваем, как в JS-наборе. */
+  workers: process.env.CI ? 1 : 3,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
@@ -40,7 +47,9 @@ export default defineConfig({
 
     /* Increase timeout for CI environment */
     actionTimeout: 60000,
-    timeout: 120000,
+
+    /* Navigation timeout: page.goto() без явного значения не имеет лимита */
+    navigationTimeout: timeouts.NAVIGATION,
   },
 
   /* Configure projects for major browsers */

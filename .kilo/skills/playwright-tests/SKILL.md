@@ -1,0 +1,157 @@
+---
+name: playwright-tests
+description: Работа с e2e-тестами SauceDemo в playwright-tests/ (TS, JS, Python). Использовать при правке спеков, page objects, фикстур, запуске тестов, ревью качества тестов и синхронизации трёх реализаций.
+---
+
+# Skill: playwright-tests
+
+Набор e2e-тестов [SauceDemo](https://www.saucedemo.com) в трёх реализациях.
+
+---
+
+## Карта проекта
+
+| Реализация | Корень | Page Objects | Тесты | Конфиг |
+|---|---|---|---|---|
+| TypeScript | `playwright-tests/typescript/` | `tests/page-objects/*.ts` | `tests/e2e/*.spec.ts` | `playwright.config.ts`, `tests/config.ts` |
+| JavaScript | `playwright-tests/js/` | `tests/page-objects/*.js` | `tests/e2e/*.spec.js` | `tests/config.js` |
+| Python | `playwright-tests/python/` | `tests/page_objects/*.py` | `tests/e2e/test-*.py` | `pytest.ini`, `tests/constants.py` |
+
+Общие элементы TS/JS:
+
+- Фикстура `authenticatedPage` (`tests/fixtures.ts`) — предустановленный логин.
+  **Внимание:** объявлена с `{ auto: true }`, из-за чего логин выполняется в каждом тесте.
+  Это известная проблема, см. чек-лист.
+- Данные пользователей и параметры логина — `tests/config.ts` (`users`, `loginTests`).
+- Page Objects: `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage`.
+- Playwright projects: `chromium`, `firefox`, `webkit` (активны только chromium/firefox/webkit).
+
+---
+
+## Команды запуска
+
+```powershell
+# TypeScript (основной набор)
+cd playwright-tests\typescript
+npx tsc --noEmit                              # типы (в CI — джоба lint)
+npx playwright test --project=chromium        # все тесты
+npx playwright test 04-add-to-cart            # один файл
+npx playwright test -g "purchase"             # по имени
+npx playwright test --ui                      # интерактивный режим
+npx playwright show-report                    # HTML-отчёт
+
+# JavaScript
+cd playwright-tests\js
+npx playwright test --project=chromium
+
+# Python
+cd playwright-tests\python
+pytest                                        # все
+pytest tests/e2e/test-06-full-purchase-flow.py
+pytest -k login -v
+```
+
+Таймауты/ретраи: TS — `actionTimeout: 60000`, `timeout: 120000`, ретраи только на CI.
+Python — `--reruns 3 --reruns-delay 1`.
+
+---
+
+## Известное состояние (актуально на 2026-10-12)
+
+| Проблема | Где | Статус |
+|---|---|---|
+| `npx tsc --noEmit` падал: `timeout` в 3-м аргументе `test()` | `typescript/tests/e2e/13-add-remove-all.spec.ts` | **Закрыта 2026-10-12:** лишний аргумент `{ timeout }` убран |
+| `npx tsc --noEmit` падал: `test()` со строкой вместо колбэка | `typescript/tests/e2e/18-about-page.spec.ts` | **Закрыта 2026-10-12:** тест переписан в корректный `test.skip` с причиной |
+| Тест `16-visual-screenshot` ничего не проверял: скриншот не сравнивался ни с чем | все три реализации | **Закрыта:** удалён из TS, JS и Python. Если понадобится визуальная проверка — только через `toHaveScreenshot` со снапшотом в `git` |
+| Тест-таймаут не применялся: `timeout` лежал в `use`, где Playwright его молча игнорирует (фактически 30с вместо 120с) | `playwright.config.ts` | **Закрыта 2026-10-12:** `timeout` вынесен на верхний уровень |
+| `LoginPage.goTo()` в TS ждал `load` со всеми картинками → навигации зависали на 30с под нагрузкой | `typescript/.../LoginPage.ts` | **Закрыта 2026-10-12:** `waitUntil: "domcontentloaded"` + `timeouts.NAVIGATION`, как в JS и Python |
+| Хардкод `timeout: 15000` в `InventoryPage.goTo()` | все три реализации | **Закрыта 2026-10-12:** заменён на `timeouts.NAVIGATION` / `NAVIGATION_TIMEOUT` |
+| TS-набор запускался на 6 воркерах, и saucedemo.com троттлил параллельные подключения | `playwright.config.ts` | **Закрыта 2026-10-12:** `workers: 3` локально (как в JS-наборе) |
+| API-intercept тест заведомо падал (пустой массив responses) | все три реализации | **Закрыта:** удалён из TS, JS и Python |
+| `authenticatedPage` была помечена `{ auto: true }` → логин в каждом тесте, даже там где не нужен | `typescript/tests/fixtures.ts` | **Закрыта 2026-10-12:** `auto` убран. Логин делают только 22 файла, которым он реально нужен; 7 файлов логинятся сами |
+| Тест `12-cart-quantity` не тестировал quantity: по факту add → count 1 | все три реализации | **Закрыта 2026-10-12:** переписан на реальную арифметику корзины: badge +1 при добавлении, −1 при удалении, отсутствие badge на пустой корзине |
+| Мёртвый код в `CartPage`: `quantityInput`, `changeItemQuantity`, `totalPrice`, `getTotalPrice`, `getRemoveButtonCount`, интерфейс `CartItem` | все три реализации | **Закрыта 2026-10-12:** удалены; локальные локаторы `[data-test="quantity"]` и `.summary_total_label` на страницы не существуют |
+| Дубль локаторов `cartBadge` / `cartIcon` | `typescript/tests/page-objects/InventoryPage.ts` | **Закрыта 2026-10-12:** `cartIcon` удалён, добавлен `cartBadgeCount` = `.shopping_cart_badge` (единый селектор для web-first проверок) |
+| `page.waitForTimeout(500)` в `CartPage.removeItem()` | все три реализации | **Закрыта 2026-10-12:** sleep убран, синхронизация через web-first `toHaveCount` в тесте |
+| `CartPage.waitForPageLoad()` ждёт `.first()`, а на пустой корзине его нет — повиснет | `typescript/.../CartPage.ts:34` | Незакрыта |
+| `reset_app_state` есть в Python, нет в TS | `python/.../inventory_page.py` vs TS | Расхождение реализаций |
+| `remove-from-cart` / `reset-app-state` обходят PO | `typescript/tests/e2e/07,34` | Расхождение реализаций |
+| Паритет числа тестов: TS 55, JS 56, Python 61 — из-за разной параметризации (`loginTests` в TS 7 кейсов, в JS/Python 8) | `config.ts` vs `config.js` / `conftest.py` | Расхождение реализаций |
+
+### Baseline на 2026-10-12 (chromium)
+
+| Набор | Команда | Результат |
+|---|---|---|
+| TypeScript | `npx tsc --noEmit` + `npx playwright test --project=chromium` | tsc чистый, **55 passed / 1 skipped** |
+| JavaScript | `npx playwright test --project=chromium` | **55 passed / 1 skipped** |
+| Python | `pytest` | **60 passed / 1 skipped** |
+
+Все три набора перепрогнаны 2026-10-12 после снятия `auto: true` с фикстуры и
+переписывания теста 12 — результат тот же, значит ни один тест не зависел
+от неявного авто-логина.
+
+Важно про паритет PO: JS-фикстура отдаёт только `{ page, loginPage, inventoryPage }`,
+а TS — ещё и `cartPage`, `checkoutPage`. В JS-спеках объекты создаются вручную.
+Python-фикстура возвращает только `page`, `login_page`, `inventory_page`.
+
+Полный разбор с приоритетами: `playwright-tests/TEST_REVIEW_2026-10-12.md`.
+
+---
+
+## Правила (кратко; полные — в `AGENTS.md`)
+
+1. Только web-first ассерты: `toHaveCount`, `toHaveText`, `toHaveURL`, `toBeVisible`
+   с ретраями. Нельзя `expect(await x())`.
+2. Никаких `waitForTimeout` / `try-catch` с `break`.
+3. В спеках нет сырых `page.locator(...)` — только PO-методы.
+4. Селекторы — `[data-test="..."]`, не CSS-цепочки.
+5. Деньги и счётчики — точные значения, не `toBeTruthy()`.
+6. Таймауты только из `config.ts` / `constants.py`.
+7. Изменение теста = правка в трёх реализациях или фиксация расхождения.
+8. Тест обязан что-то проверять; скриншот без ассерта — не тест.
+
+---
+
+## Чек-лист ревью спека
+
+- [ ] Есть ли `expect` / `assert`? Если нет — тест мусорный.
+- [ ] Все ли ассерты web-first (с ретраями)?
+- [ ] Есть ли `waitForTimeout`, `try/catch` с подавлением, `Date.now()`-замеры?
+- [ ] Используются ли только PO-методы, без `page.locator` в спеке?
+- [ ] Локаторы через `data-test`, без `getByText` / `:has-text` с переменной?
+- [ ] Проверяются ли итоговые суммы (subtotal/tax/total) в чекауте?
+- [ ] Название теста описывает поведение, а не номер?
+- [ ] Тест независим и создаёт своё состояние (не зависит от порядка)?
+- [ ] Тестируется ли функционал, которого в SauceDemo нет (PDF, API, edit quantity)?
+- [ ] Нет хардкода таймаутов и магических чисел?
+- [ ] Соответствующая правка внесена в остальные две реализации?
+
+---
+
+## Переходы страниц SauceDemo
+
+- Логин: `/` → `inventory.html`
+- Корзина: `inventory.html` → `cart.html`
+- Чекаут: `cart.html` → `checkout-step-one.html` → `checkout-step-two.html` → `checkout-complete.html`
+- `About` ведёт на `saucelabs.com` и отдаёт 403 — тест должен быть `skip` с комментарием.
+- Пустая корзина: badge отсутствует, `.cart_item` — 0 элементов.
+- Данные о товарах рендерятся сервером, API товаров нет.
+
+---
+
+## Синхронизация трёх реализаций
+
+**Все три реализации намеренны** (практика на разных стеках + портфолио). Никогда не
+предлагай удалить JS или Python, свести всё к одному языку или объявить какую-либо
+реализацию устаревшей. Цель — паритет, а не сокращение числа реализаций.
+
+При правке теста `NN-topic`:
+
+1. Правь TS — он эталонный.
+2. Отрази изменение в `js/tests/e2e/NN-topic.spec.js` и `python/tests/e2e/test-NN-topic.py`.
+3. Если метод PO меняется — он меняется во всех трёх `page-objects` / `page_objects`.
+4. Если реализацию осознанно не синхронизируешь — запиши расхождение в таблицу
+   «Известное состояние» выше с причиной.
+5. Прогони проверки из `AGENTS.md` §2 для каждой затронутой реализации.
+6. Проверяй паритет набора: число файлов `NN-topic` в трёх реализациях должно совпадать
+   (сейчас 30 / 30 / 30).

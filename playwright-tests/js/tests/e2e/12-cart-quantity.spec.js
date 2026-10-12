@@ -1,29 +1,38 @@
 import { test, expect } from "../fixtures.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Тест 12: Изменение количества товара в корзине
+ * Test 12: Cart badge increments by 1 on add and decrements by 1 on remove
  */
-test("Тест 12: Изменение количества товара в корзине", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
+test("Тест 12: badge корзины растёт на 1 при добавлении и падает на 1 при удалении", async ({
+  authenticatedPage,
+}) => {
+  const { page, inventoryPage } = authenticatedPage;
   const cartPage = new CartPage(page);
 
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+  // Изначально корзина пуста — badge отсутствует
+  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 
+  // Добавление товара → badge +1
   await inventoryPage.addProductToCart(0);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("1");
+
+  // Добавление второго товара → badge ещё +1
+  await inventoryPage.addProductToCart(1);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("2");
+
+  // Переходим в корзину и удаляем один товар → badge −1
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
+  await expect(cartPage.cartItems).toHaveCount(2);
 
+  await cartPage.removeItem(0);
   await expect(cartPage.cartItems).toHaveCount(1);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("1");
 
-  const productName = await cartPage.cartItems
-    .first()
-    .locator('[data-test="inventory-item-name"]')
-    .textContent();
-  expect(productName).toBeTruthy();
+  // Удаляем последний товар → badge пропадает
+  await cartPage.removeItem(0);
+  await expect(cartPage.cartItems).toHaveCount(0);
+  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 });
