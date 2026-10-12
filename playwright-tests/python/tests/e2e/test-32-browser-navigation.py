@@ -1,5 +1,5 @@
 """
-Test 32: Browser navigation tests
+Browser navigation tests
 """
 
 import pytest

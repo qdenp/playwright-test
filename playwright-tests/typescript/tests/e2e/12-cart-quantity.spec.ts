@@ -1,5 +1,5 @@
 /**
- * Test 12: Cart badge increments by 1 on add and decrements by 1 on remove
+ * Cart badge increments by 1 on add and decrements by 1 on remove
  */
 import { test, expect } from "../fixtures";
 import { InventoryPage } from "../page-objects/InventoryPage.js";

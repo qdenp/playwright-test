@@ -1,5 +1,5 @@
-﻿/**
- * Test 34: Reset App State tests
+/**
+ * Reset App State tests
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";

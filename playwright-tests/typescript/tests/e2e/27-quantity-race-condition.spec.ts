@@ -1,8 +1,8 @@
-﻿import { test, expect } from "../fixtures";
+import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 27: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
+ * Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
  */
 test.describe("Quantity and Race Conditions", () => {
   test("should verify each item quantity stays at 1 (no editing in cart)", async ({

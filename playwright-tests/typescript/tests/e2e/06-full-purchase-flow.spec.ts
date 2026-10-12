@@ -2,7 +2,7 @@ import { test, expect } from "../fixtures";
 import { timeouts } from "../config";
 
 /**
- * Test 06: Полный flow покупки (E2E)
+ * Полный flow покупки (E2E)
  */
 test("Полный flow покупки (E2E)", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage, checkoutPage } = authenticatedPage;

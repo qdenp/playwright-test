@@ -1,5 +1,5 @@
-﻿/**
- * Test 28: Specific item combinations (3 of 6 products)
+/**
+ * Specific item combinations (3 of 6 products)
  */
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";

@@ -4,7 +4,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
- * Test 01: Успешный логин — стандартный пользователь
+ * Успешный логин — стандартный пользователь
  */
 test("Успешный логин — стандартный пользователь", async ({ page }) => {
   const loginPage = new LoginPage(page);

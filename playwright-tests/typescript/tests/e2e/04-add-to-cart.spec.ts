@@ -2,7 +2,7 @@ import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 04: Добавление товара в корзину
+ * Добавление товара в корзину
  */
 test("Добавление товара в корзину", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;

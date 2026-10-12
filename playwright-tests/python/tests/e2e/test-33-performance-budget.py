@@ -1,5 +1,5 @@
 """
-Test 33: Performance budget tests
+Performance budget tests
 """
 
 import time

@@ -3,7 +3,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 12: Cart badge increments by 1 on add and decrements by 1 on remove
+ * Cart badge increments by 1 on add and decrements by 1 on remove
  */
 test("badge корзины растёт на 1 при добавлении и падает на 1 при удалении", async ({
   authenticatedPage,

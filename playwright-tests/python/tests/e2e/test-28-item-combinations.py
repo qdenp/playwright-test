@@ -1,5 +1,5 @@
 """
-Test 28: Specific item combinations (3 of 6 products)
+Specific item combinations (3 of 6 products)
 """
 
 import pytest

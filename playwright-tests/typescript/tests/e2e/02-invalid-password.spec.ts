@@ -2,7 +2,7 @@ import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 
 /**
- * Test 02: Неверный пароль — ошибка авторизации
+ * Неверный пароль — ошибка авторизации
  */
 test("Неверный пароль — ошибка авторизации", async ({ page }) => {
   const loginPage = new LoginPage(page);

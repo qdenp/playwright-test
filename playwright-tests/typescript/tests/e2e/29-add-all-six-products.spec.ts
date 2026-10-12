@@ -1,9 +1,9 @@
-﻿import { test, expect } from "../fixtures";
+import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
- * Test 29: Add all 6 products and verify
+ * Add all 6 products and verify
  */
 test.describe("Add All 6 Products", () => {
   test("should add all 6 products and verify cart", async ({ authenticatedPage }) => {

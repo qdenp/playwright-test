@@ -1,5 +1,5 @@
 """
-Test 23: Verify product images are displayed
+Verify product images are displayed
 """
 
 import re

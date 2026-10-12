@@ -1,5 +1,5 @@
 """
-Test 27: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
+Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
 """
 
 import pytest

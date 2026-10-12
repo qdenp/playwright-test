@@ -1,5 +1,5 @@
 """
-Test 31: Responsive design tests
+Responsive design tests
 """
 
 from playwright.sync_api import expect

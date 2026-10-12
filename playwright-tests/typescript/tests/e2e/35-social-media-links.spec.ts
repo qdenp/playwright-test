@@ -1,8 +1,8 @@
-﻿import { test, expect } from "../fixtures";
+import { test, expect } from "../fixtures";
 import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
- * Test 35: Social Media Links
+ * Social Media Links
  * РџСЂРѕРІРµСЂРєР° footer Рё СЃС‚СЂСѓРєС‚СѓСЂС‹ СЃС‚СЂР°РЅРёС†С‹
  */
 test.describe("Social Media Links", () => {

@@ -1,5 +1,5 @@
-﻿/**
- * Test 31: Responsive design tests
+/**
+ * Responsive design tests
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";

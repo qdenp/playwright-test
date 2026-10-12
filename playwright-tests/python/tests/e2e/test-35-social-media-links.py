@@ -1,5 +1,5 @@
 """
-Test 35: Social Media Links
+Social Media Links
 Проверка загрузки страницы после логина
 """
 

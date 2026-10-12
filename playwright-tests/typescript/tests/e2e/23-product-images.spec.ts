@@ -1,8 +1,8 @@
-﻿import { test, expect } from "../fixtures.js";
+import { test, expect } from "../fixtures.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Test 23: Verify product images are displayed
+ * Verify product images are displayed
  */
 test("should display all product images", async ({ authenticatedPage }) => {
   const { inventoryPage } = authenticatedPage;

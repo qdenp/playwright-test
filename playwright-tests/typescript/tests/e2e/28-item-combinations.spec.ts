@@ -1,9 +1,9 @@
-﻿import { test, expect } from "../fixtures";
+import { test, expect } from "../fixtures";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Test 28: Specific item combinations (3 of 6 products)
+ * Specific item combinations (3 of 6 products)
  */
 test.describe("Item Combinations", () => {
   test("should add cheapest 3 products and verify cart", async ({

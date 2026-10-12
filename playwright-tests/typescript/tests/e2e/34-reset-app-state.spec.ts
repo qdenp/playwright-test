@@ -1,9 +1,9 @@
-﻿import { test, expect } from "../fixtures";
+import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { timeouts } from "../config";
 
 /**
- * Test 34: Reset App State
+ * Reset App State
  */
 test.describe("Reset App State", () => {
   test("should reset cart via Reset App State in hamburger menu", async ({ authenticatedPage }) => {

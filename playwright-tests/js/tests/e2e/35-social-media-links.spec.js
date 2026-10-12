@@ -1,5 +1,5 @@
-﻿/**
- * Test 35: Social Media Links
+/**
+ * Social Media Links
  * РџСЂРѕРІРµСЂРєР° СЃРѕС†РёР°Р»СЊРЅС‹С… СЃСЃС‹Р»РѕРє РІРЅРёР·Сѓ СЌРєСЂР°РЅР° (X, Facebook, LinkedIn)
  */
 import { test, expect } from "../fixtures";

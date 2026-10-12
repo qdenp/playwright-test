@@ -1,5 +1,5 @@
 """
-Test 34: Reset App State tests
+Reset App State tests
 """
 
 from playwright.sync_api import expect

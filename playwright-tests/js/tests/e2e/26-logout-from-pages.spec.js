@@ -1,5 +1,5 @@
-﻿/**
- * Test 26: Verify logout functionality from different pages
+/**
+ * Verify logout functionality from different pages
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";

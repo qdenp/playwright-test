@@ -1,5 +1,5 @@
 /**
- * Test 31: Responsive design tests
+ * Responsive design tests
  */
 import { test, expect } from '../fixtures.js';
 import { CheckoutPage } from '../page-objects/CheckoutPage.js';

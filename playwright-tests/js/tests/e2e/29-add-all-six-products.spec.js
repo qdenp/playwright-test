@@ -1,5 +1,5 @@
-﻿/**
- * Test 29: Add all 6 products and verify
+/**
+ * Add all 6 products and verify
  */
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
