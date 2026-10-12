@@ -75,6 +75,9 @@ test.describe("Add All 6 Products", () => {
       "Test.allTheThings() T-Shirt (Red)",
     ];
 
+    // Ждём отрисовки товаров, прежде чем читать список
+    await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
+
     const cartItems = await cartPage.getCartItemNames();
     expect(cartItems).toHaveLength(EXPECTED_PRODUCT_COUNT);
 

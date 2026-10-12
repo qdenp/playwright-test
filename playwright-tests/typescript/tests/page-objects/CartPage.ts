@@ -18,8 +18,14 @@ export class CartPage {
     );
   }
 
+  /**
+   * Ожидание загрузки страницы корзины.
+   *
+   * Ждём URL, а не наличия товаров: на пустой корзине `.cart_item`
+   * отсутствует, и ожидание `.first()` зависло бы до таймаута.
+   */
   async waitForPageLoad(): Promise<void> {
-    await this.cartItems.first().waitFor({ state: "visible", timeout: timeouts.DEFAULT });
+    await this.page.waitForURL(/.*cart\.html/, { timeout: timeouts.NAVIGATION });
   }
 
   async getCartItemNames(): Promise<string[]> {

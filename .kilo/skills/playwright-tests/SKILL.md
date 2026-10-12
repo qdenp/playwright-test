@@ -73,7 +73,7 @@ Python — `--reruns 3 --reruns-delay 1`.
 | Мёртвый код в `CartPage`: `quantityInput`, `changeItemQuantity`, `totalPrice`, `getTotalPrice`, `getRemoveButtonCount`, интерфейс `CartItem` | все три реализации | **Закрыта 2026-10-12:** удалены; локальные локаторы `[data-test="quantity"]` и `.summary_total_label` на страницы не существуют |
 | Дубль локаторов `cartBadge` / `cartIcon` | `typescript/tests/page-objects/InventoryPage.ts` | **Закрыта 2026-10-12:** `cartIcon` удалён, добавлен `cartBadgeCount` = `.shopping_cart_badge` (единый селектор для web-first проверок) |
 | `page.waitForTimeout(500)` в `CartPage.removeItem()` | все три реализации | **Закрыта 2026-10-12:** sleep убран, синхронизация через web-first `toHaveCount` в тесте |
-| `CartPage.waitForPageLoad()` ждёт `.first()`, а на пустой корзине его нет — повиснет | `typescript/.../CartPage.ts:34` | Незакрыта |
+| `CartPage.waitForPageLoad()` ждал `.cart_item.first()` — на пустой корзине зависал до таймаута | все три реализации | **Закрыта 2026-10-12:** ожидание URL `cart.html`. Проверено: 37 мс вместо зависания |
 | `reset_app_state` описание устарело: метод добавлен в три реализации за долго до текущей сессии | — | Информационная строка |
 | `remove-from-cart` / `reset-app-state` обращаются к `page` / локальным локаторам вместо PO | `typescript/tests/e2e/07,34` | Расхождение реализаций |
 | Паритет числа тестов: TS 55, JS 55, Python 61: параметры логина не покрыты там же, где каталог | `config.ts` vs `config.js` / `conftest.py` | Расхождение реализаций |

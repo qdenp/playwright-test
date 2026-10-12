@@ -2,9 +2,11 @@
 Page Object для корзины
 """
 
-from playwright.sync_api import Page, expect
+import re
 
-from constants import DEFAULT_TIMEOUT
+from playwright.sync_api import Page
+
+from constants import NAVIGATION_TIMEOUT
 
 
 class CartPage:
@@ -15,7 +17,13 @@ class CartPage:
         self.continue_shopping_button = page.locator('[data-test="continue-shopping"]')
 
     def wait_for_page_load(self):
-        expect(self.cart_items.first).to_be_visible(timeout=DEFAULT_TIMEOUT)
+        """
+        Ожидание загрузки страницы корзины.
+
+        Ждём URL, а не наличия товаров: на пустой корзине `.cart_item`
+        отсутствует, и ожидание `.first()` зависло бы до таймаута.
+        """
+        self.page.wait_for_url(re.compile(r".*cart\.html"), timeout=NAVIGATION_TIMEOUT)
 
     def get_cart_item_names(self) -> list:
         names = []

@@ -27,6 +27,9 @@ def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
+    # Ждём отрисовки товаров, прежде чем читать список
+    expect(cart_page.cart_items).to_have_count(3)
+
     cart_items = cart_page.get_cart_item_names()
     assert "Sauce Labs Onesie" in cart_items
     assert "Sauce Labs Bike Light" in cart_items
@@ -52,6 +55,9 @@ def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
+    # Ждём отрисовки товаров, прежде чем читать список
+    expect(cart_page.cart_items).to_have_count(3)
+
     cart_items = cart_page.get_cart_item_names()
     assert "Sauce Labs Fleece Jacket" in cart_items
     assert "Sauce Labs Backpack" in cart_items
@@ -73,6 +79,9 @@ def test_add_alternating_products(authenticated_page):
 
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
+
+    # Ждём отрисовки товаров, прежде чем читать список
+    expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
     assert "Sauce Labs Backpack" in cart_items

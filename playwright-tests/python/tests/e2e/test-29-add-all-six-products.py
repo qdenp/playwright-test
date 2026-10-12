@@ -67,6 +67,9 @@ def test_add_all_6_products_and_verify_product_names(authenticated_page):
         "Test.allTheThings() T-Shirt (Red)",
     ]
 
+    # Ждём отрисовки товаров, прежде чем читать список
+    expect(cart_page.cart_items).to_have_count(EXPECTED_PRODUCT_COUNT)
+
     cart_items = cart_page.get_cart_item_names()
     assert len(cart_items) == 6
 

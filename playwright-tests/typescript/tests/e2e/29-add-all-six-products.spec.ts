@@ -54,6 +54,9 @@ test.describe("Add All 6 Products", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
+    // Ждём отрисовки товаров, прежде чем читать список
+    await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
+
     // Verify specific product names
     const expectedNames = [
       "Sauce Labs Backpack",

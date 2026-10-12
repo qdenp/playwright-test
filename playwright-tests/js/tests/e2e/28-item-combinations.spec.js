@@ -34,6 +34,9 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
+    // Ждём отрисовки товаров, прежде чем читать список
+    await expect(cartPage.cartItems).toHaveCount(3);
+
     const cartItems = await cartPage.getCartItemNames();
     expect(cartItems).toContain("Sauce Labs Onesie");
     expect(cartItems).toContain("Sauce Labs Bike Light");
@@ -68,6 +71,9 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
+    // Ждём отрисовки товаров, прежде чем читать список
+    await expect(cartPage.cartItems).toHaveCount(3);
+
     const cartItems = await cartPage.getCartItemNames();
     expect(cartItems).toContain("Sauce Labs Fleece Jacket");
     expect(cartItems).toContain("Sauce Labs Backpack");
@@ -99,6 +105,9 @@ test.describe("Item Combinations", () => {
 
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
+
+    // Ждём отрисовки товаров, прежде чем читать список
+    await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();
     expect(cartItems).toContain("Sauce Labs Backpack");
