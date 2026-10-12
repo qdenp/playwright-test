@@ -4,9 +4,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Добавление товара в корзину
+ * Adding a product to the cart
  */
-test("Добавление товара в корзину", async ({ page }) => {
+test("Adding a product to the cart", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
@@ -15,11 +15,11 @@ test("Добавление товара в корзину", async ({ page }) => 
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
 
-  // Добавить первый товар — badge показывает 1
+  // Add the first product - badge shows 1
   await inventoryPage.addProductToCart(0);
   await expect(inventoryPage.cartBadgeCount).toHaveText("1");
 
-  // Открыть корзину и проверить первый товар
+  // Open the cart and verify the first product
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(1);
@@ -28,15 +28,15 @@ test("Добавление товара в корзину", async ({ page }) => 
   expect(firstCartNames[0]).toBeTruthy();
   expect(firstCartNames[0].length).toBeGreaterThan(0);
 
-  // Вернуться на страницу товаров
+  // Return to the inventory page
   await cartPage.continueShopping();
   await inventoryPage.waitForPageLoad();
 
-  // Добавить второй товар — badge показывает 2
+  // Add a second product - badge shows 2
   await inventoryPage.addProductToCart(1);
   await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
-  // Открыть корзину и проверить оба товара
+  // Open the cart and verify both products
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(2);
@@ -44,6 +44,6 @@ test("Добавление товара в корзину", async ({ page }) => 
   const bothCartNames = await cartPage.getCartItemNames();
   expect(bothCartNames[1]).toBeTruthy();
   expect(bothCartNames[1].length).toBeGreaterThan(0);
-  // Товары должны быть разными
+  // The products must be different
   expect(bothCartNames[0]).not.toBe(bothCartNames[1]);
 });

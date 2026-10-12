@@ -3,7 +3,7 @@ import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
  * Social Media Links
- * РџСЂРѕРІРµСЂРєР° footer Рё СЃС‚СЂСѓРєС‚СѓСЂС‹ СЃС‚СЂР°РЅРёС†С‹
+ * Footer and page structure check
  */
 test.describe("Social Media Links", () => {
   test("should verify page loads correctly after login", async ({

@@ -17,7 +17,7 @@ export interface LoginParams {
 export class LoginPage {
   private page: Page;
 
-  // Locators - инициализируются в constructor
+  // Locators - initialised in the constructor
   usernameInput: ReturnType<Page["locator"]>;
   passwordInput: ReturnType<Page["locator"]>;
   loginButton: ReturnType<Page["locator"]>;

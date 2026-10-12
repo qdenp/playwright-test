@@ -1,12 +1,12 @@
 /**
- * Проверка карточек товаров на главной
+ * Product cards on the inventory page
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
-test("Проверка карточек товаров на главной", async ({ page }) => {
+test("Product cards on the inventory page", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -14,14 +14,14 @@ test("Проверка карточек товаров на главной", asy
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
 
-  // На каждой карточке есть название, описание, цена и кнопка добавления в корзину
+  // Each card carries a name, description, price and an add-to-cart button
   await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
   await expect(inventoryPage.productDescriptions).toHaveCount(EXPECTED_PRODUCT_COUNT);
   await expect(inventoryPage.productPrices).toHaveCount(EXPECTED_PRODUCT_COUNT);
   await expect(inventoryPage.addToCartButtons).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
-  // Все элементы непустые и видимые
+  // All elements are non-empty and visible
   await expect(inventoryPage.productNames.first()).not.toBeEmpty();
   await expect(inventoryPage.productDescriptions.first()).not.toBeEmpty();
   await expect(inventoryPage.productPrices.first()).toContainText("$");

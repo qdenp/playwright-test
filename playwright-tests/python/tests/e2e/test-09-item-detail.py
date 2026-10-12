@@ -1,5 +1,5 @@
 """
-Item detail — просмотр и возврат
+Item detail - viewing and returning
 """
 
 import pytest
@@ -16,26 +16,26 @@ def test_item_detail(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    # Клик по названию первого товара — открывает detail panel
+    # Clicking a product name opens the detail panel
     inventory_page.click_product_name(0)
 
-    # Detail panel появляется inline — проверяем что description видно
+    # The detail panel appears inline - verify the description is visible
     expect(inventory_page.get_detail_description_locator("carry.allTheThings()")).to_be_visible(timeout=5000)
 
-    # Проверяем что есть кнопка "Back to Products"
+    # Verify the Back to Products button is present
     expect(inventory_page.get_back_to_products_locator()).to_be_visible(timeout=5000)
 
-    # Возвращаемся на Products
+    # Return to the Products page
     inventory_page.click_back_to_products()
     expect(inventory_page.get_product_name_locator(0)).to_be_visible(timeout=5000)
 
-    # Открываем детали второго товара
+    # Open the details of the second product
     inventory_page.click_product_name(1)
 
-    # Проверяем detail второго товара
+    # Verify the second product's detail panel
     expect(inventory_page.get_detail_description_locator("carry.allTheThings()")).not_to_be_visible(timeout=5000)
     expect(inventory_page.get_back_to_products_locator()).to_be_visible(timeout=5000)
 
-    # Возвращаемся на Products
+    # Return to the Products page
     inventory_page.click_back_to_products()
     expect(inventory_page.get_product_name_locator(0)).to_be_visible(timeout=5000)

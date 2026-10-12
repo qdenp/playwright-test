@@ -1,5 +1,5 @@
 """
-Неверный пароль — ошибка авторизации
+Invalid password shows an authentication error
 """
 
 import pytest

@@ -2,14 +2,14 @@ import { test, expect } from "../fixtures.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Сортировка по имени (a→z)
+ * Sorting products by name (a to z)
  */
-test("Сортировка товаров по имени (a→z)", async ({ authenticatedPage }) => {
+test("Sorting products by name (a to z)", async ({ authenticatedPage }) => {
   const { inventoryPage } = authenticatedPage;
 
   await inventoryPage.sortByAlphaAtoZ();
 
-  // Список отрисован полностью — в нём 6 товаров
+  // The list has fully rendered - it holds 6 products
   await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   const names = await inventoryPage.getAllProductNames();

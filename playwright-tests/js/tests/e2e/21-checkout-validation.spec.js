@@ -5,9 +5,9 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 
 /**
- * Валидация формы checkout — пустые поля
+ * Checkout form validation with empty fields
  */
-test("Checkout валидация — пустые поля", async ({ page }) => {
+test("Checkout validation with empty fields", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
@@ -24,10 +24,10 @@ test("Checkout валидация — пустые поля", async ({ page }) =
   await cartPage.checkout();
   await checkoutPage.waitForPageLoad();
 
-  // Нажимаем Continue без заполнения полей
+  // Click Continue without filling in the fields
   await checkoutPage.clickContinue();
 
-  // Ожидаем ошибки валидации для всех полей
+  // Expect validation errors for all fields
   await expect(checkoutPage.firstNameInput).toBeVisible();
   await expect(checkoutPage.lastNameInput).toBeVisible();
   await expect(checkoutPage.zipCodeInput).toBeVisible();

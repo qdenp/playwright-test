@@ -12,18 +12,18 @@ from page_objects.login_page import LoginPage
 
 
 def test_load_login_page_within_2_seconds(page):
-    """Проверить что страница логина загружается за 2 секунды"""
+    """Verify the login page loads within 2 seconds"""
     start_time = time.time() * 1000
     page.goto("https://www.saucedemo.com/")
     load_time = time.time() * 1000 - start_time
 
-    # Разрешить до 3 секунд для более медленных браузеров (Firefox, WebKit)
+    # Allow up to 3 seconds for slower browsers (Firefox, WebKit)
     assert load_time < 3000
     print(f"Login page loaded in {load_time}ms")
 
 
 def test_load_inventory_page_within_3_seconds_after_login(page):
-    """Проверить что страница товаров загружается за 3 секунды после входа"""
+    """Verify the inventory page loads within 3 seconds after login"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 
@@ -38,7 +38,7 @@ def test_load_inventory_page_within_3_seconds_after_login(page):
 
 
 def test_load_all_6_products_within_performance_budget(page):
-    """Проверить что все 6 товаров загружаются в рамках бюджета по времени"""
+    """Verify all 6 products load within the time budget"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 
@@ -55,7 +55,7 @@ def test_load_all_6_products_within_performance_budget(page):
 
 
 def test_load_cart_page_within_2_seconds(page):
-    """Проверить что страница корзины загружается за 2 секунды"""
+    """Verify the cart page loads within 2 seconds"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -74,7 +74,7 @@ def test_load_cart_page_within_2_seconds(page):
 
 
 def test_verify_page_load_consistency(page):
-    """Проверить стабильность загрузки страницы (3 запуска)"""
+    """Verify page-load stability (3 runs)"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 
@@ -92,7 +92,7 @@ def test_verify_page_load_consistency(page):
 
 
 def test_verify_product_images_load_within_budget(page):
-    """Проверить что изображения товаров загружаются в рамках бюджета"""
+    """Verify product images load within the time budget"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 

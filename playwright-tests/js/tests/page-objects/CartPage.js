@@ -1,5 +1,5 @@
 /**
- * Page Object для корзины
+ * Page Object for the cart page
  */
 import { timeouts } from "../config.js";
 
@@ -12,10 +12,10 @@ export class CartPage {
   }
 
   /**
-   * Ожидание загрузки страницы корзины.
+   * Wait for the cart page to load.
    *
-   * Ждём URL, а не наличия товаров: на пустой корзине `.cart_item`
-   * отсутствует, и ожидание `.first()` зависло бы до таймаута.
+   * Wait for the URL instead of the items: on an empty cart `.cart_item`
+   * is absent, so waiting on `.first()` would hang until timeout.
    */
   async waitForPageLoad() {
     await this.page.waitForURL(/.*cart\.html/, { timeout: timeouts.NAVIGATION });

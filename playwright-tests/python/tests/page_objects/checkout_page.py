@@ -1,5 +1,5 @@
 """
-Page Object для оформления заказа (Checkout)
+Page Object for the checkout page
 """
 
 import re
@@ -70,33 +70,33 @@ class CheckoutPage:
         self.fill_zip_code(zip_code)
 
     def generate_pdf(self) -> Download:
-        """Экспорт заказа в PDF: клик по кнопке и ожидание скачивания"""
+        """Export the order as PDF: click the button and wait for the download"""
         with self.page.expect_download() as download_info:
             self.generate_pdf_button.click()
         return download_info.value
 
     @staticmethod
     def parse_money(text):
-        """Разбор суммы из строки вида 'Item total: $55.97'."""
+        """Parse an amount from a string such as 'Item total: $55.97'."""
         if text is None:
-            raise AssertionError("Не найдена сумма в сводке чекаута")
+            raise AssertionError("No amount found in the checkout summary")
         match = re.search(r"\$\s*([\d,]+\.\d{2})", text)
         if not match:
-            raise AssertionError(f'Не удалось разобрать сумму из "{text}"')
+            raise AssertionError(f'Could not parse the amount from "{text}"')
         return float(match.group(1).replace(",", ""))
 
     def get_items_total(self) -> float:
-        """Сумма всех товаров из сводки чекаута ('Item total: $55.97')."""
+        """Sum of all items in the checkout summary ('Item total: $55.97')."""
         return self.parse_money(self.items_total_label.text_content())
 
     def get_tax(self) -> float:
-        """Налог из сводки чекаута ('Tax: $4.48')."""
+        """Tax from the checkout summary ('Tax: $4.48')."""
         return self.parse_money(self.tax_label.text_content())
 
     def get_total(self) -> float:
-        """Итоговая сумма заказа ('Total: $60.45')."""
+        """Total order amount ('Total: $60.45')."""
         return self.parse_money(self.total_label.text_content())
 
     def get_summary_item_prices(self) -> list:
-        """Цены отдельных товаров из сводки чекаута, по порядку."""
+        """Prices of the individual items in the checkout summary, in order."""
         return [self.parse_money(t) for t in self.summary_item_prices.all_text_contents()]

@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { config } from "../config.js";
 
 /**
- * Неверный пароль — ошибка авторизации
+ * Invalid password shows an authentication error
  */
-test("Неверный пароль — ошибка авторизации", async ({ page }) => {
+test("Invalid password shows an authentication error", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.goTo();

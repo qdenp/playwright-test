@@ -6,9 +6,9 @@ import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 import { timeouts } from "../config.js";
 
 /**
- * Полный flow покупки (E2E)
+ * Full purchase flow (E2E)
  */
-test("Полный flow покупки (E2E)", { timeout: 60000 }, async ({ page }) => {
+test("Full purchase flow (E2E)", { timeout: 60000 }, async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
@@ -29,13 +29,13 @@ test("Полный flow покупки (E2E)", { timeout: 60000 }, async ({ page
   await cartPage.checkout();
   await checkoutPage.waitForPageLoad();
 
-  await checkoutPage.fillInfo("Иван", "Иванов", "100000");
+  await checkoutPage.fillInfo("Ivan", "Ivanov", "100000");
   await checkoutPage.clickContinue();
 
-  // Ожидаем кнопку Finish
+  // Wait for the Finish button
   await expect(checkoutPage.finishButton).toBeVisible({ timeout: timeouts.DEFAULT });
 
-  // Проверяем суммы заказа: item total = сумма цен товаров
+  // Verify the order totals: item total equals the sum of the item prices
   const itemPrices = await checkoutPage.getSummaryItemPrices();
   expect(itemPrices).toHaveLength(2);
 
@@ -43,7 +43,7 @@ test("Полный flow покупки (E2E)", { timeout: 60000 }, async ({ page
   const itemsTotal = await checkoutPage.getItemsTotal();
   expect(itemsTotal).toBeCloseTo(itemsSum, 2);
 
-  // tax = 8% от item total
+  // tax = 8% of the item total
   const tax = await checkoutPage.getTax();
   expect(tax).toBeCloseTo(itemsTotal * 0.08, 2);
 

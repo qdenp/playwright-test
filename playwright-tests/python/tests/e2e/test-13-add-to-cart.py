@@ -1,5 +1,5 @@
 """
-Добавление товара в корзину
+Adding a product to the cart
 """
 
 import pytest
@@ -18,31 +18,31 @@ def test_add_to_cart(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    # Добавить первый товар
+    # Add the first product
     inventory_page.add_product_to_cart(0)
     expect(inventory_page.cart_badge_count).to_have_text("1")
 
-    # Открыть корзину и проверить первый товар
+    # Open the cart and verify the first product
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
     expect(cart_page.cart_items).to_have_count(1)
     first_item_name = cart_page.get_cart_item_names()[0]
     assert first_item_name is not None and len(first_item_name) > 0
 
-    # Вернуться на страницу товаров
+    # Return to the inventory page
     cart_page.continue_shopping_button.click()
     inventory_page.wait_for_page_load()
 
-    # Добавить второй товар
+    # Add the second product
     inventory_page.add_product_to_cart(1)
     expect(inventory_page.cart_badge_count).to_have_text("2")
 
-    # Открыть корзину и проверить оба товара
+    # Open the cart and verify both products
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
     expect(cart_page.cart_items).to_have_count(2)
     cart_item_names = cart_page.get_cart_item_names()
     second_item_name = cart_item_names[1]
     assert second_item_name is not None and len(second_item_name) > 0
-    # Товары должны быть разными
+    # The products must be different
     assert first_item_name != second_item_name

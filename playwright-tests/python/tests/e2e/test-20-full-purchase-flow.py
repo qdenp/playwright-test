@@ -1,5 +1,5 @@
 """
-Полный flow покупки (E2E)
+Full purchase flow (E2E)
 """
 
 import pytest
@@ -32,13 +32,13 @@ def test_full_purchase_flow(page):
     cart_page.checkout()
     checkout_page.wait_for_page_load()
 
-    checkout_page.fill_info("Иван", "Иванов", "100000")
+    checkout_page.fill_info("Ivan", "Ivanov", "100000")
     checkout_page.click_continue()
 
-    # Переход на страницу сводки (checkout-step-two) и нажатие Finish
+    # Move to the summary page (checkout-step-two) and click Finish
     expect(checkout_page.finish_button).to_be_visible(timeout=DEFAULT_TIMEOUT)
 
-    # Проверяем суммы заказа: item total = сумма цен товаров
+    # Verify the order totals: item total equals the sum of the item prices
     item_prices = checkout_page.get_summary_item_prices()
     assert len(item_prices) == 2
 
@@ -46,7 +46,7 @@ def test_full_purchase_flow(page):
     items_total = checkout_page.get_items_total()
     assert items_total == pytest.approx(items_sum, abs=0.01)
 
-    # tax = 8% от item total
+    # tax = 8% of the item total
     tax = checkout_page.get_tax()
     assert tax == pytest.approx(items_total * 0.08, abs=0.01)
 
@@ -56,6 +56,6 @@ def test_full_purchase_flow(page):
 
     checkout_page.click_finish()
 
-    # Ожидаем страницу подтверждения
+    # Wait for the confirmation page
     expect(checkout_page.complete_title).to_be_visible(timeout=DEFAULT_TIMEOUT)
     expect(checkout_page.complete_title).to_contain_text("Thank you for your order")

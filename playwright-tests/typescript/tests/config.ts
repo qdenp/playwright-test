@@ -16,7 +16,7 @@ export const config = {
 };
 
 /**
- * Таймауты для ожиданий
+ * Timeouts for waits
  */
 export const timeouts = {
   DEFAULT: 10000,
@@ -25,7 +25,7 @@ export const timeouts = {
   ASSERT: 5000,
 };
 
-/** Ожидаемое число товаров на странице каталога */
+/** Expected number of products on the inventory page */
 export const EXPECTED_PRODUCT_COUNT = 6;
 
 /**

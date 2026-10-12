@@ -1,9 +1,9 @@
 import { test, expect } from "../fixtures.js";
 
 /**
- * Удаление товара из корзины
+ * Removing a product from the cart
  */
-test("Удаление товара из корзины", async ({ authenticatedPage }) => {
+test("Removing a product from the cart", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;
 
   await inventoryPage.addProductToCart(0);

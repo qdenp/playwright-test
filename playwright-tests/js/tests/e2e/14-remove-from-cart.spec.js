@@ -5,9 +5,9 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { timeouts } from "../config.js";
 
 /**
- * Удаление товара из корзины
+ * Removing a product from the cart
  */
-test("Удаление товара из корзины", async ({ page }) => {
+test("Removing a product from the cart", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);

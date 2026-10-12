@@ -4,9 +4,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Сортировка по имени (a→z)
+ * Sorting products by name (a to z)
  */
-test("Сортировка товаров по имени (a→z)", async ({ page }) => {
+test("Sorting products by name (a to z)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -16,7 +16,7 @@ test("Сортировка товаров по имени (a→z)", async ({ pag
 
   await inventoryPage.sortByAlphaAtoZ();
 
-  // Список отрисован полностью — в нём 6 товаров
+  // The list has fully rendered - it holds 6 products
   await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   const names = await inventoryPage.getAllProductNames();

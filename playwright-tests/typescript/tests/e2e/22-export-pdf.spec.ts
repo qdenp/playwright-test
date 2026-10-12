@@ -5,17 +5,17 @@ import { timeouts } from "../config";
 import fs from "fs";
 
 /**
- * Экспорт PDF заказа
+ * Exporting an order as PDF
  */
-test("Экспорт PDF заказа", async ({ authenticatedPage }) => {
+test("Exporting an order as PDF", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage, checkoutPage } = authenticatedPage;
 
-  // Добавляем товары в корзину
+  // Add products to the cart
   await inventoryPage.addProductToCart(0);
   await inventoryPage.addProductToCart(1);
   await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
-  // Переходим к оформлению
+  // Proceed to checkout
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(2);
@@ -23,28 +23,28 @@ test("Экспорт PDF заказа", async ({ authenticatedPage }) => {
   await cartPage.checkout();
   await checkoutPage.waitForPageLoad();
 
-  await checkoutPage.fillFirstName("Иван");
-  await checkoutPage.fillLastName("Иванов");
+  await checkoutPage.fillFirstName("Ivan");
+  await checkoutPage.fillLastName("Ivanov");
   await checkoutPage.fillZipCode("100000");
   await checkoutPage.clickContinue();
 
-  // Ожидаем перехода на checkout-step-two (Firefox может работать медленнее)
+  // Wait for the move to checkout-step-two (Firefox can be slower)
   await expect(checkoutPage.finishButton).toBeVisible({
     timeout: timeouts.NAVIGATION,
   });
 
-  // Нажима Finish
+  // Click Finish
   await checkoutPage.clickFinish();
 
-  // Ждём страницу подтверждения
+  // Wait for the confirmation page
   await expect(checkoutPage.completeTitle).toBeVisible({
     timeout: timeouts.NAVIGATION,
   });
 
-  // Кликаем Generate PDF и ждём скачивания
+  // Click Generate PDF and wait for the download
   const download = await checkoutPage.generatePdf();
 
-  // Проверяем что файл не пустой
+  // Verify that the file is not empty
   const pdfPath = await download.path();
   expect(pdfPath).toBeTruthy();
   const stats = fs.statSync(pdfPath);

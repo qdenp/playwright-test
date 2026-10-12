@@ -1,5 +1,5 @@
 """
-badge корзины растёт на 1 при добавлении и падает на 1 при удалении
+Cart badge increments on add and decrements on remove
 """
 
 from playwright.sync_api import expect
@@ -12,18 +12,18 @@ def test_cart_badge_increments_and_decrements(authenticated_page):
     page = authenticated_page["page"]
     cart_page = CartPage(page)
 
-    # Изначально корзина пуста — badge отсутствует
+    # The cart starts empty - no badge
     expect(inventory_page.cart_badge_count).to_have_count(0)
 
-    # Добавление товара → badge +1
+    # Adding a product increments the badge by 1
     inventory_page.add_product_to_cart(0)
     expect(inventory_page.cart_badge_count).to_have_text("1")
 
-    # Добавление второго товара → badge ещё +1
+    # Adding a second product increments the badge again
     inventory_page.add_product_to_cart(1)
     expect(inventory_page.cart_badge_count).to_have_text("2")
 
-    # Переходим в корзину и удаляем один товар → badge −1
+    # Going to the cart and removing one product decrements the badge
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
     expect(cart_page.cart_items).to_have_count(2)
@@ -32,7 +32,7 @@ def test_cart_badge_increments_and_decrements(authenticated_page):
     expect(cart_page.cart_items).to_have_count(1)
     expect(inventory_page.cart_badge_count).to_have_text("1")
 
-    # Удаляем последний товар → badge пропадает
+    # Removing the last product clears the badge
     cart_page.remove_item(0)
     expect(cart_page.cart_items).to_have_count(0)
     expect(inventory_page.cart_badge_count).to_have_count(0)

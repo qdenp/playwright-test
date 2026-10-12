@@ -1,5 +1,5 @@
 """
-Page Object для страницы товаров (Inventory)
+Page Object for the inventory page
 """
 
 import os
@@ -114,48 +114,48 @@ class InventoryPage:
             prices.append(self.get_product_price(i))
         return prices
 
-    # Методы для работы с detail panel товаров
+    # Methods for working with product detail panels
     def click_product_name(self, index: int):
-        """Клик по названию товара - открывает detail panel"""
+        """Click a product name - opens the detail panel"""
         self.products.nth(index).locator('[data-test="inventory-item-name"]').click()
 
     def click_back_to_products(self):
-        """Клик Back to Products - возвращает на Products страницу"""
+        """Click Back to Products - returns to the Products page"""
         self.page.get_by_text("Back to Products").click()
 
     def get_detail_description_locator(self, text: str):
-        """Возвращает locator для описания товара в detail panel"""
+        """Return a locator for a product description in the detail panel"""
         return self.page.get_by_text(text)
 
     def get_back_to_products_locator(self):
-        """Возвращает locator для кнопки Back to Products"""
+        """Return a locator for the Back to Products button"""
         return self.page.get_by_text("Back to Products")
 
     def get_product_name_locator(self, index: int):
-        """Возвращает locator для названия товара"""
+        """Return a locator for a product name"""
         return self.products.nth(index).locator('[data-test="inventory-item-name"]')
 
-    # Методы для работы с hamburger menu
+    # Methods for working with the hamburger menu
     def click_logout(self):
-        """Клик Logout в hamburger menu"""
+        """Click Logout in the hamburger menu"""
         self.page.locator('[data-test="logout-sidebar-link"]').click()
 
     def get_menu_items_locator(self):
-        """Возвращает locator для всех элементов меню"""
+        """Return a locator for all menu items"""
         return self.page.locator(".bm-item-list a")
 
     def get_menu_item_count(self) -> int:
-        """Возвращает количество элементов в меню"""
+        """Return the number of menu items"""
         return self.get_menu_items_locator().count()
 
     def is_inventory_link_visible(self) -> bool:
-        """Проверяет видимость ссылки Inventory"""
+        """Check the visibility of the Inventory link"""
         return self.page.locator('[data-test="inventory-sidebar-link"]').is_visible()
 
     def is_about_link_visible(self) -> bool:
-        """Проверяет видимость ссылки About"""
+        """Check the visibility of the About link"""
         return self.page.locator('[data-test="about-sidebar-link"]').is_visible()
 
     def is_logout_link_visible(self) -> bool:
-        """Проверяет видимость ссылки Logout"""
+        """Check the visibility of the Logout link"""
         return self.page.locator('[data-test="logout-sidebar-link"]').is_visible()

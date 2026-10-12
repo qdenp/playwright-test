@@ -1,5 +1,5 @@
 /**
- * Конфигурация для тестов
+ * Test configuration
  */
 export const config = {
   username: process.env.SAUCE_DEMO_USERNAME || "standard_user",
@@ -8,7 +8,7 @@ export const config = {
 };
 
 /**
- * Таймауты для ожиданий
+ * Timeouts for waits
  */
 export const timeouts = {
   DEFAULT: 10000,
@@ -17,11 +17,11 @@ export const timeouts = {
   ASSERT: 5000,
 };
 
-/** Ожидаемое число товаров на странице каталога */
+/** Expected number of products on the inventory page */
 export const EXPECTED_PRODUCT_COUNT = 6;
 
 /**
- * Все валидные пользователи и их пароли
+ * All valid users and their passwords
  */
 export const users = [
   {
@@ -51,7 +51,7 @@ export const users = [
 ];
 
 /**
- * Параметры для параметризованного теста
+ * Parameters for the parameterised test
  */
 export const loginTests = [
   {

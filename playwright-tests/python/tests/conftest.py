@@ -1,18 +1,18 @@
 """
-Фикстуры для pytest-playwright
+Fixtures for pytest-playwright
 """
 
 import sys
 import os
 
-# Добавляем tests в PYTHONPATH для импортов
+# Add tests to PYTHONPATH so imports resolve
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import pytest
 
 
 def get_all_credentials():
-    """Возвращает словарь всех пользователей и их паролей из SAUCE_DEMO_PASSWORDS"""
+    """Return a dict of all users and their passwords from SAUCE_DEMO_PASSWORDS"""
     passwords_str = os.getenv("SAUCE_DEMO_PASSWORDS", "")
     if not passwords_str:
         return {}
@@ -25,8 +25,8 @@ def get_all_credentials():
 
 def get_login_params(index=None):
     """
-    Возвращает параметры для параметризованного теста.
-    Если index — возвращает кейс по номеру, иначе стандартные credentials.
+    Return the parameters for the parameterised test.
+    If index is given, return that case; otherwise the standard credentials.
     """
     params = [
         ("standard_user", "secret_sauce", True, "Products", None),
@@ -46,7 +46,7 @@ def get_login_params(index=None):
 
 @pytest.fixture
 def authenticated_page(page):
-    """Автоматически авторизованная страница"""
+    """Automatically authenticated page"""
     from page_objects.login_page import LoginPage
     from page_objects.inventory_page import InventoryPage
 
@@ -54,7 +54,7 @@ def authenticated_page(page):
     inventory_page = InventoryPage(page)
 
     login_page.go_to()
-    login_page.login()  # Без аргументов — использует credentials из env vars
+    login_page.login()  # With no arguments - uses the credentials from the env vars
     inventory_page.wait_for_page_load()
 
     return {"page": page, "login_page": login_page, "inventory_page": inventory_page}

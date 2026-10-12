@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Item detail — просмотр и возврат
+ * Item detail - viewing and returning
  */
-test("Item detail — просмотр и возврат", async ({ page }) => {
+test("Item detail - viewing and returning", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -13,29 +13,29 @@ test("Item detail — просмотр и возврат", async ({ page }) => {
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
 
-  // Клик по названию первого товара — открывает detail panel
+  // Clicking a product name opens the detail panel
   await inventoryPage.clickProductName(0);
 
-  // Detail panel появляется inline — проверяем что description видно
+  // The detail panel appears inline - verify the description is visible
   await expect(inventoryPage.getDetailDescriptionLocator("carry.allTheThings()")).toBeVisible({
     timeout: 5000,
   });
 
-  // Проверяем что есть кнопка "Back to Products"
+  // Verify the Back to Products button is present
   await expect(inventoryPage.getBackToProductsLocator()).toBeVisible({
     timeout: 5000,
   });
 
-  // Возвращаемся на Products
+  // Return to the Products page
   await inventoryPage.clickBackToProducts();
   await expect(inventoryPage.getProductNameLocator(0)).toBeVisible({
     timeout: 5000,
   });
 
-  // Открываем детали второго товара
+  // Open the details of the second product
   await inventoryPage.clickProductName(1);
 
-  // Проверяем detail второго товара
+  // Verify the second product's detail panel
   await expect(inventoryPage.getDetailDescriptionLocator("carry.allTheThings()")).not.toBeVisible({
     timeout: 5000,
   });
@@ -43,7 +43,7 @@ test("Item detail — просмотр и возврат", async ({ page }) => {
     timeout: 5000,
   });
 
-  // Возвращаемся на Products
+  // Return to the Products page
   await inventoryPage.clickBackToProducts();
   await expect(inventoryPage.getProductNameLocator(0)).toBeVisible({
     timeout: 5000,

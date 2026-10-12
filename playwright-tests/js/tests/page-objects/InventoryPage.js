@@ -1,5 +1,5 @@
 /**
- * Page Object для страницы товаров (Inventory)
+ * Page Object for the inventory page
  */
 import { timeouts } from "../config.js";
 
@@ -128,7 +128,7 @@ export class InventoryPage {
     return prices;
   }
 
-  // Методы для работы с detail panel товаров
+  // Methods for working with product detail panels
   async clickProductName(index) {
     await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
   }

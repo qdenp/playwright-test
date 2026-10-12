@@ -7,15 +7,15 @@ import { timeouts } from "../config.js";
 import fs from "fs";
 
 /**
- * Экспорт PDF заказа
+ * Exporting an order as PDF
  */
-test("Экспорт PDF заказа", async ({ page }) => {
+test("Exporting an order as PDF", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
   const checkoutPage = new CheckoutPage(page);
 
-  // Добавляем товары в корзину
+  // Add products to the cart
   await loginPage.goTo();
   await loginPage.login();
   await inventoryPage.waitForPageLoad();
@@ -24,7 +24,7 @@ test("Экспорт PDF заказа", async ({ page }) => {
   await inventoryPage.addProductToCart(1);
   await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
-  // Переходим к оформлению
+  // Proceed to checkout
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(2);
@@ -32,30 +32,30 @@ test("Экспорт PDF заказа", async ({ page }) => {
   await cartPage.checkout();
   await checkoutPage.waitForPageLoad();
 
-  await checkoutPage.fillInfo("Иван", "Иванов", "100000");
+  await checkoutPage.fillInfo("Ivan", "Ivanov", "100000");
   await checkoutPage.clickContinue();
 
-  // Ожидаем перехода на checkout-step-two (Firefox может работать медленнее)
+  // Wait for the move to checkout-step-two (Firefox can be slower)
   await expect(checkoutPage.finishButton).toBeVisible({
     timeout: timeouts.NAVIGATION,
   });
 
-  // Нажимам Finish
+  // Click Finish
   await checkoutPage.clickFinish();
 
-  // Ждём страницу подтверждения
+  // Wait for the confirmation page
   await expect(checkoutPage.completeTitle).toBeVisible({
     timeout: timeouts.NAVIGATION,
   });
 
-  // Кликаем Generate PDF и ждём скачивания
+  // Click Generate PDF and wait for the download
   const download = await checkoutPage.generatePdf();
 
-  // Сохраняем PDF
+  // Save the PDF
   const pdfPath = await download.path();
   expect(pdfPath).toBeTruthy();
 
-  // Проверяем что файл существует и не пустой
+  // Verify the file exists and it is not empty
   const stats = fs.statSync(pdfPath);
   expect(stats.size).toBeGreaterThan(0);
 });

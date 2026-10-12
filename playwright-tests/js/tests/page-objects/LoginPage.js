@@ -1,5 +1,5 @@
 /**
- * Page Object для страницы логина
+ * Page Object for the login page
  */
 import { config, timeouts } from "../config.js";
 
@@ -35,9 +35,9 @@ export class LoginPage {
   }
 
   async login(username = null, password = null) {
-    /** Логин с credentials из config по умолчанию.
-     *  Именно `??`, а не `||`: пустая строка — валидный ввод для кейса
-     *  "пустой username", и `||` подменил бы её дефолтом. */
+    /** Login with the config credentials by default.
+     *  Use `??` rather than `||`: an empty string is valid input for the
+     *  "empty username" case, whereas `||` would substitute the default. */
     const user = username ?? config.username;
     const pwd = password ?? config.password;
     await this.enterUsername(user);

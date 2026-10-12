@@ -11,7 +11,7 @@ from page_objects.login_page import LoginPage
 
 
 def test_work_on_mobile_viewport(page):
-    """Проверить что работает на мобильном viewport (375x667)"""
+    """Verify it works on a mobile viewport (375x667)"""
     page.set_viewport_size({"width": 375, "height": 667})
 
     login_page = LoginPage(page)
@@ -24,13 +24,13 @@ def test_work_on_mobile_viewport(page):
     expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
 
     login_page.open_hamburger_menu()
-    # Проверяем что меню открылось (кнопка закрытия видна)
+    # Verify the menu opened (the close button is visible)
     expect(login_page.close_menu).to_be_visible()
     login_page.close_hamburger_menu()
 
 
 def test_work_on_tablet_viewport(page):
-    """Проверить что работает на планшетном viewport (768x1024)"""
+    """Verify it works on a tablet viewport (768x1024)"""
     page.set_viewport_size({"width": 768, "height": 1024})
 
     login_page = LoginPage(page)
@@ -44,7 +44,7 @@ def test_work_on_tablet_viewport(page):
 
 
 def test_handle_viewport_resize(page):
-    """Проверить обработку изменения размера viewport во время взаимодействия"""
+    """Verify handling a viewport resize mid-interaction"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 
@@ -52,18 +52,18 @@ def test_handle_viewport_resize(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    # Изменить на мобильный
+    # Switch to mobile
     page.set_viewport_size({"width": 375, "height": 667})
     inventory_page.add_product_to_cart(0)
 
-    # Изменить на планшет
+    # Switch to tablet
     page.set_viewport_size({"width": 768, "height": 1024})
     badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("1")
 
 
 def test_add_to_cart_on_mobile(page):
-    """Проверить добавление в корзину на мобильном viewport"""
+    """Verify adding to the cart on a mobile viewport"""
     page.set_viewport_size({"width": 375, "height": 667})
 
     login_page = LoginPage(page)
@@ -81,7 +81,7 @@ def test_add_to_cart_on_mobile(page):
 
 
 def test_checkout_on_tablet(page):
-    """Проверить оформление заказа на планшетном viewport"""
+    """Verify checkout on a tablet viewport"""
     page.set_viewport_size({"width": 768, "height": 1024})
 
     login_page = LoginPage(page)

@@ -4,15 +4,15 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Разные пользователи видят одинаковый каталог
+ * All users see the same catalogue
  */
-test("Разные пользователи видят одинаковый каталог", async ({
+test("All users see the same catalogue", async ({
   page,
 }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
-  // Берём первых 5 пользователей
+  // Take the first 5 users
   const testUsers = [
     { username: "standard_user", password: "secret_sauce" },
     { username: "problem_user", password: "secret_sauce" },
@@ -28,7 +28,7 @@ test("Разные пользователи видят одинаковый ка
     await loginPage.login(username, password);
     await inventoryPage.waitForPageLoad();
 
-    // Все пользователи видят одинаковое число товаров с названиями
+    // All users see the same number of named products
     await expect(inventoryPage.productNames).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     const names = await inventoryPage.getAllProductNames();

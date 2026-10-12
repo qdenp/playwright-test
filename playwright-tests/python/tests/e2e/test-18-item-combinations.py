@@ -9,25 +9,25 @@ from page_objects.inventory_page import InventoryPage
 
 
 def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
-    """Добавить 3 самых дешёвых товара и проверить корзину"""
+    """Add the 3 cheapest products and verify the cart"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить 3 самых дешёвых: Onesie (7.99), Bike Light (9.99), Red T-Shirt (15.99)
+    # Add the 3 cheapest: Onesie (7.99), Bike Light (9.99), Red T-Shirt (15.99)
     inventory_page.add_product_to_cart(4)  # Onesie - $7.99
     inventory_page.add_product_to_cart(1)  # Bike Light - $9.99
     inventory_page.add_product_to_cart(5)  # Red T-Shirt - $15.99
 
-    # Проверить badge
+    # Verify the badge
     badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
-    # Открыть корзину и проверить товары
+    # Open the cart and verify the products
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Ждём отрисовки товаров, прежде чем читать список
+    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
@@ -37,25 +37,25 @@ def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
 
 
 def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
-    """Добавить 3 самых дорогих товара и проверить корзину"""
+    """Add the 3 most expensive products and verify the cart"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить 3 самых дорогих: Fleece Jacket (49.99), Backpack (29.99), Bolt T-Shirt (24.99)
+    # Add the 3 most expensive: Fleece Jacket (49.99), Backpack (29.99), Bolt T-Shirt (24.99)
     inventory_page.add_product_to_cart(3)  # Fleece Jacket - $49.99
     inventory_page.add_product_to_cart(0)  # Backpack - $29.99
     inventory_page.add_product_to_cart(2)  # Bolt T-Shirt - $24.99
 
-    # Проверить badge
+    # Verify the badge
     badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
-    # Открыть корзину и проверить товары
+    # Open the cart and verify the products
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Ждём отрисовки товаров, прежде чем читать список
+    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
@@ -65,12 +65,12 @@ def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
 
 
 def test_add_alternating_products(authenticated_page):
-    """Добавить товары через один (1-й, 3-й, 5-й)"""
+    """Add every other product (1st, 3rd, 5th)"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить товары с индексами 0, 2, 4 (Backpack, Bolt T-Shirt, Onesie)
+    # Add the products at indices 0, 2, 4 (Backpack, Bolt T-Shirt, Onesie)
     inventory_page.add_product_to_cart(0)
     inventory_page.add_product_to_cart(2)
     inventory_page.add_product_to_cart(4)
@@ -80,7 +80,7 @@ def test_add_alternating_products(authenticated_page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Ждём отрисовки товаров, прежде чем читать список
+    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()

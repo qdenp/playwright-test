@@ -1,17 +1,17 @@
 import { test } from "../fixtures";
 
 /**
- * About page — переход из hamburger меню
+ * About page - navigating from the hamburger menu
  *
- * SAUCE_DEMO_BUG: ссылка About ведёт на saucelabs.com, который отдаёт
- * 403 Forbidden. Проверить переход и содержимое страницы About невозможно,
- * поэтому тест помечен как skip.
+ * SAUCE_DEMO_BUG: the About link leads to saucelabs.com, which returns
+ * 403 Forbidden. The redirect and the About page content cannot be verified,
+ * so the test is marked as skip.
  *
- * Когда баг на стороне SauceDemo исправят: убрать `test.skip`, восстановить
- * импорты LoginPage / InventoryPage и тело теста:
+ * Once the SauceDemo-side bug is fixed: remove `test.skip`, restore the
+ * LoginPage / InventoryPage imports and the test body:
  *   loginPage.goTo() → loginPage.login() → loginPage.openHamburgerMenu()
  *   → inventoryPage.clickAbout() → expect(page).toHaveURL(...)
  */
-test.skip("About page — переход из hamburger меню", async () => {
-  // SAUCE_DEMO_BUG: About ведёт на saucelabs.com, который отдаёт 403 Forbidden.
+test.skip("About page - navigating from the hamburger menu", async () => {
+  // SAUCE_DEMO_BUG: About leads to saucelabs.com, which returns 403 Forbidden.
 });

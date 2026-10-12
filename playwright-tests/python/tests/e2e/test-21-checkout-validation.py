@@ -1,5 +1,5 @@
 """
-Валидация формы checkout — пустые поля
+Checkout form validation with empty fields
 """
 
 import pytest
@@ -27,8 +27,8 @@ def test_checkout_validation_empty_fields(page):
     cart_page.checkout()
     checkout_page.wait_for_page_load()
 
-    # Нажимаем Continue без заполнения полей
+    # Click Continue without filling in the fields
     checkout_page.click_continue()
 
-    # Ожидаем ошибки валидации
+    # Expect validation errors
     expect(checkout_page.error_message).to_be_visible()

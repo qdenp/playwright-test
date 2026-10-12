@@ -3,36 +3,36 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Добавление и удаление всех товаров
+ * Adding and removing all products
  */
-test("Добавление и удаление всех товаров", async ({ authenticatedPage }) => {
+test("Adding and removing all products", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;
 
   const productCount = await inventoryPage.getProductCount();
   await expect(inventoryPage.products).toHaveCount(productCount);
 
-  // Добавляем все товары
+  // Add all products
   for (let i = 0; i < productCount; i++) {
     await inventoryPage.addProductToCart(i);
   }
 
   await expect(inventoryPage.cartBadgeCount).toHaveText(String(productCount));
 
-  // Переходим в корзину
+  // Go to the cart
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(productCount);
 
-  // Удаляем все товары
+  // Remove all products
   for (let i = 0; i < productCount; i++) {
     await cartPage.removeItem(0);
     await expect(cartPage.cartItems).toHaveCount(productCount - 1 - i);
   }
 
-  // Корзина должна быть пуста
+  // The cart must be empty
   await expect(cartPage.cartItems).toHaveCount(0);
 
-  // Перезагружаем для проверки badge
+  // Reload in order to verify the badge
   await authenticatedPage.page.reload();
   await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 });

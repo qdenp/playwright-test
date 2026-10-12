@@ -1,6 +1,6 @@
 """
 Add all 6 products and verify total price
-Sauce Demo имеет ровно 6 товаров — добавляем все и проверяем итоговую сумму
+SauceDemo has exactly 6 products - add them all and verify the final total
 """
 
 from playwright.sync_api import expect
@@ -10,33 +10,33 @@ from page_objects.checkout_page import CheckoutPage
 
 
 def test_add_all_6_products_and_verify_total_price(authenticated_page):
-    """Добавить все 6 товаров и проверить итоговую сумму"""
+    """Add all 6 products and verify the final total"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить все 6 товаров (индексы 0-5)
+    # Add all 6 products (indices 0-5)
     for i in range(EXPECTED_PRODUCT_COUNT):
         inventory_page.add_product_to_cart(i)
 
-    # Проверить badge = 6
+    # Verify the badge shows 6
     expect(inventory_page.cart_badge_count).to_have_text("6", timeout=10000)
 
-    # Открыть корзину
+    # Open the cart
     inventory_page.open_cart()
 
-    # Проверить что в корзине 6 товаров
+    # Verify the cart holds 6 products
     cart_page.wait_for_page_load()
     expect(cart_page.cart_items).to_have_count(6)
 
 
 def test_verify_individual_product_prices_are_correct(authenticated_page):
-    """Проверить что цены всех 6 товаров валидные"""
+    """Verify the prices of all 6 products are valid"""
     inventory_page = authenticated_page["inventory_page"]
 
     expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
 
-    # Проверить что все цены > 0 и <= 100
+    # Verify all prices are > 0 and <= 100
     for i in range(EXPECTED_PRODUCT_COUNT):
         price = inventory_page.get_product_price(i)
         assert price > 0
@@ -44,20 +44,20 @@ def test_verify_individual_product_prices_are_correct(authenticated_page):
 
 
 def test_add_all_6_products_and_verify_product_names(authenticated_page):
-    """Добавить все 6 товаров и проверить названия"""
+    """Add all 6 products and verify the names"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить все 6 товаров
+    # Add all 6 products
     for i in range(EXPECTED_PRODUCT_COUNT):
         inventory_page.add_product_to_cart(i)
 
-    # Открыть корзину
+    # Open the cart
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Проверить конкретные названия товаров
+    # Verify the specific product names
     expected_names = [
         "Sauce Labs Backpack",
         "Sauce Labs Bike Light",
@@ -67,7 +67,7 @@ def test_add_all_6_products_and_verify_product_names(authenticated_page):
         "Test.allTheThings() T-Shirt (Red)",
     ]
 
-    # Ждём отрисовки товаров, прежде чем читать список
+    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(EXPECTED_PRODUCT_COUNT)
 
     cart_items = cart_page.get_cart_item_names()

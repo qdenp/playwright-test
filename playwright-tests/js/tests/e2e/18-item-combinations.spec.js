@@ -34,7 +34,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
+    // Wait for the products to render before reading the list
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();
@@ -71,7 +71,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
+    // Wait for the products to render before reading the list
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();
@@ -106,7 +106,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
+    // Wait for the products to render before reading the list
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();

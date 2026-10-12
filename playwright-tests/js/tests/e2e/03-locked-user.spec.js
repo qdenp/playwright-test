@@ -3,12 +3,12 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { users } from "../config.js";
 
 /**
- * Блокированный пользователь — locked_out_user
+ * Locked out user sees the locked out error
  */
-test("Блокированный пользователь — locked_out_user", async ({ page }) => {
+test("Locked out user sees the locked out error", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
-  // Используем credentials из config
+  // Use the credentials from the config
   const lockedUser = users.find((u) => u.username === "locked_out_user");
 
   await loginPage.goTo();

@@ -1,5 +1,5 @@
 """
-Успешный логин
+Successful login
 """
 
 import re

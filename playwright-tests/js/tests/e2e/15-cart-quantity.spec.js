@@ -5,24 +5,24 @@ import { CartPage } from "../page-objects/CartPage.js";
 /**
  * Cart badge increments by 1 on add and decrements by 1 on remove
  */
-test("badge корзины растёт на 1 при добавлении и падает на 1 при удалении", async ({
+test("Cart badge increments on add and decrements on remove", async ({
   authenticatedPage,
 }) => {
   const { page, inventoryPage } = authenticatedPage;
   const cartPage = new CartPage(page);
 
-  // Изначально корзина пуста — badge отсутствует
+  // The cart starts empty - no badge
   await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
 
-  // Добавление товара → badge +1
+  // Adding a product increments the badge by 1
   await inventoryPage.addProductToCart(0);
   await expect(inventoryPage.cartBadgeCount).toHaveText("1");
 
-  // Добавление второго товара → badge ещё +1
+  // Adding a second product increments the badge again
   await inventoryPage.addProductToCart(1);
   await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
-  // Переходим в корзину и удаляем один товар → badge −1
+  // Going to the cart and removing one product decrements the badge
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
   await expect(cartPage.cartItems).toHaveCount(2);
@@ -31,7 +31,7 @@ test("badge корзины растёт на 1 при добавлении и п
   await expect(cartPage.cartItems).toHaveCount(1);
   await expect(inventoryPage.cartBadgeCount).toHaveText("1");
 
-  // Удаляем последний товар → badge пропадает
+  // Removing the last product clears the badge
   await cartPage.removeItem(0);
   await expect(cartPage.cartItems).toHaveCount(0);
   await expect(inventoryPage.cartBadgeCount).toHaveCount(0);

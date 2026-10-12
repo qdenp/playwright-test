@@ -11,7 +11,7 @@ from page_objects.login_page import LoginPage
 
 
 def test_display_all_product_images(page):
-    """Проверить что все изображения товаров отображаются"""
+    """Verify all product images are shown"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
 
@@ -19,10 +19,10 @@ def test_display_all_product_images(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    # Проверить что все 6 изображений товаров видны
+    # Verify all 6 product images are visible
     expect(inventory_page.product_images).to_have_count(EXPECTED_PRODUCT_COUNT)
     expect(inventory_page.product_images.first).to_be_visible()
 
-    # Проверить что каждое изображение имеет непустой src атрибут
+    # Verify each image has a non-empty src attribute
     for i in range(EXPECTED_PRODUCT_COUNT):
         expect(inventory_page.product_images.nth(i)).to_have_attribute("src", re.compile(r"\S"))

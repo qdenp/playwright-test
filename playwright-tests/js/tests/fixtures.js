@@ -6,8 +6,8 @@ import { config } from "./config.js";
 export { expect } from "@playwright/test";
 
 /**
- * Custom fixture: автоматически авторизованная страница
- * Используется через: async ({ authenticatedPage }, test) => { ... }
+ * Custom fixture: an automatically authenticated page
+ * Used as: async ({ authenticatedPage }, test) => { ... }
  */
 export const test = base.extend({
   authenticatedPage: async ({ page }, use) => {

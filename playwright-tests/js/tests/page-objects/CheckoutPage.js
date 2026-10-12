@@ -1,5 +1,5 @@
 /**
- * Page Object для оформления заказа (Checkout)
+ * Page Object for the checkout page
  */
 import { timeouts } from "../config.js";
 
@@ -76,7 +76,7 @@ export class CheckoutPage {
     await this.fillZipCode(zipCode);
   }
 
-  /** Экспорт заказа в PDF: клик по кнопке и ожидание скачивания */
+  /** Export the order as PDF: click the button and wait for the download */
   async generatePdf() {
     const [download] = await Promise.all([
       this.page.waitForEvent("download"),
@@ -86,23 +86,23 @@ export class CheckoutPage {
   }
 
   /**
-   * Сумма всех товаров из сводки чекаута ("Item total: $55.97").
+   * Sum of all items in the checkout summary ("Item total: $55.97").
    */
   async getItemsTotal() {
     return CheckoutPage.parseMoney(await this.itemsTotalLabel.textContent());
   }
 
-  /** Налог из сводки чекаута ("Tax: $4.48"). */
+  /** Tax from the checkout summary ("Tax: $4.48"). */
   async getTax() {
     return CheckoutPage.parseMoney(await this.taxLabel.textContent());
   }
 
-  /** Итоговая сумма заказа ("Total: $60.45"). */
+  /** Total order amount ("Total: $60.45"). */
   async getTotal() {
     return CheckoutPage.parseMoney(await this.totalLabel.textContent());
   }
 
-  /** Цены отдельных товаров из сводки чекаута, по порядку. */
+  /** Prices of the individual items in the checkout summary, in order. */
   async getSummaryItemPrices() {
     const texts = await this.summaryItemPrices.allTextContents();
     return texts.map((text) => CheckoutPage.parseMoney(text));
@@ -110,11 +110,11 @@ export class CheckoutPage {
 
   static parseMoney(text) {
     if (text === null) {
-      throw new Error("Не найдена сумма в сводке чекаута");
+      throw new Error("No amount found in the checkout summary");
     }
     const match = text.match(/\$\s*([\d,]+\.\d{2})/);
     if (!match) {
-      throw new Error(`Не удалось разобрать сумму из "${text}"`);
+      throw new Error(`Could not parse the amount from "${text}"`);
     }
     return parseFloat(match[1].replace(/,/g, ""));
   }

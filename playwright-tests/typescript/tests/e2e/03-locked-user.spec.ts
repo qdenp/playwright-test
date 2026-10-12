@@ -2,9 +2,9 @@ import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 
 /**
- * Блокированный пользователь — locked_out_user
+ * Locked out user sees the locked out error
  */
-test("Блокированный пользователь — locked_out_user", async ({ page }) => {
+test("Locked out user sees the locked out error", async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.goTo();

@@ -11,7 +11,7 @@ test.describe("Reset App State", () => {
 
     await inventoryPage.waitForPageLoad();
 
-    // Р”РѕР±Р°РІР»СЏРµРј С‚РѕРІР°СЂС‹ Рё СЃР±СЂР°СЃС‹РІР°РµРј РєРѕСЂР·РёРЅСѓ С‡РµСЂРµР· Reset App State
+    // Add products and reset the cart via Reset App State
     for (let i = 0; i < 3; i++) {
       await inventoryPage.addProductToCart(i);
     }
@@ -21,7 +21,7 @@ test.describe("Reset App State", () => {
     await inventoryPage.resetAppState();
     await inventoryPage.closeHamburgerMenu();
 
-    // РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р° вЂ” badge РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚
+    // The cart is empty - no badge
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 

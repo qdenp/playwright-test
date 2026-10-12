@@ -11,7 +11,7 @@ from page_objects.login_page import LoginPage
 
 
 def test_handle_browser_back_button(page):
-    """Проверить кнопку назад из корзины на страницу товаров"""
+    """Verify the back button from cart to inventory"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -24,7 +24,7 @@ def test_handle_browser_back_button(page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Вернуться назад на страницу товаров
+    # Navigate back to the inventory page
     page.go_back()
     inventory_page.wait_for_page_load()
 
@@ -33,7 +33,7 @@ def test_handle_browser_back_button(page):
 
 
 def test_handle_browser_forward_button(page):
-    """Проверить кнопку вперед после кнопки назад"""
+    """Verify the forward button after the back button"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -46,11 +46,11 @@ def test_handle_browser_forward_button(page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Назад
+    # Back
     page.go_back()
     inventory_page.wait_for_page_load()
 
-    # Вперед
+    # Forward
     page.go_forward()
     cart_page.wait_for_page_load()
 
@@ -58,7 +58,7 @@ def test_handle_browser_forward_button(page):
 
 
 def test_handle_back_from_checkout_to_cart(page):
-    """Проверить возврат из оформления заказа в корзину"""
+    """Verify returning from checkout to the cart"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -75,7 +75,7 @@ def test_handle_back_from_checkout_to_cart(page):
     cart_page.checkout()
     checkout_page.wait_for_page_load()
 
-    # Вернуться в корзину
+    # Return to the cart
     page.go_back()
     cart_page.wait_for_page_load()
 
@@ -83,7 +83,7 @@ def test_handle_back_from_checkout_to_cart(page):
 
 
 def test_preserve_cart_state_after_navigation(page):
-    """Проверить что корзина сохраняет состояние после навигации назад/вперед"""
+    """Verify the cart keeps its state after back/forward navigation"""
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -100,11 +100,11 @@ def test_preserve_cart_state_after_navigation(page):
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Навигация назад и вперед
+    # Back and forward navigation
     page.go_back()
     inventory_page.wait_for_page_load()
     page.go_forward()
     cart_page.wait_for_page_load()
 
-    # Корзина должна сохранить 2 товара
+    # The cart must retain 2 products
     expect(badge).to_have_text("2")

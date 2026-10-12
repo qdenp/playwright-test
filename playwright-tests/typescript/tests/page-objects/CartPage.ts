@@ -4,7 +4,7 @@ import { timeouts } from "../config";
 export class CartPage {
   private page: Page;
 
-  // Locators - инициализируются в constructor
+  // Locators - initialised in the constructor
   cartItems: ReturnType<Page["locator"]>;
   checkoutButton: ReturnType<Page["locator"]>;
   continueShoppingButton: ReturnType<Page["locator"]>;
@@ -19,10 +19,10 @@ export class CartPage {
   }
 
   /**
-   * Ожидание загрузки страницы корзины.
+   * Wait for the cart page to load.
    *
-   * Ждём URL, а не наличия товаров: на пустой корзине `.cart_item`
-   * отсутствует, и ожидание `.first()` зависло бы до таймаута.
+   * Wait for the URL instead of the items: on an empty cart `.cart_item`
+   * is absent, so waiting on `.first()` would hang until timeout.
    */
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForURL(/.*cart\.html/, { timeout: timeouts.NAVIGATION });

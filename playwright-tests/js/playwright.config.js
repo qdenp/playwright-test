@@ -3,26 +3,26 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
 
-  // Запускать тесты параллельно
+  // Run tests in parallel
   fullyParallel: true,
 
-  // Не повторять упавшие тесты — только на CI
+  // Do not retry failed tests outside CI
   retries: process.env.CI ? 2 : 0,
 
-  // Количество воркеров
+  // Number of workers
   workers: process.env.CI ? 1 : 3,
 
-  // Timeout на каждый тест: ТОЛЬКО на верхнем уровне.
-  // Внутри `use` этот ключ молча игнорируется и применяется дефолт 30s.
+  // Per-test timeout: set at the top level ONLY.
+  // Inside `use` this key is silently ignored and the 30s default applies.
   timeout: 120000,
 
-  // Отчёты
+  // Reporters
   reporter: [
     ['html', { open: 'never' }],
     ['list']
   ],
 
-  // Глобальные настройки
+  // Shared settings
   use: {
     baseURL: 'https://www.saucedemo.com',
     screenshot: 'only-on-failure',

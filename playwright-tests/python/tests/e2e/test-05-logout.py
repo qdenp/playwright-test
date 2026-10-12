@@ -1,5 +1,5 @@
 """
-Logout — выход из аккаунта
+Logout - signing out of the account
 """
 
 import re
@@ -18,14 +18,14 @@ def test_logout(page):
     login_page.login()
     inventory_page.wait_for_page_load()
 
-    # Убедимся что мы на странице товаров
+    # Ensure that we are on the inventory page
     expect(page).to_have_url(re.compile(r".*inventory\.html"))
 
-    # Открываем меню и нажимаем Logout
+    # Open the menu and click Logout
     login_page.open_hamburger_menu()
     inventory_page.click_logout()
 
-    # Проверяем что попали на страницу логина (SPA — URL не меняется)
+    # Verify we are back on the login page (SPA - the URL does not change)
     expect(login_page.username_input).to_be_visible(timeout=10000)
     expect(login_page.password_input).to_be_visible(timeout=10000)
     expect(login_page.login_button).to_be_visible(timeout=10000)

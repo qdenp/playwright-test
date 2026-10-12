@@ -1,5 +1,5 @@
 """
-Сортировка по имени (a→z)
+Sorting products by name (a to z)
 """
 
 import pytest

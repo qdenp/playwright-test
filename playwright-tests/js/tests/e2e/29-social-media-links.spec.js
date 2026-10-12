@@ -1,6 +1,6 @@
 /**
  * Social Media Links
- * РџСЂРѕРІРµСЂРєР° СЃРѕС†РёР°Р»СЊРЅС‹С… СЃСЃС‹Р»РѕРє РІРЅРёР·Сѓ СЌРєСЂР°РЅР° (X, Facebook, LinkedIn)
+ * Social links at the bottom of the screen (X, Facebook, LinkedIn)
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";

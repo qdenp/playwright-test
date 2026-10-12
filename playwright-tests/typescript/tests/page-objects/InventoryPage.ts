@@ -10,7 +10,7 @@ export interface Product {
 export class InventoryPage {
   private page: Page;
 
-  // Locators - инициализируются в constructor
+  // Locators - initialised in the constructor
   products: ReturnType<Page["locator"]>;
   sortDropdown: ReturnType<Page["locator"]>;
   cartBadge: ReturnType<Page["locator"]>;
@@ -167,7 +167,7 @@ export class InventoryPage {
     return products;
   }
 
-  // Методы для работы с detail panel товаров
+  // Methods for working with product detail panels
   async clickProductName(index: number): Promise<void> {
     await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
   }
@@ -188,7 +188,7 @@ export class InventoryPage {
     return this.products.nth(index).locator('[data-test="inventory-item-name"]');
   }
 
-  // Методы для работы с hamburger menu
+  // Methods for working with the hamburger menu
   async openHamburgerMenu(): Promise<void> {
     await this.page.locator(".bm-burger-button").click();
   }
@@ -197,7 +197,7 @@ export class InventoryPage {
     await this.page.locator(".bm-cross-button").click();
   }
 
-  /** Сброс состояния приложения (корзина) через hamburger меню */
+  /** Reset the app state (the cart) via the hamburger menu */
   async resetAppState(): Promise<void> {
     await this.page.locator('[data-test="reset-sidebar-link"]').click();
   }

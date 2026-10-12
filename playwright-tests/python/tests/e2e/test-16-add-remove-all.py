@@ -1,5 +1,5 @@
 """
-Добавление и удаление всех товаров
+Adding and removing all products
 """
 
 from playwright.sync_api import expect
@@ -20,23 +20,23 @@ def test_add_remove_all(page):
 
     expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
 
-    # Добавляем все товары
+    # Add all products
     for i in range(EXPECTED_PRODUCT_COUNT):
         inventory_page.add_product_to_cart(i)
 
     expect(inventory_page.cart_badge_count).to_have_text(str(EXPECTED_PRODUCT_COUNT))
 
-    # Переходим в корзину
+    # Go to the cart
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
     expect(cart_page.cart_items).to_have_count(EXPECTED_PRODUCT_COUNT)
 
-    # Удаляем все товары
+    # Remove all products
     for i in range(EXPECTED_PRODUCT_COUNT):
         cart_page.remove_item(0)
         expect(cart_page.cart_items).to_have_count(EXPECTED_PRODUCT_COUNT - 1 - i)
 
-    # Корзина пуста
+    # The cart is empty
     expect(cart_page.cart_items).to_have_count(0)
 
     page.reload()

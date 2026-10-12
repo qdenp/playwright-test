@@ -4,7 +4,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { loginTests, LoginTestParams } from "../config.js";
 
 /**
- * Параметризация логинов через test.each
+ * Parametrise logins with test.each
  */
 loginTests.forEach(
   ({
@@ -15,7 +15,7 @@ loginTests.forEach(
     expectedError,
   }: LoginTestParams) => {
     const status = shouldLogin ? "success" : "failure";
-    test(`Вход: ${username} — ${status}`, async ({ page }) => {
+    test(`Login: ${username} - ${status}`, async ({ page }) => {
       const loginPage = new LoginPage(page);
       const inventoryPage = new InventoryPage(page);
 

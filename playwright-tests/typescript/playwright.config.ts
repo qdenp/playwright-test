@@ -27,9 +27,9 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
 
-  /* Количество воркеров: по умолчанию Playwright берёт половину ядер,
-     но saucedemo.com троттлит параллельные подключения и часть навигаций
-     зависает на 30с. Ограничиваем, как в JS-наборе. */
+  /* Number of workers: Playwright takes half the cores by default,
+     but saucedemo.com throttles parallel connections and some navigations
+     stall for 30s. Capped as in the JS suite. */
   workers: process.env.CI ? 1 : 3,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -48,7 +48,7 @@ export default defineConfig({
     /* Increase timeout for CI environment */
     actionTimeout: 60000,
 
-    /* Navigation timeout: page.goto() без явного значения не имеет лимита */
+    /* Navigation timeout: page.goto() has no limit without an explicit value */
     navigationTimeout: timeouts.NAVIGATION,
   },
 

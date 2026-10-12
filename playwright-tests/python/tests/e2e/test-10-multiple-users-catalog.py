@@ -1,5 +1,5 @@
 """
-Разные пользователи видят одинаковый каталог
+All users see the same catalogue
 """
 
 import pytest
@@ -10,11 +10,11 @@ from page_objects.inventory_page import InventoryPage
 
 
 def get_test_users():
-    """Возвращает пользователей из env vars или fallback на стандартных"""
+    """Return the users from env vars, falling back to the standard ones"""
     creds = get_all_credentials()
     if creds:
         return list(creds.keys())[:5]
-    # Fallback на стандартных пользователей
+    # Fall back to the standard users
     return [
         "standard_user",
         "problem_user",
@@ -30,15 +30,15 @@ def test_same_catalog_for_all_users(page, username):
     inventory_page = InventoryPage(page)
 
     login_page.go_to()
-    # Используем стандартный пароль для fallback пользователей
+    # Use the standard password for the fallback users
     password = get_all_credentials().get(username, "secret_sauce")
     login_page.login(username, password)
     inventory_page.wait_for_page_load()
 
-    # Все пользователи видят 6 товаров
+    # All users see 6 products
     expect(inventory_page.products).to_have_count(6)
 
-    # Все видят одинаковые названия товаров
+    # Everyone sees the same product names
     names = inventory_page.get_all_product_names()
     assert len(names) == 6
     assert "Sauce Labs Backpack" in names

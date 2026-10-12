@@ -1,5 +1,5 @@
 """
-Удаление товара из корзины
+Removing a product from the cart
 """
 
 import pytest

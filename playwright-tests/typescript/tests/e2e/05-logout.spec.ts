@@ -3,20 +3,20 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Logout — выход из аккаунта
+ * Logout - signing out of the account
  */
-test("Logout — выход из аккаунта", async ({ authenticatedPage }) => {
+test("Logout - signing out of the account", async ({ authenticatedPage }) => {
   const { loginPage, inventoryPage } = authenticatedPage;
   const { page } = authenticatedPage;
 
-  // Убедимся что мы на странице товаров
+  // Ensure that we are on the inventory page
   await expect(page).toHaveURL(/.*inventory\.html/);
 
-  // Открываем меню и нажимаем Logout
+  // Open the menu and click Logout
   await loginPage.openHamburgerMenu();
   await inventoryPage.clickLogout();
 
-  // Проверяем что попали на страницу логина (SPA — URL не меняется, но появляются поля логина)
+  // Verify we are back on the login page (SPA - the URL does not change but the login fields appear)
   await expect(loginPage.usernameInput).toBeVisible({ timeout: 10000 });
   await expect(loginPage.passwordInput).toBeVisible({ timeout: 10000 });
   await expect(loginPage.loginButton).toBeVisible({ timeout: 10000 });

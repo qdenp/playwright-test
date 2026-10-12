@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Сортировка товаров по цене (low → high)
+ * Sorting products by price (low to high)
  */
-test("Сортировка товаров по цене (low → high)", async ({ page }) => {
+test("Sorting products by price (low to high)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 
@@ -24,9 +24,9 @@ test("Сортировка товаров по цене (low → high)", async (
 });
 
 /**
- * Сортировка товаров по цене (high → low)
+ * Sorting products by price (high to low)
  */
-test("Сортировка товаров по цене (high → low)", async ({ page }) => {
+test("Sorting products by price (high to low)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

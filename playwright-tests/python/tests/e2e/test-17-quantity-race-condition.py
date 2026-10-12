@@ -9,43 +9,43 @@ from page_objects.inventory_page import InventoryPage
 
 
 def test_verify_each_item_quantity_stays_at_1(authenticated_page):
-    """Проверить что количество каждого товара = 1 (редактирование невозможно)"""
+    """Verify each item's quantity is 1 (editing is not possible)"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Добавить 3 разных товара
+    # Add three different products
     inventory_page.add_product_to_cart(0)  # Backpack
     inventory_page.add_product_to_cart(2)  # Bolt T-Shirt
     inventory_page.add_product_to_cart(4)  # Onesie
 
-    # Проверить badge = 3
+    # Verify the badge shows 3
     badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
-    # Открыть корзину
+    # Open the cart
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 
-    # Проверить что в корзине 3 товара
+    # Verify the cart holds 3 products
     expect(cart_page.cart_items).to_have_count(3)
 
 
 def test_handle_rapid_add_multiple_products(authenticated_page):
-    """Обработать быстрое добавление нескольких товаров"""
+    """Handle the rapid addition of multiple products"""
     page = authenticated_page["page"]
     inventory_page = authenticated_page["inventory_page"]
     cart_page = CartPage(page)
 
-    # Быстро добавить 3 товара (последовательно без задержек)
+    # Rapidly add 3 products (sequentially, with no waits)
     for i in range(3):
         inventory_page.add_product_to_cart(i)
 
-    # Все 3 должны быть добавлены успешно
+    # All three must be added successfully
     badge = inventory_page.cart_badge_count
     expect(badge).to_have_text("3")
 
-    # Проверить что в корзине 3 товара
+    # Verify the cart holds 3 products
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
 

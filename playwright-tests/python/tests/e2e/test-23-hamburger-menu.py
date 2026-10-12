@@ -1,5 +1,5 @@
 """
-Hamburger меню — открытие и закрытие
+Hamburger menu - opening and closing
 """
 
 from playwright.sync_api import expect
@@ -14,18 +14,18 @@ def test_hamburger_menu(page):
     login_page.go_to()
     login_page.login()
 
-    # Открываем меню
+    # Open the menu
     login_page.open_hamburger_menu()
     expect(login_page.close_menu).to_be_visible()
 
-    # Проверяем количество элементов меню (5 штук)
+    # Verify the menu has 5 items
     expect(inventory_page.get_menu_items_locator()).to_have_count(5)
 
-    # Проверяем наличие элементов меню
+    # Verify the menu items are present
     expect(inventory_page.inventory_link).to_be_visible()
     expect(inventory_page.about_link).to_be_visible()
     expect(inventory_page.logout_link).to_be_visible()
 
-    # Закрываем меню
+    # Close the menu
     login_page.close_hamburger_menu()
     expect(login_page.hamburger_menu).to_be_visible()

@@ -1,10 +1,10 @@
 import { test, expect } from "../fixtures";
 
 /**
- * Сортировка товаров по цене
+ * Sorting products by price
  */
-test.describe("Сортировка товаров по цене", () => {
-  test("Сортировка товаров по цене (low → high)", async ({ authenticatedPage }) => {
+test.describe("Sorting products by price", () => {
+  test("Sorting products by price (low to high)", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     // Sort by price low to high
@@ -18,7 +18,7 @@ test.describe("Сортировка товаров по цене", () => {
     expect(prices[0]).toBe(Math.min(...prices));
   });
 
-  test("Сортировка товаров по цене (high → low)", async ({ authenticatedPage }) => {
+  test("Sorting products by price (high to low)", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     // Sort by price high to low

@@ -1,5 +1,5 @@
 """
-Page Object для корзины
+Page Object for the cart page
 """
 
 import re
@@ -18,10 +18,10 @@ class CartPage:
 
     def wait_for_page_load(self):
         """
-        Ожидание загрузки страницы корзины.
+        Wait for the cart page to load.
 
-        Ждём URL, а не наличия товаров: на пустой корзине `.cart_item`
-        отсутствует, и ожидание `.first()` зависло бы до таймаута.
+        Wait for the URL instead of the items: on an empty cart `.cart_item`
+        is absent, so waiting on `.first()` would hang until timeout.
         """
         self.page.wait_for_url(re.compile(r".*cart\.html"), timeout=NAVIGATION_TIMEOUT)
 

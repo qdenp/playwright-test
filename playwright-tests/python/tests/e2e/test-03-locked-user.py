@@ -1,5 +1,5 @@
 """
-Блокированный пользователь — locked_out_user
+Locked out user sees the locked out error
 """
 
 import pytest
@@ -12,7 +12,7 @@ def test_locked_user(page):
     login_page = LoginPage(page)
 
     login_page.go_to()
-    # locked_out_user имеет тот же пароль secret_sauce
+    # locked_out_user shares the same secret_sauce password
     login_page.login("locked_out_user", "secret_sauce")
 
     expect(login_page.error_message).to_be_visible()

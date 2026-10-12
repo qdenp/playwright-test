@@ -1,9 +1,9 @@
 import { test, expect } from "../fixtures.js";
 
 /**
- * Успешный логин — стандартный пользователь
+ * Successful login with the standard user
  */
-test("Успешный логин — стандартный пользователь", async ({
+test("Successful login with the standard user", async ({
   authenticatedPage,
 }) => {
   const { page, inventoryPage } = authenticatedPage;

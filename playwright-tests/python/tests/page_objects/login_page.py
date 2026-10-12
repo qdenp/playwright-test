@@ -1,5 +1,5 @@
 """
-Page Object для страницы логина
+Page Object for the login page
 """
 
 import os
@@ -7,7 +7,7 @@ from playwright.sync_api import Page, expect
 
 from constants import NAVIGATION_TIMEOUT
 
-# Credentials из environment variables (с дефолтными значениями)
+# Credentials from environment variables (with defaults)
 DEFAULT_USERNAME = os.getenv("SAUCE_DEMO_USERNAME", "standard_user")
 DEFAULT_PASSWORD = os.getenv("SAUCE_DEMO_PASSWORD", "secret_sauce")
 
@@ -39,10 +39,10 @@ class LoginPage:
         self.login_button.click()
 
     def login(self, username: str = None, password: str = None):
-        """Логин с credentials из env vars по умолчанию.
+        """Login with the env vars credentials by default.
 
-        Именно `is not None`, а не `or`: пустая строка — валидный ввод для кейса
-        "пустой username", и `or` подменил бы её дефолтом.
+        Use `is not None` rather than `or`: an empty string is valid input for the
+        "empty username" case, whereas `or` would substitute the default.
         """
         user = username if username is not None else DEFAULT_USERNAME
         pwd = password if password is not None else DEFAULT_PASSWORD
@@ -51,7 +51,7 @@ class LoginPage:
         self.click_login()
 
     def get_error_message(self) -> str:
-        # Пробуем сначала error_banner, потом error_message
+        # Try error_banner first, then error_message
         if self.error_banner.is_visible():
             return self.error_banner.inner_text()
         return self.error_message.inner_text()
@@ -64,8 +64,8 @@ class LoginPage:
             return False
 
     def wait_for_error_message(self, timeout: int = 10000):
-        """Явное ожидание появления сообщения об ошибке с auto-retry"""
-        # Пробуем error_banner (для empty username), потом error_message
+        """Explicitly wait for the error message with auto-retry"""
+        # Try error_banner (for an empty username), then error_message
         try:
             expect(self.error_banner).to_be_visible(timeout=3000)
         except Exception:

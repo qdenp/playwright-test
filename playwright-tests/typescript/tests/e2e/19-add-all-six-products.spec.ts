@@ -54,7 +54,7 @@ test.describe("Add All 6 Products", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
+    // Wait for the products to render before reading the list
     await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     // Verify specific product names

@@ -7,12 +7,12 @@ import { CheckoutPage } from "./page-objects/CheckoutPage.js";
 export { expect } from "@playwright/test";
 
 /**
- * Custom fixture: предварительно авторизованная страница.
- * Используется через: async ({ authenticatedPage }, test) => { ... }
+ * Custom fixture: a pre-authenticated page.
+ * Used as: async ({ authenticatedPage }, test) => { ... }
  *
- * НЕ помечен как auto: ранее логин выполнялся в каждом тесте, даже когда
- * тест в нём не нуждался (двойной логин + лишние переходы).
- * Тесты, которым нужна только страница без логина, используют `page`.
+ * Not marked auto: login used to run in every test, even when
+ * the test did not need it (a double login plus extra navigations).
+ * Tests that only need a page without login use `page`.
  */
 export const test = base.extend<{
   authenticatedPage: {
