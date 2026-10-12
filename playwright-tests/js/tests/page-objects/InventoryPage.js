@@ -15,6 +15,14 @@ export class InventoryPage {
     await this.headerTitle.waitFor({ state: "visible", timeout: 10000 });
   }
 
+  async goTo() {
+    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: 15000 });
+  }
+
+  async clickAbout() {
+    await this.page.locator('[data-test="about-sidebar-link"]').click();
+  }
+
   async getProductCount() {
     return this.products.count();
   }

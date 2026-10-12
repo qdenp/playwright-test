@@ -2,6 +2,7 @@
 Page Object для страницы товаров (Inventory)
 """
 
+import os
 from playwright.sync_api import Page, expect
 
 
@@ -12,6 +13,10 @@ class InventoryPage:
         self.sort_dropdown = page.locator(".product_sort_container")
         self.cart_badge = page.locator(".shopping_cart_link")
         self.header_title = page.locator(".title")
+
+    def go_to(self):
+        base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
+        self.page.goto(f"{base_url}/inventory.html", wait_until="domcontentloaded", timeout=15000)
 
     def wait_for_page_load(self):
         self.header_title.wait_for(state="visible", timeout=10000)
@@ -85,6 +90,9 @@ class InventoryPage:
         for i in range(count):
             names.append(self.get_product_title(i))
         return names
+
+    def click_about(self):
+        self.page.locator('[data-test="about-sidebar-link"]').click()
 
     def get_all_product_prices(self) -> list:
         prices = []

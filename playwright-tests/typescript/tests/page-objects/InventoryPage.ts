@@ -25,6 +25,14 @@ export class InventoryPage {
     this.headerTitle = this.page.locator(".title");
   }
 
+  async goTo(): Promise<void> {
+    await this.page.goto("/inventory.html", { waitUntil: "domcontentloaded", timeout: 15000 });
+  }
+
+  async clickAbout(): Promise<void> {
+    await this.page.locator('[data-test="about-sidebar-link"]').click();
+  }
+
   async waitForPageLoad(): Promise<void> {
     await this.headerTitle.waitFor({ state: "visible", timeout: 10000 });
   }

@@ -5,10 +5,12 @@
 import pytest
 from playwright.sync_api import expect
 from page_objects.login_page import LoginPage
+from page_objects.inventory_page import InventoryPage
 
 
 def test_about_page(page):
     login_page = LoginPage(page)
+    inventory_page = InventoryPage(page)
 
     login_page.go_to()
     login_page.login()
@@ -17,10 +19,7 @@ def test_about_page(page):
     login_page.open_hamburger_menu()
 
     # Переходим по ссылке About
-    page.get_by_text("About").click()
-
-    # Sauce Demo — SPA, ждём загрузки новой страницы
-    page.wait_for_timeout(2000)
+    inventory_page.click_about()
 
     # Закрываем меню если открыто
     try:
@@ -28,6 +27,7 @@ def test_about_page(page):
     except Exception:
         pass
 
-    # Возвращаемся на Products через навигацию браузера
-    page.goto("https://www.saucedemo.com/inventory.html")
-    expect(page.locator(".title")).to_contain_text("Products", timeout=5000)
+    # Возвращаемся на Products
+    inventory_page.go_to()
+    inventory_page.wait_for_page_load()
+    expect(inventory_page.header_title).to_contain_text("Products", timeout=5000)
