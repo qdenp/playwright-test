@@ -6,17 +6,8 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
  * Test 29: Add all 6 products and verify
  */
 test.describe("Add All 6 Products", () => {
-  test("01 - should add all 6 products and verify cart", async ({ page }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
-    const cartPage = new CartPage(page);
+  test("01 - should add all 6 products and verify cart", async ({ authenticatedPage }) => {
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add all 6 products (indices 0-5)
     for (let i = 0; i < 6; i++) {
@@ -36,15 +27,8 @@ test.describe("Add All 6 Products", () => {
     expect(await cartPage.getCartItemCount()).toBe(6);
   });
 
-  test("02 - should verify product count and prices", async ({ page }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
+  test("02 - should verify product count and prices", async ({ authenticatedPage }) => {
+    const { inventoryPage } = authenticatedPage;
 
     // Verify 6 products loaded
     const productCount = await inventoryPage.getProductCount();
@@ -59,18 +43,9 @@ test.describe("Add All 6 Products", () => {
   });
 
   test("03 - should add all 6 products and verify product names", async ({
-    page,
+    authenticatedPage,
   }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
-    const cartPage = new CartPage(page);
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add all 6 products
     for (let i = 0; i < 6; i++) {

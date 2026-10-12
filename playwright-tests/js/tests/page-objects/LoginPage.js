@@ -1,7 +1,7 @@
 /**
  * Page Object для страницы логина
  */
-import { config } from "../config.js";
+import { config, timeouts } from "../config.js";
 
 export class LoginPage {
   constructor(page) {
@@ -18,7 +18,7 @@ export class LoginPage {
   async goTo() {
     await this.page.goto(config.baseUrl, {
       waitUntil: "domcontentloaded",
-      timeout: 15000,
+      timeout: timeouts.DEFAULT,
     });
   }
 

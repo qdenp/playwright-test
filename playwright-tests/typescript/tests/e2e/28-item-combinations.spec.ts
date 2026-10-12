@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
@@ -8,16 +7,9 @@ import { CartPage } from "../page-objects/CartPage.js";
  */
 test.describe("Item Combinations", () => {
   test("01 - should add cheapest 3 products and verify cart", async ({
-    page,
+    authenticatedPage,
   }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add 3 cheapest: Onesie (7.99), Bike Light (9.99), Red T-Shirt (15.99)
     await inventoryPage.addProductToCart(4); // Onesie - $7.99
@@ -40,16 +32,9 @@ test.describe("Item Combinations", () => {
   });
 
   test("02 - should add most expensive 3 products and verify cart", async ({
-    page,
+    authenticatedPage,
   }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add 3 most expensive: Fleece Jacket (49.99), Backpack (29.99), Bolt T-Shirt (24.99)
     await inventoryPage.addProductToCart(3); // Fleece Jacket - $49.99
@@ -72,16 +57,9 @@ test.describe("Item Combinations", () => {
   });
 
   test("03 - should add alternating products (1st, 3rd, 5th)", async ({
-    page,
+    authenticatedPage,
   }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add items at indices 0, 2, 4 (Backpack, Bolt T-Shirt, Onesie)
     await inventoryPage.addProductToCart(0);

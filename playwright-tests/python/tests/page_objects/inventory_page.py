@@ -3,7 +3,10 @@ Page Object для страницы товаров (Inventory)
 """
 
 import os
+
 from playwright.sync_api import Page, expect
+
+from constants import DEFAULT_TIMEOUT
 
 
 class InventoryPage:
@@ -19,7 +22,7 @@ class InventoryPage:
         self.page.goto(f"{base_url}/inventory.html", wait_until="domcontentloaded", timeout=15000)
 
     def wait_for_page_load(self):
-        self.header_title.wait_for(state="visible", timeout=10000)
+        self.header_title.wait_for(state="visible", timeout=DEFAULT_TIMEOUT)
 
     def get_product_count(self) -> int:
         return self.products.count()
@@ -59,6 +62,7 @@ class InventoryPage:
 
     def open_cart(self):
         self.cart_badge.click()
+        self.page.wait_for_url("**cart*", timeout=DEFAULT_TIMEOUT)
 
     def sort_by_price_low_to_high(self):
         self.sort_dropdown.select_option("Price (low to high)")

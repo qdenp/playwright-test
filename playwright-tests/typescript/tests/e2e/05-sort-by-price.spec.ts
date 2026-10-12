@@ -1,18 +1,12 @@
 import { test, expect } from "../fixtures";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Test 05: Сортировка товаров по цене
  */
 test.describe("Тест 5: Сортировка товаров по цене", () => {
-  test("Тест 5a: Сортировка товаров по цене (low → high)", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+  test("Тест 5a: Сортировка товаров по цене (low → high)", async ({ authenticatedPage }) => {
+    const { inventoryPage } = authenticatedPage;
 
     // Sort by price low to high
     await inventoryPage.sortByPriceLowToHigh();
@@ -24,13 +18,8 @@ test.describe("Тест 5: Сортировка товаров по цене", (
     }
   });
 
-  test("Тест 5b: Сортировка товаров по цене (high → low)", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+  test("Тест 5b: Сортировка товаров по цене (high → low)", async ({ authenticatedPage }) => {
+    const { inventoryPage } = authenticatedPage;
 
     // Sort by price high to low
     await inventoryPage.sortByPriceHighToLow();

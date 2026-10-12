@@ -5,46 +5,11 @@ Page Object для страницы логина
 import os
 from playwright.sync_api import Page, expect
 
+from constants import NAVIGATION_TIMEOUT
+
 # Credentials из environment variables (с дефолтными значениями)
 DEFAULT_USERNAME = os.getenv("SAUCE_DEMO_USERNAME", "standard_user")
 DEFAULT_PASSWORD = os.getenv("SAUCE_DEMO_PASSWORD", "secret_sauce")
-
-
-def get_all_credentials():
-    """Возвращает словарь всех пользователей и их паролей из SAUCE_DEMO_PASSWORDS"""
-    passwords_str = os.getenv("SAUCE_DEMO_PASSWORDS", "")
-    if not passwords_str:
-        return {}
-    credentials = {}
-    for pair in passwords_str.split(","):
-        username, password = pair.split(":")
-        credentials[username] = password
-    return credentials
-
-
-def get_login_params(index=None):
-    """
-    Возвращает параметры для параметризованного теста.
-    Если index=None — возвращает стандартные credentials.
-    Если index — возвращает credentials из списка пользователей.
-    """
-    all_creds = get_all_credentials()
-    valid_users = list(all_creds.keys())
-
-    params = [
-        ("standard_user", "secret_sauce", True, "Products", None),
-        ("problem_user", "secret_sauce", True, "Products", None),
-        ("performance_glitch_user", "secret_sauce", True, "Products", None),
-        ("error_user", "secret_sauce", True, "Products", None),
-        ("visual_user", "secret_sauce", True, "Products", None),
-        ("locked_out_user", "secret_sauce", False, None, "locked out"),
-        ("standard_user", "wrong_password", False, None, "do not match"),
-        ("", "secret_sauce", True, "Products", None),
-    ]
-
-    if index is not None and index < len(params):
-        return params[index]
-    return (DEFAULT_USERNAME, DEFAULT_PASSWORD, True, "Products", None)
 
 
 class LoginPage:
@@ -61,7 +26,7 @@ class LoginPage:
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
-        self.page.goto(base_url, wait_until="domcontentloaded", timeout=60000)
+        self.page.goto(base_url, wait_until="domcontentloaded", timeout=NAVIGATION_TIMEOUT)
 
     def enter_username(self, username: str):
         self.username_input.clear()

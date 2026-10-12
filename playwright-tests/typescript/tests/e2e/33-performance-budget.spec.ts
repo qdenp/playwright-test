@@ -2,7 +2,6 @@
  * Test 33: Performance budget tests
  */
 import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
 import { InventoryPage } from '../page-objects/InventoryPage.js';
 import { CartPage } from '../page-objects/CartPage.js';
 
@@ -18,14 +17,11 @@ test.describe('Performance Budget', () => {
   });
 
   test('02 - should load inventory page within 3 seconds after login', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { inventoryPage } = authenticatedPage;
 
     const startTime = Date.now();
-    await loginPage.goTo();
-    await loginPage.login();
     await inventoryPage.waitForPageLoad();
     const loadTime = Date.now() - startTime;
 
@@ -34,14 +30,11 @@ test.describe('Performance Budget', () => {
   });
 
   test('03 - should load all 6 products within performance budget', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { inventoryPage } = authenticatedPage;
 
     const startTime = Date.now();
-    await loginPage.goTo();
-    await loginPage.login();
     await inventoryPage.waitForPageLoad();
     const loadTime = Date.now() - startTime;
 
@@ -51,15 +44,10 @@ test.describe('Performance Budget', () => {
     console.log(`All 6 products loaded in ${loadTime}ms`);
   });
 
-  test('04 - should load cart page within 2 seconds', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
+  test('04 - should load cart page within 2 seconds', async ({ authenticatedPage }) => {
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     const startTime = Date.now();
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
     await inventoryPage.addProductToCart(0);
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
@@ -70,16 +58,13 @@ test.describe('Performance Budget', () => {
   });
 
   test('05 - should verify page load consistency (3 runs)', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { inventoryPage } = authenticatedPage;
 
     const loadTimes: number[] = [];
     for (let i = 0; i < 3; i++) {
       const startTime = Date.now();
-      await loginPage.goTo();
-      await loginPage.login();
       await inventoryPage.waitForPageLoad();
       loadTimes.push(Date.now() - startTime);
     }
@@ -90,13 +75,10 @@ test.describe('Performance Budget', () => {
   });
 
   test('06 - should verify product images load within budget', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { page, inventoryPage } = authenticatedPage;
 
-    await loginPage.goTo();
-    await loginPage.login();
     await inventoryPage.waitForPageLoad();
 
     const startTime = Date.now();

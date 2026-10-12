@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
@@ -8,15 +7,9 @@ import { CartPage } from "../page-objects/CartPage.js";
  */
 test.describe("Quantity and Race Conditions", () => {
   test("01 - should verify each item quantity stays at 1 (no editing in cart)", async ({
-    page,
+    authenticatedPage,
   }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add 3 different products
     await inventoryPage.addProductToCart(0); // Backpack
@@ -30,8 +23,6 @@ test.describe("Quantity and Race Conditions", () => {
 
     // Open cart
     await inventoryPage.openCart();
-
-    const cartPage = new CartPage(page);
     await cartPage.waitForPageLoad();
 
     // Verify each item has quantity = 1 (default)
@@ -39,14 +30,10 @@ test.describe("Quantity and Race Conditions", () => {
     expect(itemCount).toBe(3);
   });
 
-  test("02 - should handle rapid add multiple products", async ({ page }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+  test("02 - should handle rapid add multiple products", async ({
+    authenticatedPage,
+  }) => {
+    const { inventoryPage, cartPage } = authenticatedPage;
 
     // Rapidly add 3 products (click all buttons in sequence without waits)
     for (let i = 0; i < 3; i++) {
@@ -60,7 +47,6 @@ test.describe("Quantity and Race Conditions", () => {
 
     // Verify cart has exactly 3 items
     await inventoryPage.openCart();
-    const cartPage = new CartPage(page);
     await cartPage.waitForPageLoad();
 
     expect(await cartPage.getCartItemCount()).toBe(3);

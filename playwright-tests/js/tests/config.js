@@ -8,6 +8,16 @@ export const config = {
 };
 
 /**
+ * Таймауты для ожиданий
+ */
+export const timeouts = {
+  DEFAULT: 10000,
+  NAVIGATION: 30000,
+  ERROR: 3000,
+  ASSERT: 5000,
+};
+
+/**
  * Все валидные пользователи и их пароли
  */
 export const users = [

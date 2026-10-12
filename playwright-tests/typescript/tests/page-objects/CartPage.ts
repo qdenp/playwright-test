@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { timeouts } from "../config";
 
 export interface CartItem {
   name: string;
@@ -30,7 +31,7 @@ export class CartPage {
   }
 
   async waitForPageLoad(): Promise<void> {
-    await this.cartItems.first().waitFor({ state: "visible", timeout: 10000 });
+    await this.cartItems.first().waitFor({ state: "visible", timeout: timeouts.DEFAULT });
   }
 
   async getCartItemNames(): Promise<string[]> {
@@ -40,8 +41,8 @@ export class CartPage {
       const name = await this.cartItems
         .nth(i)
         .locator('[data-test="inventory-item-name"]')
-        .textContent();
-      names.push(name ?? "");
+        .innerText();
+      names.push(name);
     }
     return names;
   }
@@ -91,3 +92,4 @@ export class CartPage {
     }
   }
 }
+    

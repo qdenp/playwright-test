@@ -1,6 +1,8 @@
 /**
  * Page Object для корзины
  */
+import { timeouts } from "../config.js";
+
 export class CartPage {
   constructor(page) {
     this.page = page;
@@ -13,7 +15,7 @@ export class CartPage {
   }
 
   async waitForPageLoad() {
-    await this.cartItems.first().waitFor({ state: "visible", timeout: 10000 });
+    await this.cartItems.first().waitFor({ state: "visible", timeout: timeouts.DEFAULT });
   }
 
   async getCartItemNames() {
@@ -24,7 +26,7 @@ export class CartPage {
         .nth(i)
         .locator('[data-test="inventory-item-name"]')
         .textContent();
-      names.push(name);
+      names.push(name || "");
     }
     return names;
   }

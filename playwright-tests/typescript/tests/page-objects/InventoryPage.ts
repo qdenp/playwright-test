@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { timeouts } from "../config";
 
 export interface Product {
   name: string;
@@ -81,12 +82,17 @@ export class InventoryPage {
 
   async getCartBadgeCount(): Promise<number> {
     const badge = this.cartBadge.locator(".shopping_cart_badge");
+    const isVisible = await badge.isVisible();
+    if (!isVisible) {
+      return 0;
+    }
     const text = await badge.textContent();
     return parseInt(text ?? "0", 10) || 0;
   }
 
   async openCart(): Promise<void> {
     await this.cartBadge.click();
+    await this.page.waitForURL("**cart*", { timeout: timeouts.DEFAULT });
   }
 
   async sortByPriceLowToHigh(): Promise<void> {

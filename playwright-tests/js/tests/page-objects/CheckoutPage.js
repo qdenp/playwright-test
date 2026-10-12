@@ -1,6 +1,8 @@
 /**
  * Page Object для оформления заказа (Checkout)
  */
+import { timeouts } from "../config.js";
+
 export class CheckoutPage {
   constructor(page) {
     this.page = page;
@@ -50,7 +52,7 @@ export class CheckoutPage {
   }
 
   async isCompleteHeaderVisible() {
-    await this.thankYouMessage.waitFor({ state: "attached", timeout: 10000 });
+    await this.thankYouMessage.waitFor({ state: "attached", timeout: timeouts.DEFAULT });
     return await this.thankYouMessage.isVisible();
   }
 

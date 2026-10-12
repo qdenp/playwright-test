@@ -4,6 +4,8 @@ Page Object для оформления заказа (Checkout)
 
 from playwright.sync_api import Page, expect
 
+from constants import DEFAULT_TIMEOUT
+
 
 class CheckoutPage:
     def __init__(self, page: Page):
@@ -22,7 +24,7 @@ class CheckoutPage:
         self.item_prices = page.locator(".inventory_item_price")
 
     def wait_for_page_load(self):
-        self.first_name_input.wait_for(state="visible", timeout=10000)
+        self.first_name_input.wait_for(state="visible", timeout=DEFAULT_TIMEOUT)
 
     def fill_info(self, first_name: str, last_name: str, zip_code: str):
         self.first_name_input.fill(first_name)
@@ -32,9 +34,6 @@ class CheckoutPage:
     def click_continue(self):
         self.continue_button.click()
 
-    def checkout(self):
-        self.continue_button.click()
-
     def click_finish(self):
         self.finish_button.click()
 
@@ -42,7 +41,7 @@ class CheckoutPage:
         return self.error_message.text_content()
 
     def is_error_message_visible(self) -> bool:
-        return self.error_message.count() > 0
+        return self.error_message.is_visible()
 
     def get_thank_you_message(self) -> str:
         return self.thank_you_message.text_content()

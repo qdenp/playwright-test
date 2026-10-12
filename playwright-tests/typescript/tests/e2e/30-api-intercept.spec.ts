@@ -2,17 +2,15 @@
  * Test 30: API intercept - verify API responses
  */
 import { test, expect } from '../fixtures.js';
-import { LoginPage } from '../page-objects/LoginPage.js';
 import { InventoryPage } from '../page-objects/InventoryPage.js';
 import { CartPage } from '../page-objects/CartPage.js';
 import { CheckoutPage } from '../page-objects/CheckoutPage.js';
 
 test.describe('API Intercept Tests', () => {
   test('01 - should intercept and verify inventory API response', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { page, inventoryPage } = authenticatedPage;
 
     // Set up API interception before navigation
     // Sauce Demo loads products via page rendering, not API calls
@@ -24,24 +22,15 @@ test.describe('API Intercept Tests', () => {
       }
     });
 
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
-
     // Verify page loaded successfully
     expect(responses.length).toBeGreaterThan(0);
     await expect(page).toHaveURL(/.*saucedemo/);
   });
 
   test('02 - should verify product data structure from API', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage } = authenticatedPage;
 
     // Verify products loaded with correct data
     const productCount = await inventoryPage.getProductCount();
@@ -60,14 +49,9 @@ test.describe('API Intercept Tests', () => {
   });
 
   test('03 - should verify all 6 products have valid data', async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage } = authenticatedPage;
 
     const productCount = await inventoryPage.getProductCount();
     expect(productCount).toBe(6);
@@ -80,11 +64,8 @@ test.describe('API Intercept Tests', () => {
     }
   });
 
-  test('04 - should intercept API during checkout flow', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
+  test('04 - should intercept API during checkout flow', async ({ authenticatedPage }) => {
+    const { page, inventoryPage, cartPage, checkoutPage } = authenticatedPage;
 
     // Track all responses from the start
     const allResponses: any[] = [];
@@ -93,10 +74,6 @@ test.describe('API Intercept Tests', () => {
         allResponses.push(response);
       }
     });
-
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
 
     // Add product to cart
     await inventoryPage.addProductToCart(0);

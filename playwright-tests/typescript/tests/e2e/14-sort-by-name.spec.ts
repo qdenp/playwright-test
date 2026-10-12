@@ -1,17 +1,11 @@
 import { test, expect } from "../fixtures.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Тест 14: Сортировка по имени (a→z)
  */
-test("Тест 14: Сортировка товаров по имени (a→z)", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+test("Тест 14: Сортировка товаров по имени (a→z)", async ({ authenticatedPage }) => {
+  const { inventoryPage } = authenticatedPage;
 
   await inventoryPage.sortByAlphaAtoZ();
 

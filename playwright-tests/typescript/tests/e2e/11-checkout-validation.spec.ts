@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 import { CheckoutPage } from "../page-objects/CheckoutPage.js";
@@ -7,15 +6,8 @@ import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 /**
  * Валидация формы checkout — пустые поля
  */
-test("Checkout валидация — пустые поля", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
-  const checkoutPage = new CheckoutPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+test("Checkout валидация — пустые поля", async ({ authenticatedPage }) => {
+  const { inventoryPage, cartPage, checkoutPage } = authenticatedPage;
 
   await inventoryPage.addProductToCart(0);
   await inventoryPage.openCart();

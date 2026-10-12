@@ -6,15 +6,8 @@ import { LoginPage } from '../page-objects/LoginPage.js';
 import { InventoryPage } from '../page-objects/InventoryPage.js';
 import { CartPage } from '../page-objects/CartPage.js';
 
-test('26 - should logout from inventory and cart pages', async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
-
-  // Login
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+test('26 - should logout from inventory and cart pages', async ({ authenticatedPage }) => {
+  const { page, loginPage, inventoryPage, cartPage } = authenticatedPage;
 
   // Logout from inventory page
   await inventoryPage.openHamburgerMenu();

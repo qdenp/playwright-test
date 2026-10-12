@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { timeouts } from "../config";
 
 export class CheckoutPage {
   private page: Page;
@@ -76,7 +77,7 @@ export class CheckoutPage {
   }
 
   async waitForPageLoad(): Promise<void> {
-    await this.firstNameInput.waitFor({ state: "visible", timeout: 10000 });
+    await this.firstNameInput.waitFor({ state: "visible", timeout: timeouts.DEFAULT });
   }
 
   async submitCheckoutForm(

@@ -5,12 +5,8 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Тест 15: Hamburger меню — открытие и закрытие
  */
-test("Тест 15: Hamburger меню — открытие и закрытие", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
+test("Тест 15: Hamburger меню — открытие и закрытие", async ({ authenticatedPage }) => {
+  const { loginPage, inventoryPage } = authenticatedPage;
 
   // Открываем меню
   await loginPage.openHamburgerMenu();

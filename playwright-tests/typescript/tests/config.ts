@@ -21,6 +21,16 @@ export const config = {
 };
 
 /**
+ * Timeout constants for waits
+ */
+export const timeouts = {
+  DEFAULT: 10000,
+  NAVIGATION: 30000,
+  ERROR: 3000,
+  ASSERT: 5000,
+};
+
+/**
  * All available users
  */
 export const users: User[] = [

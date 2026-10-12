@@ -1,17 +1,11 @@
 import { test, expect } from "../fixtures.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
  * Тест 19: Item detail — просмотр и возврат
  */
-test("Тест 19: Item detail — просмотр и возврат", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+test("Тест 19: Item detail — просмотр и возврат", async ({ authenticatedPage }) => {
+  const { inventoryPage } = authenticatedPage;
 
   // Клик по названию первого товара — открывает detail panel
   await inventoryPage.clickProductName(0);

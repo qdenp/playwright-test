@@ -5,13 +5,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 /**
  * Тест 17: Logout — выход из аккаунта
  */
-test("Тест 17: Logout — выход из аккаунта", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+test("Тест 17: Logout — выход из аккаунта", async ({ authenticatedPage }) => {
+  const { loginPage, inventoryPage } = authenticatedPage;
+  const { page } = authenticatedPage;
 
   // Убедимся что мы на странице товаров
   await expect(page).toHaveURL(/.*inventory\.html/);

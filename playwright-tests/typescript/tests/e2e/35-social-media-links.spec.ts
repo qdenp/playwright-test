@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures";
-import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
@@ -8,29 +7,19 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
  */
 test.describe("Social Media Links", () => {
   test("01 - should verify page loads correctly after login", async ({
-    page,
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    // Login
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    const { inventoryPage } = authenticatedPage;
 
     // Verify inventory page loaded correctly
     await expect(inventoryPage.products.first()).toBeVisible();
     expect(await inventoryPage.getProductCount()).toBe(6);
   });
 
-  test("02 - should verify page structure and elements", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
-    // Login
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+  test("02 - should verify page structure and elements", async ({
+    authenticatedPage,
+  }) => {
+    const { inventoryPage } = authenticatedPage;
 
     // Verify main page elements
     await expect(inventoryPage.headerTitle).toContainText("Products");

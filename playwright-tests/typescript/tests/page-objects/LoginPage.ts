@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { timeouts } from "../config";
 
 export interface UserCredentials {
   username: string;
@@ -80,7 +81,7 @@ export class LoginPage {
   }
 
   async waitForErrorMessage(): Promise<void> {
-    await this.errorMessage.waitFor({ state: "visible", timeout: 10000 });
+    await this.errorMessage.waitFor({ state: "visible", timeout: timeouts.DEFAULT });
   }
 
   async getMenuItemItems(): Promise<string[]> {
