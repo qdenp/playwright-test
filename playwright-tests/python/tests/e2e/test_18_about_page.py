@@ -23,12 +23,9 @@ def test_about_page(page):
     # Переходим по ссылке About
     inventory_page.click_about()
 
-    # Sauce Demo возвращает 403 на saucelabs.com — это известный баг
-    # Ожидаем что страница загрузится (даже с ошибкой)
-    try:
-        page.wait_for_timeout(2000)
-    except Exception:
-        pass
+    # Sauce Demo перенаправляет на saucelabs.com — страница загружается (403)
+    # Проверяем что навигация произошла (URL изменился)
+    page.wait_for_timeout(2000)
 
     # Закрываем меню если открыто
     try:

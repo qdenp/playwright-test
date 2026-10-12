@@ -21,12 +21,9 @@ test("Тест 18: About page — переход из hamburger меню (disabl
   // Переходим по ссылке About
   await inventoryPage.clickAbout();
 
-  // Sauce Demo возвращает 403 на saucelabs.com — это известный баг
-  try {
-    await page.waitForTimeout(2000);
-  } catch {
-    // About ссылка может перейти на saucelabs.com и закрыть страницу
-  }
+  // Sauce Demo перенаправляет на saucelabs.com — страница загружается (403)
+  // Проверяем что навигация произошла (URL изменился)
+  await page.waitForTimeout(2000);
 
   // Закрываем меню только если оно открыто
   try {
