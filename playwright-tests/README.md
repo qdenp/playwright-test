@@ -1,32 +1,43 @@
 # Playwright E2E Tests — Sauce Demo
 
-Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **JavaScript** и **Python** с использованием [Playwright](https://playwright.dev/).
+Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **TypeScript**, **JavaScript** и **Python** с использованием [Playwright](https://playwright.dev/).
 
 ## 📋 Содержание
 
-| # | Описание | JS | Python |
-|---|----------|-----|--------|
-| 01 | Успешный логин | ✅ | ✅ |
-| 02 | Неверный пароль | ✅ | ✅ |
-| 03 | Блокированный пользователь | ✅ | ✅ |
-| 04 | Добавление товара в корзину | ✅ | ✅ |
-| 05 | Сортировка по цене | ✅ | ✅ |
-| 06 | Полный flow покупки | ✅ | ✅ |
-| 07 | Удаление из корзины | ✅ | ✅ |
-| 08 | Параметризованный логин | ✅ | ✅ |
-| 09 | Скриншот при падении | ✅ | ✅ |
-| 10 | Кросс-браузерная проверка | ✅ | ✅ |
-| 11 | Валидация checkout | ✅ | ✅ |
-| 12 | Изменение количества | ✅ | ✅ |
-| 13 | Добавление/удаление всех товаров | ✅ | ✅ |
-| 14 | Сортировка по имени | ✅ | ✅ |
-| 15 | Hamburger меню | ✅ | ✅ |
-| 16 | Визуальный скриншот | ✅ | ✅ |
-| 17 | Logout | ✅ | ✅ |
-| 18 | About page | ✅ | ✅ |
-| 19 | Item detail | ✅ | ✅ |
-| 20 | Разные пользователи = одинаковый каталог | ✅ | ✅ |
-| 21 | Экспорт PDF заказа | ✅ | ✅ |
+| # | Описание | TS | JS | Python |
+|---|----------|----|----|--------|
+| 01 | Успешный логин | ✅ | ✅ | ✅ |
+| 02 | Неверный пароль | ✅ | ✅ | ✅ |
+| 03 | Заблокированный пользователь | ✅ | ✅ | ✅ |
+| 04 | Параметризованный логин | ✅ | ✅ | ✅ |
+| 05 | Выход из аккаунта | ✅ | ✅ | ✅ |
+| 06 | Выход с разных страниц | ✅ | ✅ | ✅ |
+| 07 | Сортировка по цене | ✅ | ✅ | ✅ |
+| 08 | Сортировка по имени | ✅ | ✅ | ✅ |
+| 09 | Страница товара | ✅ | ✅ | ✅ |
+| 10 | Разные пользователи = одинаковый каталог | ✅ | ✅ | ✅ |
+| 11 | Изображения товаров | ✅ | ✅ | ✅ |
+| 12 | Карточки товаров | ✅ | ✅ | ✅ |
+| 13 | Добавление товара в корзину | ✅ | ✅ | ✅ |
+| 14 | Удаление из корзины | ✅ | ✅ | ✅ |
+| 15 | Арифметика корзины (badge) | ✅ | ✅ | ✅ |
+| 16 | Добавление/удаление всех товаров | ✅ | ✅ | ✅ |
+| 17 | Количество в корзине не редактируется | ✅ | ✅ | ✅ |
+| 18 | Комбинации товаров (cheapest/most expensive) | ✅ | ✅ | ✅ |
+| 19 | Добавление всех шести товаров | ✅ | ✅ | ✅ |
+| 20 | Полный флоу покупки | ✅ | ✅ | ✅ |
+| 21 | Валидация чекаута | ✅ | ✅ | ✅ |
+| 22 | Экспорт PDF заказа | ✅ | ✅ | ✅ |
+| 23 | Гамбургер-меню | ✅ | ✅ | ✅ |
+| 24 | About page | skip | skip | skip |
+| 25 | Адаптивность | ✅ | ✅ | ✅ |
+| 26 | Навигация браузера | ✅ | ✅ | ✅ |
+| 27 | Бюджет производительности | ✅ | ✅ | ✅ |
+| 28 | Сброс состояния приложения | ✅ | ✅ | ✅ |
+| 29 | Ссылки на соцсети | ✅ | ✅ | ✅ |
+
+`24-about-page` помечен `skip` во всех трёх реализациях: About ведёт на
+`saucelabs.com`, который отдаёт 403.
 
 ## 🚀 Запуск
 
@@ -56,21 +67,31 @@ pytest tests/e2e/ --browser webkit
 
 ```
 playwright-tests/
-├── js/
-│   ├── playwright.config.js      # Конфиг Playwright (retries, browsers)
+├── typescript/             # Эталонный набор (TypeScript)
+│   ├── playwright.config.ts    # Конфиг Playwright (retries, browsers)
 │   ├── tests/
-│   │   ├── config.js             # Пользователи и credentials из env vars
-│   │   ├── fixtures.js           # Base fixtures
-│   │   ├── e2e/                  # 29 тестовых файлов (01-29)
-│   │   └── page-objects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
-├── python/
-│   ├── pytest.ini                # Конфиг pytest (retries, browsers)
+│   │   ├── config.ts          # Таймауты и параметры логина
+│   │   ├── fixtures.ts        # Фикстура authenticatedPage
+│   │   ├── e2e/               # 29 тестовых файлов (01-29)
+│   │   └── page-objects/      # LoginPage, InventoryPage, CartPage, CheckoutPage
+├── js/                      # Дубликат набора на JavaScript
+│   ├── playwright.config.js
+│   ├── tests/
+│   │   ├── config.js
+│   │   ├── fixtures.js
+│   │   ├── e2e/               # 29 тестовых файлов (01-29)
+│   │   └── page-objects/      # LoginPage, InventoryPage, CartPage, CheckoutPage
+├── python/                  # Набор на Python (pytest + pytest-playwright)
+│   ├── pytest.ini
 │   ├── requirements.txt
 │   └── tests/
-│       ├── conftest.py           # Shared fixtures
-│       ├── e2e/                  # 29 тестовых файлов (01-29)
-│       └── page_objects/         # Page Objects
-└── ENV_CONFIG.md                 # Документация по env vars
+│       ├── conftest.py        # Фикстуры и параметры логина
+│       ├── constants.py       # Таймауты
+│       ├── e2e/               # 29 тестовых файлов (01-29)
+│       └── page_objects/      # login_page, inventory_page, cart_page, checkout_page
+├── README.md
+├── ENV_CONFIG.md             # Документация по env vars
+└── TEST_REVIEW_2026-10-12.md # Разбор качества тестов (5 заходов)
 ```
 
 ## 🔐 Environment Variables
