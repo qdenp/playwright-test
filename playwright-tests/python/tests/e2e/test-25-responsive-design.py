@@ -25,7 +25,7 @@ def test_work_on_mobile_viewport(page):
 
     login_page.open_hamburger_menu()
     # Verify the menu opened (the close button is visible)
-    expect(login_page.close_menu).to_be_visible()
+    expect(login_page.close_button).to_be_visible()
     login_page.close_hamburger_menu()
 
 

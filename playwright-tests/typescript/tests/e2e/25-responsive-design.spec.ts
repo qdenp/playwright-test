@@ -6,7 +6,7 @@ import { CheckoutPage } from '../page-objects/CheckoutPage.js';
 import { EXPECTED_PRODUCT_COUNT } from '../config';
 
 test.describe('Responsive Design', () => {
-  test('01 - should work on mobile viewport (375x667)', async ({ page, authenticatedPage }) => {
+  test('should work on mobile viewport (375x667)', async ({ page, authenticatedPage }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const { loginPage, inventoryPage } = authenticatedPage;
@@ -18,7 +18,7 @@ test.describe('Responsive Design', () => {
     await loginPage.closeHamburgerMenu();
   });
 
-  test('02 - should work on tablet viewport (768x1024)', async ({ page, authenticatedPage }) => {
+  test('should work on tablet viewport (768x1024)', async ({ page, authenticatedPage }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const { inventoryPage } = authenticatedPage;
@@ -26,7 +26,7 @@ test.describe('Responsive Design', () => {
     await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
-  test('03 - should handle viewport resize during interaction', async ({
+  test('should handle viewport resize during interaction', async ({
     page,
     authenticatedPage,
   }) => {
@@ -38,12 +38,10 @@ test.describe('Responsive Design', () => {
 
     // Resize to tablet
     await page.setViewportSize({ width: 768, height: 1024 });
-    await expect(
-      inventoryPage.cartBadge.locator('.shopping_cart_badge'),
-    ).toHaveText('1');
+    await expect(inventoryPage.cartBadgeCount).toHaveText('1');
   });
 
-  test('04 - should add to cart on mobile viewport', async ({ page, authenticatedPage }) => {
+  test('should add to cart on mobile viewport', async ({ page, authenticatedPage }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const { inventoryPage } = authenticatedPage;
@@ -51,12 +49,10 @@ test.describe('Responsive Design', () => {
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
 
-    await expect(
-      inventoryPage.cartBadge.locator('.shopping_cart_badge'),
-    ).toHaveText('2');
+    await expect(inventoryPage.cartBadgeCount).toHaveText('2');
   });
 
-  test('05 - should checkout on tablet viewport', async ({ page, authenticatedPage }) => {
+  test('should checkout on tablet viewport', async ({ page, authenticatedPage }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const { inventoryPage, cartPage, checkoutPage } = authenticatedPage;

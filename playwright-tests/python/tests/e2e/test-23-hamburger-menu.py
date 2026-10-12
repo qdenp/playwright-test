@@ -16,7 +16,7 @@ def test_hamburger_menu(page):
 
     # Open the menu
     login_page.open_hamburger_menu()
-    expect(login_page.close_menu).to_be_visible()
+    expect(login_page.close_button).to_be_visible()
 
     # Verify the menu has 5 items
     expect(inventory_page.get_menu_items_locator()).to_have_count(5)

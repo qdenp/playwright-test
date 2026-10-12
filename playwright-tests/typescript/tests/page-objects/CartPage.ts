@@ -9,6 +9,12 @@ export class CartPage {
   checkoutButton: ReturnType<Page["locator"]>;
   continueShoppingButton: ReturnType<Page["locator"]>;
 
+  /** Поля ввода количества. В SauceDemo их нет — проверять на 0. */
+  quantityInputs: ReturnType<Page["locator"]>;
+
+  /** Отображаемое количество товара. Один элемент на товар, только чтение. */
+  itemQuantities: ReturnType<Page["locator"]>;
+
   constructor(page: Page) {
     this.page = page;
     this.cartItems = this.page.locator(".cart_item");
@@ -16,6 +22,8 @@ export class CartPage {
     this.continueShoppingButton = this.page.locator(
       '[data-test="continue-shopping"]',
     );
+    this.quantityInputs = this.cartItems.locator("input");
+    this.itemQuantities = this.page.locator('[data-test="item-quantity"]');
   }
 
   /**
@@ -26,6 +34,14 @@ export class CartPage {
    */
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForURL(/.*cart\.html/, { timeout: timeouts.NAVIGATION });
+  }
+
+  /** Prices of the individual items in the cart, in order. */
+  async getCartItemPrices(): Promise<number[]> {
+    const texts = await this.cartItems
+      .locator('[data-test="inventory-item-price"]')
+      .allTextContents();
+    return texts.map((text) => CartPage.parseMoney(text));
   }
 
   async getCartItemNames(): Promise<string[]> {
@@ -62,12 +78,19 @@ export class CartPage {
   async clearCart(): Promise<void> {
     const count = await this.cartItems.count();
     for (let i = count - 1; i >= 0; i--) {
-      try {
-        await this.removeItem(i);
-      } catch {
-        break;
-      }
+      await this.removeItem(i);
     }
+  }
+
+  private static parseMoney(text: string | null): number {
+    if (text === null) {
+      throw new Error("No amount found for the cart item");
+    }
+    const match = text.match(/\$\s*([\d,]+\.\d{2})/);
+    if (!match) {
+      throw new Error(`Could not parse the amount from "${text}"`);
+    }
+    return parseFloat(match[1].replace(/,/g, ""));
   }
 }
     

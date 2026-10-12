@@ -8,7 +8,7 @@ import { CartPage } from '../page-objects/CartPage.js';
 import { CheckoutPage } from '../page-objects/CheckoutPage.js';
 
 test.describe('Browser Navigation', () => {
-  test('01 - should handle browser back button from cart to inventory', async ({
+  test('should handle browser back button from cart to inventory', async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -31,7 +31,7 @@ test.describe('Browser Navigation', () => {
     await expect(inventoryPage.headerTitle).toContainText('Products');
   });
 
-  test('02 - should handle browser forward button after back', async ({
+  test('should handle browser forward button after back', async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -57,7 +57,7 @@ test.describe('Browser Navigation', () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test('03 - should handle back from checkout to cart', async ({ page }) => {
+  test('should handle back from checkout to cart', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
@@ -81,7 +81,7 @@ test.describe('Browser Navigation', () => {
     await expect(page).toHaveURL(/.*cart/);
   });
 
-  test('04 - should preserve cart state after multiple back/forward', async ({
+  test('should preserve cart state after multiple back/forward', async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -94,9 +94,7 @@ test.describe('Browser Navigation', () => {
 
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
-    await expect(
-      inventoryPage.cartBadge.locator('.shopping_cart_badge'),
-    ).toHaveText('2');
+    await expect(inventoryPage.cartBadgeCount).toHaveText('2');
 
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
@@ -108,8 +106,6 @@ test.describe('Browser Navigation', () => {
     await cartPage.waitForPageLoad();
 
     // Cart should still have 2 items
-    await expect(
-      inventoryPage.cartBadge.locator('.shopping_cart_badge'),
-    ).toHaveText('2');
+    await expect(inventoryPage.cartBadgeCount).toHaveText('2');
   });
 });

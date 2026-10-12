@@ -1,38 +1,63 @@
 import { test, expect } from "../fixtures";
-import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
- * Social Media Links
- * Footer and page structure check
+ * Social links at the bottom of the screen (X, Facebook, LinkedIn)
  */
 test.describe("Social Media Links", () => {
-  test("should verify page loads correctly after login", async ({
+  test("should show all three social links with the expected targets", async ({
     authenticatedPage,
   }) => {
     const { inventoryPage } = authenticatedPage;
 
-    // Verify inventory page loaded correctly
-    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
+    await expect(inventoryPage.socialXLink).toHaveAttribute(
+      "href",
+      "https://x.com/saucelabs",
+    );
+    await expect(inventoryPage.socialFacebookLink).toHaveAttribute(
+      "href",
+      "https://www.facebook.com/saucelabs",
+    );
+    await expect(inventoryPage.socialLinkedinLink).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/company/sauce-labs/",
+    );
   });
 
-  test("should verify page structure and elements", async ({
+  test("should open each social link in a new tab", async ({
     authenticatedPage,
   }) => {
-    const { inventoryPage } = authenticatedPage;
+    const { page, inventoryPage } = authenticatedPage;
 
-    // Verify main page elements
-    await expect(inventoryPage.headerTitle).toContainText("Products");
-    await expect(inventoryPage.sortDropdown).toBeVisible();
-    await expect(inventoryPage.cartBadge).toBeVisible();
+    for (const link of [
+      inventoryPage.socialXLink,
+      inventoryPage.socialFacebookLink,
+      inventoryPage.socialLinkedinLink,
+    ]) {
+      await expect(link).toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("rel", /noreferrer/);
+    }
+
+    // Follow the X link and confirm it leaves the shop
+    const [popup] = await Promise.all([
+      page.waitForEvent("popup"),
+      inventoryPage.socialXLink.click(),
+    ]);
+    await expect(popup).toHaveURL(/x\.com/);
   });
 
-  test("should verify all products are loaded and visible", async ({
+  test("should keep the inventory page usable after opening a social link", async ({
     authenticatedPage,
   }) => {
-    const { inventoryPage } = authenticatedPage;
+    const { page, inventoryPage } = authenticatedPage;
 
-    // Verify all products are present
-    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
-    await expect(inventoryPage.products.first()).toBeVisible();
+    const [popup] = await Promise.all([
+      page.waitForEvent("popup"),
+      inventoryPage.socialFacebookLink.click(),
+    ]);
+    await popup.close();
+
+    // The shop is untouched and still holds the products
+    await expect(page).toHaveURL(/.*inventory\.html/);
+    await expect(inventoryPage.products).toHaveCount(6);
   });
 });

@@ -2,11 +2,10 @@
  * Performance budget tests
  */
 import { test, expect } from '../fixtures.js';
-import { InventoryPage } from '../page-objects/InventoryPage.js';
-import { CartPage } from '../page-objects/CartPage.js';
+import { EXPECTED_PRODUCT_COUNT } from '../config';
 
 test.describe('Performance Budget', () => {
-  test('01 - should load login page within 2 seconds', async ({ page }) => {
+  test('should load login page within 2 seconds', async ({ page }) => {
     const startTime = Date.now();
     await page.goto('https://www.saucedemo.com/');
     const loadTime = Date.now() - startTime;
@@ -16,7 +15,7 @@ test.describe('Performance Budget', () => {
     console.log(`Login page loaded in ${loadTime}ms`);
   });
 
-  test('02 - should load inventory page within 3 seconds after login', async ({
+  test('should load inventory page within 3 seconds after login', async ({
     authenticatedPage,
   }) => {
     const { inventoryPage } = authenticatedPage;
@@ -29,7 +28,7 @@ test.describe('Performance Budget', () => {
     console.log(`Inventory page loaded in ${loadTime}ms`);
   });
 
-  test('03 - should load all 6 products within performance budget', async ({
+  test('should load all 6 products within performance budget', async ({
     authenticatedPage,
   }) => {
     const { inventoryPage } = authenticatedPage;
@@ -38,13 +37,12 @@ test.describe('Performance Budget', () => {
     await inventoryPage.waitForPageLoad();
     const loadTime = Date.now() - startTime;
 
-    const productCount = await inventoryPage.getProductCount();
-    expect(productCount).toBe(6);
+    expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
     expect(loadTime).toBeLessThan(5000);
     console.log(`All 6 products loaded in ${loadTime}ms`);
   });
 
-  test('04 - should load cart page within 2 seconds', async ({ authenticatedPage }) => {
+  test('should load cart page within 2 seconds', async ({ authenticatedPage }) => {
     const { inventoryPage, cartPage } = authenticatedPage;
 
     const startTime = Date.now();
@@ -57,7 +55,7 @@ test.describe('Performance Budget', () => {
     console.log(`Cart page loaded in ${loadTime}ms`);
   });
 
-  test('05 - should verify page load consistency (3 runs)', async ({
+  test('should verify page load consistency (3 runs)', async ({
     authenticatedPage,
   }) => {
     const { inventoryPage } = authenticatedPage;
@@ -74,7 +72,7 @@ test.describe('Performance Budget', () => {
     expect(avgLoadTime).toBeLessThan(5000);
   });
 
-  test('06 - should verify product images load within budget', async ({
+  test('should verify product images load within budget', async ({
     authenticatedPage,
   }) => {
     const { page, inventoryPage } = authenticatedPage;

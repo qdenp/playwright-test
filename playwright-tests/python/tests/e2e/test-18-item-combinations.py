@@ -2,32 +2,41 @@
 Specific item combinations (3 of 6 products)
 """
 
-import pytest
 from playwright.sync_api import expect
 from page_objects.cart_page import CartPage
 from page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage
 
 
-def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
-    """Add the 3 cheapest products and verify the cart"""
-    page = authenticated_page["page"]
-    inventory_page = authenticated_page["inventory_page"]
+def _open_cart_with_three(page, indices):
+    login_page = LoginPage(page)
+    inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
 
-    # Add the 3 cheapest: Onesie (7.99), Bike Light (9.99), Red T-Shirt (15.99)
-    inventory_page.add_product_to_cart(4)  # Onesie - $7.99
-    inventory_page.add_product_to_cart(1)  # Bike Light - $9.99
-    inventory_page.add_product_to_cart(5)  # Red T-Shirt - $15.99
+    login_page.go_to()
+    login_page.login()
+    inventory_page.wait_for_page_load()
 
-    # Verify the badge
-    badge = inventory_page.cart_badge_count
-    expect(badge).to_have_text("3")
+    # Read the catalog prices before leaving the inventory page
+    catalog_prices = inventory_page.get_all_product_prices()
+    return inventory_page, cart_page, catalog_prices
 
-    # Open the cart and verify the products
+
+def test_add_cheapest_3_products_and_verify_cart(page):
+    inventory_page, cart_page, catalog_prices = _open_cart_with_three(
+        page, [4, 1, 5]
+    )
+    cheapest_three = sorted(catalog_prices)[:3]
+
+    # Add 3 cheapest: Onesie (7.99), Bike Light (9.99), Red T-Shirt (15.99)
+    inventory_page.add_product_to_cart(4)
+    inventory_page.add_product_to_cart(1)
+    inventory_page.add_product_to_cart(5)
+
+    expect(inventory_page.cart_badge_count).to_have_text("3")
+
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
-
-    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
@@ -35,27 +44,26 @@ def test_add_cheapest_3_products_and_verify_cart(authenticated_page):
     assert "Sauce Labs Bike Light" in cart_items
     assert "Test.allTheThings() T-Shirt (Red)" in cart_items
 
+    # The three cheapest in the catalogue are the three items in the cart
+    prices_in_cart = sorted(cart_page.get_cart_item_prices())
+    assert prices_in_cart == cheapest_three
 
-def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
-    """Add the 3 most expensive products and verify the cart"""
-    page = authenticated_page["page"]
-    inventory_page = authenticated_page["inventory_page"]
-    cart_page = CartPage(page)
 
-    # Add the 3 most expensive: Fleece Jacket (49.99), Backpack (29.99), Bolt T-Shirt (24.99)
-    inventory_page.add_product_to_cart(3)  # Fleece Jacket - $49.99
-    inventory_page.add_product_to_cart(0)  # Backpack - $29.99
-    inventory_page.add_product_to_cart(2)  # Bolt T-Shirt - $24.99
+def test_add_most_expensive_3_products_and_verify_cart(page):
+    inventory_page, cart_page, catalog_prices = _open_cart_with_three(
+        page, [3, 0, 2]
+    )
+    priciest_three = sorted(catalog_prices, reverse=True)[:3]
 
-    # Verify the badge
-    badge = inventory_page.cart_badge_count
-    expect(badge).to_have_text("3")
+    # Add 3 most expensive: Fleece Jacket (49.99), Backpack (29.99), Bolt T-Shirt (24.99)
+    inventory_page.add_product_to_cart(3)
+    inventory_page.add_product_to_cart(0)
+    inventory_page.add_product_to_cart(2)
 
-    # Open the cart and verify the products
+    expect(inventory_page.cart_badge_count).to_have_text("3")
+
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
-
-    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
@@ -63,14 +71,17 @@ def test_add_most_expensive_3_products_and_verify_cart(authenticated_page):
     assert "Sauce Labs Backpack" in cart_items
     assert "Sauce Labs Bolt T-Shirt" in cart_items
 
+    prices_in_cart = sorted(cart_page.get_cart_item_prices(), reverse=True)
+    assert prices_in_cart == priciest_three
 
-def test_add_alternating_products(authenticated_page):
-    """Add every other product (1st, 3rd, 5th)"""
-    page = authenticated_page["page"]
-    inventory_page = authenticated_page["inventory_page"]
-    cart_page = CartPage(page)
 
-    # Add the products at indices 0, 2, 4 (Backpack, Bolt T-Shirt, Onesie)
+def test_add_alternating_products_1st_3rd_5th(page):
+    inventory_page, cart_page, catalog_prices = _open_cart_with_three(
+        page, [0, 2, 4]
+    )
+    alternating = sorted([catalog_prices[0], catalog_prices[2], catalog_prices[4]])
+
+    # Add items at indices 0, 2, 4 (Backpack, Bolt T-Shirt, Onesie)
     inventory_page.add_product_to_cart(0)
     inventory_page.add_product_to_cart(2)
     inventory_page.add_product_to_cart(4)
@@ -79,11 +90,13 @@ def test_add_alternating_products(authenticated_page):
 
     inventory_page.open_cart()
     cart_page.wait_for_page_load()
-
-    # Wait for the products to render before reading the list
     expect(cart_page.cart_items).to_have_count(3)
 
     cart_items = cart_page.get_cart_item_names()
     assert "Sauce Labs Backpack" in cart_items
     assert "Sauce Labs Bolt T-Shirt" in cart_items
     assert "Sauce Labs Onesie" in cart_items
+
+    # Alternating means the odd-indexed catalog entries were picked
+    prices_in_cart = sorted(cart_page.get_cart_item_prices())
+    assert prices_in_cart == alternating

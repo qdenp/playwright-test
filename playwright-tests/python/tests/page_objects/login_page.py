@@ -5,7 +5,7 @@ Page Object for the login page
 import os
 from playwright.sync_api import Page, expect
 
-from constants import NAVIGATION_TIMEOUT
+from constants import DEFAULT_TIMEOUT, ERROR_TIMEOUT, NAVIGATION_TIMEOUT
 
 # Credentials from environment variables (with defaults)
 DEFAULT_USERNAME = os.getenv("SAUCE_DEMO_USERNAME", "standard_user")
@@ -21,8 +21,8 @@ class LoginPage:
         self.error_message = page.locator(".error-message-container")
         self.error_banner = page.get_by_role("alert")
         self.hamburger_menu = page.locator(".bm-burger-button")
-        self.close_menu = page.locator(".bm-cross-button")
-        self.menu_overlay = page.locator(".bm-cover")
+        self.close_button = page.locator(".bm-cross-button")
+        self.menu_overlay = page.locator(".bm-menu-wrap")
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
@@ -58,27 +58,27 @@ class LoginPage:
 
     def is_error_message_visible(self) -> bool:
         try:
-            self.error_message.wait_for(state="visible", timeout=1000)
+            self.error_message.wait_for(state="visible", timeout=ERROR_TIMEOUT)
             return True
         except Exception:
             return False
 
-    def wait_for_error_message(self, timeout: int = 10000):
+    def wait_for_error_message(self, timeout: int = DEFAULT_TIMEOUT):
         """Explicitly wait for the error message with auto-retry"""
-        # Try error_banner (for an empty username), then error_message
-        try:
-            expect(self.error_banner).to_be_visible(timeout=3000)
-        except Exception:
-            pass
         expect(self.error_message).to_be_visible(timeout=timeout)
 
     def open_hamburger_menu(self):
         self.hamburger_menu.click()
 
     def close_hamburger_menu(self):
-        self.close_menu.click()
+        self.close_button.click()
 
     def is_hamburger_menu_open(self) -> bool:
-        return self.close_menu.is_visible()
+        return self.close_button.is_visible()
+
+    def get_menu_items(self) -> list:
+        """Return the labels of the hamburger menu entries"""
+        items = self.page.locator(".bm-item-list a").all_text_contents()
+        return [item.strip() for item in items]
 
 

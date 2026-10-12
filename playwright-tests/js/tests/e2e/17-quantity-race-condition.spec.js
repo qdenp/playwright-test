@@ -3,62 +3,57 @@
  */
 import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { LoginPage } from "../page-objects/LoginPage.js";
-import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Quantity and Race Conditions", () => {
-  test("should verify each item quantity stays at 1 (no editing in cart)", async ({
-    page,
+  test("should show quantity 1 per item and offer no way to edit it", async ({
+    authenticatedPage,
   }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    await loginPage.goTo();
-    await loginPage.login();
+    const { page, inventoryPage } = authenticatedPage;
+    const cartPage = new CartPage(page);
 
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
-    // Add 3 different products
     await inventoryPage.addProductToCart(0); // Backpack
     await inventoryPage.addProductToCart(2); // Bolt T-Shirt
     await inventoryPage.addProductToCart(4); // Onesie
 
-    // Verify badge shows 3
     await expect(inventoryPage.cartBadgeCount).toHaveText("3");
 
-    // Open cart
     await inventoryPage.openCart();
-
-    const cartPage = new CartPage(page);
     await cartPage.waitForPageLoad();
 
-    // Verify each item has quantity = 1 (default)
+    // Every item is displayed with quantity 1
     await expect(cartPage.cartItems).toHaveCount(3);
+    await expect(cartPage.itemQuantities).toHaveText(["1", "1", "1"]);
+
+    // There is no quantity input to edit it with
+    await expect(cartPage.quantityInputs).toHaveCount(0);
   });
 
-  test("should handle rapid add multiple products", async ({ page }) => {
-    // Login
-    const loginPage = new LoginPage(page);
-    await loginPage.goTo();
-    await loginPage.login();
-
-    const inventoryPage = new InventoryPage(page);
-    await inventoryPage.waitForPageLoad();
-
-    // Rapidly add 3 products (click all buttons in sequence without waits)
-    for (let i = 0; i < 3; i++) {
-      await inventoryPage.addProductToCart(i);
-    }
-
-    // All 3 should be added successfully
-    await expect(inventoryPage.cartBadgeCount).toHaveText("3");
-
-    // Verify cart has exactly 3 items
-    await inventoryPage.openCart();
+  test("should add every product when the add buttons are clicked concurrently", async ({
+    authenticatedPage,
+  }) => {
+    const { page, inventoryPage } = authenticatedPage;
     const cartPage = new CartPage(page);
-    await cartPage.waitForPageLoad();
 
-    await expect(cartPage.cartItems).toHaveCount(3);
+    const buttonCount = await inventoryPage.addToCartButtons.count();
+
+    // Click all add-to-cart buttons without awaiting each one individually
+    await page.evaluate((count) => {
+      const buttons = Array.from(
+        document.querySelectorAll(".btn.btn_primary.btn_small.btn_inventory"),
+      );
+      buttons.slice(0, count).forEach((button) => button.click());
+    }, buttonCount);
+
+    // All of them must have landed in the cart
+    await expect(inventoryPage.cartBadgeCount).toHaveText(String(buttonCount));
+
+    await inventoryPage.openCart();
+    await cartPage.waitForPageLoad();
+    await expect(cartPage.cartItems).toHaveCount(buttonCount);
+
+    // And none of them can have a quantity other than 1
+    await expect(cartPage.itemQuantities).toHaveText(
+      Array.from({ length: buttonCount }, () => "1"),
+    );
   });
 });

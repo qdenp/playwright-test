@@ -1,7 +1,7 @@
 import { test, expect } from "../fixtures.js";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { loginTests, LoginTestParams } from "../config.js";
+import { loginTests, timeouts, LoginTestParams } from "../config.js";
 
 /**
  * Parametrise logins with test.each
@@ -20,18 +20,22 @@ loginTests.forEach(
       const inventoryPage = new InventoryPage(page);
 
       await loginPage.goTo();
-      await loginPage.login(username, password);
 
       if (shouldLogin) {
-        await expect(page).toHaveURL(/.*saucedemo/);
-        await inventoryPage.waitForPageLoad();
-        const title = await inventoryPage.getTitleText();
-        expect(title).toBe(expectedTitle);
+        await loginPage.login(username, password);
+
+        // A successful login leaves the login form behind and shows the catalogue.
+        // performance_glitch_user needs the longer budget.
+        await expect(inventoryPage.headerTitle).toHaveText(expectedTitle, {
+          timeout: timeouts.SLOW,
+        });
       } else {
-        await expect(page).toHaveURL(/.*saucedemo/);
-        await loginPage.waitForErrorMessage();
-        const errorMessage = await loginPage.getErrorMessage();
-        expect(errorMessage).toContain(expectedError);
+        // A failed login stays on the login form and explains why
+        await loginPage.login(username, password);
+        await expect(loginPage.usernameInput).toBeVisible();
+
+        await expect(loginPage.errorMessage).toContainText(expectedError!);
+        await expect(inventoryPage.headerTitle).toBeHidden();
       }
     });
   },

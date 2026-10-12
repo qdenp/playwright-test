@@ -11,8 +11,8 @@ export class LoginPage {
     this.loginButton = page.locator("#login-button");
     this.errorMessage = page.locator(".error-message-container");
     this.hamburgerMenu = page.locator(".bm-burger-button");
-    this.closeMenu = page.locator(".bm-cross-button");
-    this.menuOverlay = page.locator(".bm-menu");
+    this.closeButton = page.locator(".bm-cross-button");
+    this.menuOverlay = page.locator(".bm-menu-wrap");
   }
 
   async goTo() {
@@ -53,7 +53,7 @@ export class LoginPage {
     return await this.errorMessage.isVisible();
   }
 
-  async waitForErrorMessage(timeout = 10000) {
+  async waitForErrorMessage(timeout = timeouts.DEFAULT) {
     await this.errorMessage.waitFor({ state: "visible", timeout });
   }
 
@@ -62,16 +62,19 @@ export class LoginPage {
   }
 
   async closeHamburgerMenu() {
-    await this.closeMenu.click();
+    await this.closeButton.click();
   }
 
   async isHamburgerMenuOpen() {
-    return await this.closeMenu.isVisible();
+    return await this.closeButton.isVisible();
+  }
+
+  async getMenuItemItems() {
+    const menuItems = await this.page.locator(".bm-item-list a").allTextContents();
+    return menuItems.map((item) => item.trim());
   }
 
   async clickBackToProducts() {
     await this.page.getByRole("link", { name: "Back to Products" }).click();
   }
-
-
 }

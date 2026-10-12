@@ -1,68 +1,53 @@
 /**
- * Reset App State tests
+ * Reset App State
  */
 import { test, expect } from "../fixtures";
-import { LoginPage } from "../page-objects/LoginPage.js";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { CartPage } from "../page-objects/CartPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
+import { CartPage } from "../page-objects/CartPage.js";
 
 test.describe("Reset App State", () => {
-  test("should reset cart via Reset App State in hamburger menu", async ({
-    page,
+  test("should clear the cart badge when Reset App State is used", async ({
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
+    const { inventoryPage } = authenticatedPage;
 
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    for (let i = 0; i < 3; i++) {
+      await inventoryPage.addProductToCart(i);
+    }
+    await expect(inventoryPage.cartBadgeCount).toHaveText("3");
 
-    // Add products to cart
-    await inventoryPage.addProductToCart(0);
-    await inventoryPage.addProductToCart(1);
-    await expect(inventoryPage.cartBadgeCount).toHaveText("2");
-
-    // Reset app state via hamburger menu
     await inventoryPage.openHamburgerMenu();
-    await inventoryPage.clickResetAppState();
-    // Reload page to reflect the reset (Sauce Demo bug: cart UI doesn't update without reload)
-    await page.reload();
-    await inventoryPage.waitForPageLoad();
+    await inventoryPage.resetAppState();
+    await inventoryPage.closeHamburgerMenu();
 
-    // Cart should be empty
+    // The badge disappears immediately - the cart is empty
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 
-  test("should reset app state and verify complete reset", async ({
-    page,
+  test("should clear the stored cart, not just the badge", async ({
+    authenticatedPage,
   }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+    const { page, inventoryPage } = authenticatedPage;
     const cartPage = new CartPage(page);
 
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
-
-    // Add products and navigate to cart
-    await inventoryPage.addProductToCart(0);
+    for (let i = 0; i < 3; i++) {
+      await inventoryPage.addProductToCart(i);
+    }
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
+    await expect(cartPage.cartItems).toHaveCount(3);
 
-    // Reset app state via hamburger menu
     await inventoryPage.openHamburgerMenu();
-    await inventoryPage.clickResetAppState();
-    // Reload page to reflect the reset (Sauce Demo bug: cart UI doesn't update without reload)
-    await page.reload();
-    // Sauce Demo redirects to login page after reset
-    await loginPage.goTo();
-    await loginPage.login();
-    await inventoryPage.waitForPageLoad();
+    await inventoryPage.resetAppState();
+    await inventoryPage.closeHamburgerMenu();
 
-    // Verify complete reset
-    await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
+    // Re-open the cart so the page re-reads the stored state
+    await page.goto("/cart.html", { waitUntil: "domcontentloaded" });
+    await expect(cartPage.cartItems).toHaveCount(0);
+
+    // The catalogue itself is untouched
+    await page.goto("/inventory.html", { waitUntil: "domcontentloaded" });
     await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
+    await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 });

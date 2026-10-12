@@ -5,35 +5,42 @@ import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
+import { timeouts } from "../config.js";
 
-test("should logout from inventory and cart pages", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
-  const cartPage = new CartPage(page);
+test("should logout from the inventory page", async ({ authenticatedPage }) => {
+  const { page, loginPage, inventoryPage } = authenticatedPage;
 
-  // Login
-  await loginPage.goTo();
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
-
-  // Logout from inventory page
   await inventoryPage.openHamburgerMenu();
   await inventoryPage.clickLogout();
-  // Logout redirects to inventory page, not login
-  await expect(page).toHaveURL(/.*saucedemo/);
 
-  // Login again
-  await loginPage.login();
-  await inventoryPage.waitForPageLoad();
+  // Logout really happened: the login form is back and the inventory is gone
+  await expect(loginPage.usernameInput).toBeVisible({ timeout: timeouts.DEFAULT });
+  await expect(loginPage.loginButton).toBeVisible();
+  await expect(inventoryPage.headerTitle).toBeHidden();
 
-  // Add product and go to cart
+  // The inventory page is no longer reachable without logging in again
+  await page.goto("/inventory.html", { waitUntil: "domcontentloaded" });
+  await expect(loginPage.usernameInput).toBeVisible();
+});
+
+test("should logout from the cart page", async ({ authenticatedPage }) => {
+  const { page, loginPage, inventoryPage } = authenticatedPage;
+  const cartPage = new CartPage(page);
+
   await inventoryPage.addProductToCart(0);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("1");
+
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
 
-  // Open menu and logout
   await inventoryPage.openHamburgerMenu();
   await inventoryPage.clickLogout();
-  // Logout redirects to inventory page
-  await expect(page).toHaveURL(/.*saucedemo/);
+
+  await expect(loginPage.usernameInput).toBeVisible({ timeout: timeouts.DEFAULT });
+  await expect(loginPage.loginButton).toBeVisible();
+
+  // Logging back in returns to the inventory page
+  await loginPage.login();
+  await inventoryPage.waitForPageLoad();
+  await expect(page).toHaveURL(/.*inventory\.html/);
 });

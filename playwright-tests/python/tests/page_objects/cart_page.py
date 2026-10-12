@@ -15,6 +15,8 @@ class CartPage:
         self.cart_items = page.locator(".cart_item")
         self.checkout_button = page.locator(".checkout_button")
         self.continue_shopping_button = page.locator('[data-test="continue-shopping"]')
+        self.quantity_inputs = self.cart_items.locator("input")
+        self.item_quantities = page.locator('[data-test="item-quantity"]')
 
     def wait_for_page_load(self):
         """
@@ -32,6 +34,21 @@ class CartPage:
             name = self.cart_items.nth(i).locator('[data-test="inventory-item-name"]').inner_text()
             names.append(name)
         return names
+
+    def get_cart_item_prices(self) -> list:
+        """Prices of the individual items in the cart, in order."""
+        texts = self.cart_items.locator('[data-test="inventory-item-price"]').all_text_contents()
+        return [self.parse_money(t) for t in texts]
+
+    @staticmethod
+    def parse_money(text):
+        """Parse an amount from a string such as '$29.99'."""
+        if text is None:
+            raise ValueError("No amount found for the cart item")
+        match = re.search(r"\$\s*([\d,]+\.\d{2})", text)
+        if not match:
+            raise ValueError(f'Could not parse the amount from "{text}"')
+        return float(match.group(1).replace(",", ""))
 
     def remove_item(self, index: int):
         cart_item = self.cart_items.nth(index)

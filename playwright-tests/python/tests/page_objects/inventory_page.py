@@ -25,6 +25,9 @@ class InventoryPage:
         self.product_prices = page.locator(".inventory_item_price")
         self.product_images = page.locator(".inventory_item img")
         self.add_to_cart_buttons = page.locator(".btn.btn_primary.btn_small.btn_inventory")
+        self.social_x_link = page.locator('[data-test="social-x"]')
+        self.social_facebook_link = page.locator('[data-test="social-facebook"]')
+        self.social_linkedin_link = page.locator('[data-test="social-linkedin"]')
 
     def go_to(self):
         base_url = os.getenv("SAUCE_DEMO_BASE_URL", "https://www.saucedemo.com")
@@ -94,8 +97,12 @@ class InventoryPage:
     def open_hamburger_menu(self):
         self.page.locator(".bm-burger-button").click()
 
-    def click_reset_app_state(self):
-        self.page.get_by_text("Reset App State").click()
+    def close_hamburger_menu(self):
+        self.page.locator(".bm-cross-button").click()
+
+    def reset_app_state(self):
+        """Reset the app state (the cart) via the hamburger menu"""
+        self.page.locator('[data-test="reset-sidebar-link"]').click()
 
     def get_all_product_names(self) -> list:
         names = []
@@ -114,22 +121,24 @@ class InventoryPage:
             prices.append(self.get_product_price(i))
         return prices
 
-    # Methods for working with product detail panels
+    # Methods for working with the item detail page
     def click_product_name(self, index: int):
-        """Click a product name - opens the detail panel"""
         self.products.nth(index).locator('[data-test="inventory-item-name"]').click()
 
     def click_back_to_products(self):
-        """Click Back to Products - returns to the Products page"""
-        self.page.get_by_text("Back to Products").click()
+        self.get_back_to_products_locator().click()
 
-    def get_detail_description_locator(self, text: str):
-        """Return a locator for a product description in the detail panel"""
-        return self.page.get_by_text(text)
+    def get_detail_description_locator(self):
+        """
+        Description of the product currently shown on the item detail page.
+
+        Scoped by class because `data-test="inventory-item-desc"` also exists,
+        one per product, in the inventory grid.
+        """
+        return self.page.locator(".inventory_details_desc")
 
     def get_back_to_products_locator(self):
-        """Return a locator for the Back to Products button"""
-        return self.page.get_by_text("Back to Products")
+        return self.page.locator('[data-test="back-to-products"]')
 
     def get_product_name_locator(self, index: int):
         """Return a locator for a product name"""

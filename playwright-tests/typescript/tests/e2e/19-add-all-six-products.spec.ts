@@ -46,7 +46,7 @@ test.describe("Add All 6 Products", () => {
     const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add all 6 products
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
       await inventoryPage.addProductToCart(i);
     }
 
@@ -68,7 +68,7 @@ test.describe("Add All 6 Products", () => {
     ];
 
     const cartItems = await cartPage.getCartItemNames();
-    expect(cartItems).toHaveLength(6);
+    expect(cartItems).toHaveLength(EXPECTED_PRODUCT_COUNT);
 
     for (const name of expectedNames) {
       expect(cartItems).toContain(name);

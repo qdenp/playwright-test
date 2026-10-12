@@ -2,10 +2,9 @@
 Parametrise logins with pytest.mark.parametrize
 """
 
-import re
-
 import pytest
 from playwright.sync_api import expect
+from constants import SLOW_TIMEOUT
 from page_objects.login_page import LoginPage
 from conftest import get_login_params
 from page_objects.inventory_page import InventoryPage
@@ -25,11 +24,13 @@ def test_parameterized_login(
     login_page.login(username, password)
 
     if should_login:
-        expect(page).to_have_url(re.compile(r".*inventory\.html"))
-        inventory_page.wait_for_page_load()
-        title = inventory_page.get_title_text()
-        assert title == expected_title
+        # A successful login shows the catalogue.
+        # performance_glitch_user needs the longer budget.
+        expect(inventory_page.header_title).to_have_text(
+            expected_title, timeout=SLOW_TIMEOUT
+        )
     else:
-        login_page.wait_for_error_message()
-        error_message = login_page.get_error_message()
-        assert expected_error in error_message
+        # A failed login stays on the login form and explains why
+        expect(login_page.username_input).to_be_visible()
+        expect(login_page.error_message).to_contain_text(expected_error)
+        expect(inventory_page.header_title).to_be_hidden()

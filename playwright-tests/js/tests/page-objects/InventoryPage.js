@@ -19,6 +19,9 @@ export class InventoryPage {
     this.productPrices = page.locator(".inventory_item_price");
     this.productImages = page.locator(".inventory_item img");
     this.addToCartButtons = page.locator(".btn.btn_primary.btn_small.btn_inventory");
+    this.socialXLink = page.locator('[data-test="social-x"]');
+    this.socialFacebookLink = page.locator('[data-test="social-facebook"]');
+    this.socialLinkedinLink = page.locator('[data-test="social-linkedin"]');
   }
 
   async waitForPageLoad() {
@@ -128,21 +131,26 @@ export class InventoryPage {
     return prices;
   }
 
-  // Methods for working with product detail panels
+  // Methods for working with the item detail page
   async clickProductName(index) {
     await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
   }
 
   async clickBackToProducts() {
-    await this.page.getByText("Back to Products").click();
+    await this.getBackToProductsLocator().click();
   }
 
-  getDetailDescriptionLocator(text) {
-    return this.page.getByText(text);
+  /**
+   * Description of the product currently shown on the item detail page.
+   * Scoped by class because `data-test="inventory-item-desc"` also exists,
+   * one per product, in the inventory grid.
+   */
+  getDetailDescriptionLocator() {
+    return this.page.locator(".inventory_details_desc");
   }
 
   getBackToProductsLocator() {
-    return this.page.getByText("Back to Products");
+    return this.page.locator('[data-test="back-to-products"]');
   }
 
   getProductNameLocator(index) {
@@ -153,8 +161,13 @@ export class InventoryPage {
     await this.page.locator(".bm-burger-button").click();
   }
 
-  async clickResetAppState() {
-    await this.page.getByText("Reset App State").click();
+  async closeHamburgerMenu() {
+    await this.page.locator(".bm-cross-button").click();
+  }
+
+  /** Reset the app state (the cart) via the hamburger menu */
+  async resetAppState() {
+    await this.page.locator('[data-test="reset-sidebar-link"]').click();
   }
 
   async clickLogout() {

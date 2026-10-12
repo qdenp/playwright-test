@@ -14,7 +14,7 @@ test("Hamburger menu - opening and closing", async ({ page }) => {
 
   // Open the menu
   await loginPage.openHamburgerMenu();
-  await expect(loginPage.closeMenu).toBeVisible();
+  await expect(loginPage.closeButton).toBeVisible();
 
   // Verify the menu has 5 items
   await expect(inventoryPage.getMenuItemsLocator()).toHaveCount(5);
@@ -26,5 +26,5 @@ test("Hamburger menu - opening and closing", async ({ page }) => {
 
   // Close the menu
   await loginPage.closeHamburgerMenu();
-  await expect(loginPage.closeMenu).not.toBeVisible();
+  await expect(loginPage.closeButton).not.toBeVisible();
 });

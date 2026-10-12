@@ -1,7 +1,7 @@
 import { test, expect } from "../fixtures.js";
 import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { loginTests } from "../config.js";
+import { loginTests, timeouts } from "../config.js";
 
 /**
  * Parametrise logins with test.each
@@ -9,28 +9,28 @@ import { loginTests } from "../config.js";
 loginTests.forEach(
   ({ username, password, shouldLogin, expectedTitle, expectedError }) => {
     const status = shouldLogin ? "success" : "failure";
-    test(
-      `Login: ${username} - ${status}`,
-      { timeout: 60000 },
-      async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        const inventoryPage = new InventoryPage(page);
+    test(`Login: ${username} - ${status}`, async ({ page }) => {
+      const loginPage = new LoginPage(page);
+      const inventoryPage = new InventoryPage(page);
 
-        await loginPage.goTo();
+      await loginPage.goTo();
+
+      if (shouldLogin) {
         await loginPage.login(username, password);
 
-        if (shouldLogin) {
-          await expect(page).toHaveURL(/.*saucedemo/);
-          await inventoryPage.waitForPageLoad();
-          const title = await inventoryPage.getTitleText();
-          expect(title).toBe(expectedTitle);
-        } else {
-          await expect(page).toHaveURL(/.*saucedemo/);
-          await loginPage.waitForErrorMessage();
-          const errorMessage = await loginPage.getErrorMessage();
-          expect(errorMessage).toContain(expectedError);
-        }
-      },
-    );
+        // A successful login leaves the login form behind and shows the catalogue.
+        // performance_glitch_user needs the longer budget.
+        await expect(inventoryPage.headerTitle).toHaveText(expectedTitle, {
+          timeout: timeouts.SLOW,
+        });
+      } else {
+        // A failed login stays on the login form and explains why
+        await loginPage.login(username, password);
+        await expect(loginPage.usernameInput).toBeVisible();
+
+        await expect(loginPage.errorMessage).toContainText(expectedError);
+        await expect(inventoryPage.headerTitle).toBeHidden();
+      }
+    });
   },
 );

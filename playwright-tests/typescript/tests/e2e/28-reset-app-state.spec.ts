@@ -1,17 +1,15 @@
 import { test, expect } from "../fixtures";
-import { CartPage } from "../page-objects/CartPage.js";
-import { timeouts } from "../config";
+import { EXPECTED_PRODUCT_COUNT } from "../config";
 
 /**
  * Reset App State
  */
 test.describe("Reset App State", () => {
-  test("should reset cart via Reset App State in hamburger menu", async ({ authenticatedPage }) => {
-    const { inventoryPage } = authenticatedPage;
+  test("should clear the cart badge when Reset App State is used", async ({
+    authenticatedPage,
+  }) => {
+    const { page, inventoryPage } = authenticatedPage;
 
-    await inventoryPage.waitForPageLoad();
-
-    // Add products and reset the cart via Reset App State
     for (let i = 0; i < 3; i++) {
       await inventoryPage.addProductToCart(i);
     }
@@ -21,24 +19,33 @@ test.describe("Reset App State", () => {
     await inventoryPage.resetAppState();
     await inventoryPage.closeHamburgerMenu();
 
-    // The cart is empty - no badge
+    // The badge disappears immediately - the cart is empty
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 
-  test("should reset app state and verify complete reset", async ({ authenticatedPage }) => {
-    const { inventoryPage } = authenticatedPage;
-
-    await inventoryPage.waitForPageLoad();
+  test("should clear the cart server side too, not just the badge", async ({
+    authenticatedPage,
+  }) => {
+    const { page, inventoryPage, cartPage } = authenticatedPage;
 
     for (let i = 0; i < 3; i++) {
       await inventoryPage.addProductToCart(i);
     }
-    await expect(inventoryPage.cartBadgeCount).toHaveText("3");
+    await inventoryPage.openCart();
+    await cartPage.waitForPageLoad();
+    await expect(cartPage.cartItems).toHaveCount(3);
 
     await inventoryPage.openHamburgerMenu();
     await inventoryPage.resetAppState();
     await inventoryPage.closeHamburgerMenu();
 
+    // Reload so the cart page re-reads the stored state
+    await page.goto("/cart.html", { waitUntil: "domcontentloaded" });
+    await expect(cartPage.cartItems).toHaveCount(0);
+
+    // The catalogue itself is untouched
+    await page.goto("/inventory.html", { waitUntil: "domcontentloaded" });
+    await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 });

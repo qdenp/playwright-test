@@ -94,9 +94,7 @@ test.describe("Browser Navigation", () => {
 
     await inventoryPage.addProductToCart(0);
     await inventoryPage.addProductToCart(1);
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("2");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("2");
 
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
@@ -108,8 +106,6 @@ test.describe("Browser Navigation", () => {
     await cartPage.waitForPageLoad();
 
     // Cart should still have 2 items
-    await expect(
-      inventoryPage.cartBadge.locator(".shopping_cart_badge"),
-    ).toHaveText("2");
+    await expect(inventoryPage.cartBadgeCount).toHaveText("2");
   });
 });

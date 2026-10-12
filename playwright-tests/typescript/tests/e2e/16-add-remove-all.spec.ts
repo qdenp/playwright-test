@@ -1,6 +1,5 @@
 import { test, expect } from "../fixtures.js";
-import { InventoryPage } from "../page-objects/InventoryPage.js";
-import { CartPage } from "../page-objects/CartPage.js";
+import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
  * Adding and removing all products
@@ -8,25 +7,28 @@ import { CartPage } from "../page-objects/CartPage.js";
 test("Adding and removing all products", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;
 
-  const productCount = await inventoryPage.getProductCount();
-  await expect(inventoryPage.products).toHaveCount(productCount);
+  await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   // Add all products
-  for (let i = 0; i < productCount; i++) {
+  for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
     await inventoryPage.addProductToCart(i);
   }
 
-  await expect(inventoryPage.cartBadgeCount).toHaveText(String(productCount));
+  await expect(inventoryPage.cartBadgeCount).toHaveText(
+    String(EXPECTED_PRODUCT_COUNT),
+  );
 
   // Go to the cart
   await inventoryPage.openCart();
   await cartPage.waitForPageLoad();
-  await expect(cartPage.cartItems).toHaveCount(productCount);
+  await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
   // Remove all products
-  for (let i = 0; i < productCount; i++) {
+  for (let i = 0; i < EXPECTED_PRODUCT_COUNT; i++) {
     await cartPage.removeItem(0);
-    await expect(cartPage.cartItems).toHaveCount(productCount - 1 - i);
+    await expect(cartPage.cartItems).toHaveCount(
+      EXPECTED_PRODUCT_COUNT - 1 - i,
+    );
   }
 
   // The cart must be empty

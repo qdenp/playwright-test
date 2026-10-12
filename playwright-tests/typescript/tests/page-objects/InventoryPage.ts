@@ -24,6 +24,9 @@ export class InventoryPage {
   productPrices: ReturnType<Page["locator"]>;
   productImages: ReturnType<Page["locator"]>;
   addToCartButtons: ReturnType<Page["locator"]>;
+  socialXLink: ReturnType<Page["locator"]>;
+  socialFacebookLink: ReturnType<Page["locator"]>;
+  socialLinkedinLink: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
     this.page = page;
@@ -40,6 +43,9 @@ export class InventoryPage {
     this.productPrices = this.page.locator(".inventory_item_price");
     this.productImages = this.page.locator(".inventory_item img");
     this.addToCartButtons = this.page.locator(".btn.btn_primary.btn_small.btn_inventory");
+    this.socialXLink = this.page.locator('[data-test="social-x"]');
+    this.socialFacebookLink = this.page.locator('[data-test="social-facebook"]');
+    this.socialLinkedinLink = this.page.locator('[data-test="social-linkedin"]');
   }
 
   async goTo(): Promise<void> {
@@ -167,21 +173,26 @@ export class InventoryPage {
     return products;
   }
 
-  // Methods for working with product detail panels
+  // Methods for working with the item detail page
   async clickProductName(index: number): Promise<void> {
     await this.products.nth(index).locator('[data-test="inventory-item-name"]').click();
   }
 
-  async clickBackToProducts(): Promise<void> {
-    await this.page.getByText("Back to Products").click();
-  }
-
-  getDetailDescriptionLocator(text: string) {
-    return this.page.getByText(text);
+  /**
+   * Description of the product currently shown on the item detail page.
+   * Scoped by class because `data-test="inventory-item-desc"` also exists,
+   * one per product, in the inventory grid.
+   */
+  getDetailDescriptionLocator() {
+    return this.page.locator(".inventory_details_desc");
   }
 
   getBackToProductsLocator() {
-    return this.page.getByText("Back to Products");
+    return this.page.locator('[data-test="back-to-products"]');
+  }
+
+  async clickBackToProducts(): Promise<void> {
+    await this.getBackToProductsLocator().click();
   }
 
   getProductNameLocator(index: number) {

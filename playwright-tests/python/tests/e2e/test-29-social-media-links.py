@@ -1,54 +1,53 @@
 """
-Social Media Links
-Verifying that the page loads after login
+Social Media Links: the three footer links and how they behave
 """
 
+import re
+
 from playwright.sync_api import expect
-from constants import EXPECTED_PRODUCT_COUNT
 from page_objects.inventory_page import InventoryPage
 from page_objects.login_page import LoginPage
 
 
-def test_verify_page_loads_correctly_after_login(page):
-    """Verify the page loads correctly after login"""
-    login_page = LoginPage(page)
-    inventory_page = InventoryPage(page)
+def test_all_three_social_links_point_at_the_expected_targets(authenticated_page):
+    inventory_page = authenticated_page["inventory_page"]
 
-    # Login
-    login_page.go_to()
-    login_page.login()
-    inventory_page.wait_for_page_load()
-
-    # Verify the inventory page loaded correctly
-    expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
+    expect(inventory_page.social_x_link).to_have_attribute("href", "https://x.com/saucelabs")
+    expect(inventory_page.social_facebook_link).to_have_attribute(
+        "href", "https://www.facebook.com/saucelabs"
+    )
+    expect(inventory_page.social_linkedin_link).to_have_attribute(
+        "href", "https://www.linkedin.com/company/sauce-labs/"
+    )
 
 
-def test_verify_page_structure_and_elements(page):
-    """Verify the page structure and elements"""
-    login_page = LoginPage(page)
-    inventory_page = InventoryPage(page)
+def test_social_links_open_in_a_new_tab(authenticated_page):
+    page = authenticated_page["page"]
+    inventory_page = authenticated_page["inventory_page"]
 
-    # Login
-    login_page.go_to()
-    login_page.login()
-    inventory_page.wait_for_page_load()
+    for link in (
+        inventory_page.social_x_link,
+        inventory_page.social_facebook_link,
+        inventory_page.social_linkedin_link,
+    ):
+        expect(link).to_have_attribute("target", "_blank")
+        expect(link).to_have_attribute("rel", "noreferrer")
 
-    # Verify the main page elements
-    expect(inventory_page.header_title).to_contain_text("Products")
-    expect(inventory_page.sort_dropdown).to_be_visible()
-    expect(inventory_page.cart_badge).to_be_visible()
+    with page.context.expect_page() as new_page_info:
+        inventory_page.social_x_link.click()
+    new_page = new_page_info.value
+    expect(new_page).to_have_url(re.compile(r"x\.com"))
+    new_page.close()
 
 
-def test_verify_all_6_products_are_loaded(page):
-    """Verify all 6 products are loaded"""
-    login_page = LoginPage(page)
-    inventory_page = InventoryPage(page)
+def test_shop_stays_usable_after_opening_a_social_link(authenticated_page):
+    page = authenticated_page["page"]
+    inventory_page = authenticated_page["inventory_page"]
 
-    # Login
-    login_page.go_to()
-    login_page.login()
-    inventory_page.wait_for_page_load()
+    with page.context.expect_page() as new_page_info:
+        inventory_page.social_facebook_link.click()
+    new_page = new_page_info.value
+    new_page.close()
 
-    # Verify all products are present and visible
-    expect(inventory_page.products).to_have_count(EXPECTED_PRODUCT_COUNT)
-    expect(inventory_page.products.first).to_be_visible()
+    expect(page).to_have_url(re.compile(r".*inventory\.html"))
+    expect(inventory_page.products).to_have_count(6)

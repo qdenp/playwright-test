@@ -13,6 +13,8 @@ export const config = {
 export const timeouts = {
   DEFAULT: 10000,
   NAVIGATION: 30000,
+  /** performance_glitch_user is deliberately slow - needs room to log in */
+  SLOW: 60000,
   ERROR: 3000,
   ASSERT: 5000,
 };
