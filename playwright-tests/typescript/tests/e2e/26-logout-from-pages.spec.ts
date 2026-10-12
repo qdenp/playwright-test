@@ -17,8 +17,8 @@ test('26 - should logout from inventory and cart pages', async ({ page }) => {
   await inventoryPage.waitForPageLoad();
 
   // Logout from inventory page
-  await loginPage.openHamburgerMenu();
-  await page.locator('.bm-item-list a:has-text("Logout")').click();
+  await inventoryPage.openHamburgerMenu();
+  await inventoryPage.clickLogout();
   // Logout redirects to inventory page, not login
   await expect(page).toHaveURL(/.*saucedemo/);
 
@@ -32,8 +32,8 @@ test('26 - should logout from inventory and cart pages', async ({ page }) => {
   await cartPage.waitForPageLoad();
 
   // Open menu and logout
-  await page.locator('.bm-burger-button').click();
-  await page.locator('.bm-item-list a:has-text("Logout")').click();
+  await inventoryPage.openHamburgerMenu();
+  await inventoryPage.clickLogout();
   // Logout redirects to inventory page
   await expect(page).toHaveURL(/.*saucedemo/);
 });

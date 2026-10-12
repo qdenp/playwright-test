@@ -3,19 +3,19 @@
  * Проверка социальных ссылок внизу экрана (X, Facebook, LinkedIn)
  */
 import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 test.describe("Social Media Links", () => {
   test("35 - should verify page loads correctly after login", async ({
     page,
   }) => {
+    const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
     // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
+    await loginPage.goTo();
+    await loginPage.login();
     await inventoryPage.waitForPageLoad();
 
     // Verify inventory page loaded correctly
@@ -24,13 +24,12 @@ test.describe("Social Media Links", () => {
   });
 
   test("36 - should verify page structure and elements", async ({ page }) => {
-    // Login
-    await page.goto("/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-
+    const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
+
+    // Login
+    await loginPage.goTo();
+    await loginPage.login();
     await inventoryPage.waitForPageLoad();
 
     // Verify main page elements

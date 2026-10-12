@@ -6,6 +6,7 @@ Test 35: Social Media Links
 import pytest
 from playwright.sync_api import expect
 from page_objects.inventory_page import InventoryPage
+from page_objects.login_page import LoginPage
 
 
 class TestSocialMediaLinks:
@@ -13,13 +14,12 @@ class TestSocialMediaLinks:
 
     def test_01_should_verify_page_loads_correctly_after_login(self, page):
         """Проверить что страница загружается корректно после логина"""
+        login_page = LoginPage(page)
         inventory_page = InventoryPage(page)
 
         # Логин
-        page.goto("/")
-        page.locator("#user-name").fill("standard_user")
-        page.locator("#password").fill("secret_sauce")
-        page.locator("#login-button").click()
+        login_page.go_to()
+        login_page.login()
         inventory_page.wait_for_page_load()
 
         # Проверить что страница товаров загрузилась корректно
@@ -28,13 +28,12 @@ class TestSocialMediaLinks:
 
     def test_02_should_verify_page_structure_and_elements(self, page):
         """Проверить структуру страницы и элементы"""
-        # Логин
-        page.goto("/")
-        page.locator("#user-name").fill("standard_user")
-        page.locator("#password").fill("secret_sauce")
-        page.locator("#login-button").click()
-
+        login_page = LoginPage(page)
         inventory_page = InventoryPage(page)
+
+        # Логин
+        login_page.go_to()
+        login_page.login()
         inventory_page.wait_for_page_load()
 
         # Проверить основные элементы страницы
@@ -44,13 +43,12 @@ class TestSocialMediaLinks:
 
     def test_03_should_verify_all_6_products_are_loaded(self, page):
         """Проверить что все 6 товаров загружены"""
-        # Логин
-        page.goto("/")
-        page.locator("#user-name").fill("standard_user")
-        page.locator("#password").fill("secret_sauce")
-        page.locator("#login-button").click()
-
+        login_page = LoginPage(page)
         inventory_page = InventoryPage(page)
+
+        # Логин
+        login_page.go_to()
+        login_page.login()
         inventory_page.wait_for_page_load()
 
         # Проверить что все 6 товаров присутствуют

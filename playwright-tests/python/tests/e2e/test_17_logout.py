@@ -21,7 +21,7 @@ def test_logout(page):
 
     # Открываем меню и нажимаем Logout
     login_page.open_hamburger_menu()
-    login_page.click_logout()
+    inventory_page.click_logout()
 
     # Проверяем что попали на страницу логина (SPA — URL не меняется)
     expect(login_page.username_input).to_be_visible(timeout=10000)

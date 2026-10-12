@@ -113,23 +113,4 @@ class LoginPage:
     def is_hamburger_menu_open(self) -> bool:
         return self.close_menu.is_visible()
 
-    def click_back_to_products(self):
-        self.page.get_by_text("Back to Products").click()
 
-    def click_logout(self):
-        self.page.locator('[data-test="logout-sidebar-link"]').click()
-
-    def get_menu_items_locator(self):
-        return self.page.locator(".bm-item-list a")
-
-    def get_menu_item_count(self) -> int:
-        return self.get_menu_items_locator().count()
-
-    def is_inventory_link_visible(self) -> bool:
-        return self.page.locator('[data-test="inventory-sidebar-link"]').is_visible()
-
-    def is_about_link_visible(self) -> bool:
-        return self.page.locator('[data-test="about-sidebar-link"]').is_visible()
-
-    def is_logout_link_visible(self) -> bool:
-        return self.page.locator('[data-test="logout-sidebar-link"]').is_visible()

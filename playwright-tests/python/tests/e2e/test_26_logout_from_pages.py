@@ -24,8 +24,8 @@ class TestLogoutFromPages:
         inventory_page.wait_for_page_load()
 
         # Выйти из аккаунта со страницы товаров
-        login_page.open_hamburger_menu()
-        page.locator('.bm-item-list a:has-text("Logout")').click()
+        inventory_page.open_hamburger_menu()
+        inventory_page.click_logout()
         # Sauce Demo перенаправляет на login page после logout
         login_page.username_input.wait_for(state="visible", timeout=10000)
 
@@ -40,7 +40,7 @@ class TestLogoutFromPages:
         cart_page.wait_for_page_load()
 
         # Открыть меню и выйти
-        page.locator(".bm-burger-button").click()
-        page.locator('.bm-item-list a:has-text("Logout")').click()
+        inventory_page.open_hamburger_menu()
+        inventory_page.click_logout()
         # Sauce Demo перенаправляет на login page
         login_page.username_input.wait_for(state="visible", timeout=10000)

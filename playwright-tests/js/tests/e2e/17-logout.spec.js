@@ -18,7 +18,7 @@ test("Тест 17: Logout — выход из аккаунта", async ({ page }
 
   // Открываем меню и нажимаем Logout
   await loginPage.openHamburgerMenu();
-  await loginPage.clickLogout();
+  await inventoryPage.clickLogout();
 
   // Проверяем что попали на страницу логина (SPA — URL не меняется, но появляются поля логина)
   await expect(loginPage.usernameInput).toBeVisible({ timeout: 10000 });

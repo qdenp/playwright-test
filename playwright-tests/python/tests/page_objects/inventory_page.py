@@ -121,3 +121,28 @@ class InventoryPage:
     def get_product_name_locator(self, index: int):
         """Возвращает locator для названия товара"""
         return self.products.nth(index).locator('[data-test="inventory-item-name"]')
+
+    # Методы для работы с hamburger menu
+    def click_logout(self):
+        """Клик Logout в hamburger menu"""
+        self.page.locator('[data-test="logout-sidebar-link"]').click()
+
+    def get_menu_items_locator(self):
+        """Возвращает locator для всех элементов меню"""
+        return self.page.locator(".bm-item-list a")
+
+    def get_menu_item_count(self) -> int:
+        """Возвращает количество элементов в меню"""
+        return self.get_menu_items_locator().count()
+
+    def is_inventory_link_visible(self) -> bool:
+        """Проверяет видимость ссылки Inventory"""
+        return self.page.locator('[data-test="inventory-sidebar-link"]').is_visible()
+
+    def is_about_link_visible(self) -> bool:
+        """Проверяет видимость ссылки About"""
+        return self.page.locator('[data-test="about-sidebar-link"]').is_visible()
+
+    def is_logout_link_visible(self) -> bool:
+        """Проверяет видимость ссылки Logout"""
+        return self.page.locator('[data-test="logout-sidebar-link"]').is_visible()

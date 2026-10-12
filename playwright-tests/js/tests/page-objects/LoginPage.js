@@ -71,27 +71,5 @@ export class LoginPage {
     await this.page.getByRole("link", { name: "Back to Products" }).click();
   }
 
-  async clickLogout() {
-    await this.page.locator('[data-test="logout-sidebar-link"]').click();
-  }
 
-  getMenuItemsLocator() {
-    return this.page.locator(".bm-item-list a");
-  }
-
-  async getMenuItemCount() {
-    return await this.getMenuItemsLocator().count();
-  }
-
-  async isInventoryLinkVisible() {
-    return await this.page.locator('[data-test="inventory-sidebar-link"]').isVisible();
-  }
-
-  async isAboutLinkVisible() {
-    return await this.page.locator('[data-test="about-sidebar-link"]').isVisible();
-  }
-
-  async isLogoutLinkVisible() {
-    return await this.page.locator('[data-test="logout-sidebar-link"]').isVisible();
-  }
 }

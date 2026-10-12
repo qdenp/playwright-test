@@ -24,8 +24,6 @@ export class LoginPage {
   hamburgerMenu: ReturnType<Page["locator"]>;
   menuOverlay: ReturnType<Page["locator"]>;
   closeButton: ReturnType<Page["locator"]>;
-  logoutMenuItem: ReturnType<Page["locator"]>;
-  aboutMenuItem: ReturnType<Page["locator"]>;
 
   constructor(page: Page) {
     this.page = page;
@@ -36,10 +34,6 @@ export class LoginPage {
     this.hamburgerMenu = this.page.locator(".bm-burger-button");
     this.menuOverlay = this.page.locator(".bm-menu-wrap");
     this.closeButton = this.page.locator(".bm-cross-button");
-    this.logoutMenuItem = this.page.locator(
-      '.bm-item-list a:has-text("Logout")',
-    );
-    this.aboutMenuItem = this.page.locator('.bm-item-list a:has-text("About")');
   }
 
   async goTo(url: string = "/"): Promise<void> {
@@ -77,14 +71,6 @@ export class LoginPage {
     await this.closeButton.click();
   }
 
-  async clickLogout(): Promise<void> {
-    await this.page.locator('[data-test="logout-sidebar-link"]').click();
-  }
-
-  async clickAbout(): Promise<void> {
-    await this.aboutMenuItem.click();
-  }
-
   async getErrorMessage(): Promise<string | null> {
     return await this.errorMessage.innerText();
   }
@@ -102,29 +88,5 @@ export class LoginPage {
       .locator(".bm-item-list a")
       .allTextContents();
     return menuItems.map((item) => item.trim());
-  }
-
-  async isMenuOpen(): Promise<boolean> {
-    return await this.menuOverlay.isVisible();
-  }
-
-  getMenuItemsLocator() {
-    return this.page.locator(".bm-item-list a");
-  }
-
-  async getMenuItemCount(): Promise<number> {
-    return await this.getMenuItemsLocator().count();
-  }
-
-  async isInventoryLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="inventory-sidebar-link"]').isVisible();
-  }
-
-  async isAboutLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="about-sidebar-link"]').isVisible();
-  }
-
-  async isLogoutLinkVisible(): Promise<boolean> {
-    return await this.page.locator('[data-test="logout-sidebar-link"]').isVisible();
   }
 }

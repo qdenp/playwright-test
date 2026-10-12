@@ -165,4 +165,33 @@ export class InventoryPage {
   getProductNameLocator(index: number) {
     return this.products.nth(index).locator('[data-test="inventory-item-name"]');
   }
+
+  // Методы для работы с hamburger menu
+  async openHamburgerMenu(): Promise<void> {
+    await this.page.locator(".bm-burger-button").click();
+  }
+
+  async clickLogout(): Promise<void> {
+    await this.page.locator('[data-test="logout-sidebar-link"]').click();
+  }
+
+  getMenuItemsLocator() {
+    return this.page.locator(".bm-item-list a");
+  }
+
+  async getMenuItemCount(): Promise<number> {
+    return await this.getMenuItemsLocator().count();
+  }
+
+  async isInventoryLinkVisible(): Promise<boolean> {
+    return await this.page.locator('[data-test="inventory-sidebar-link"]').isVisible();
+  }
+
+  async isAboutLinkVisible(): Promise<boolean> {
+    return await this.page.locator('[data-test="about-sidebar-link"]').isVisible();
+  }
+
+  async isLogoutLinkVisible(): Promise<boolean> {
+    return await this.page.locator('[data-test="logout-sidebar-link"]').isVisible();
+  }
 }
