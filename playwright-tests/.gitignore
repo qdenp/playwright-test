@@ -5,6 +5,8 @@ package-lock.json
 # Test outputs
 test-results/
 reports/
+playwright-report/
+last-run.json
 
 # Python
 __pycache__/
