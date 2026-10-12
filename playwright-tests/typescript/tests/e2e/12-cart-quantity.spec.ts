@@ -5,7 +5,7 @@ import { test, expect } from "../fixtures";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
-test("Тест 12: badge корзины растёт на 1 при добавлении и падает на 1 при удалении", async ({
+test("badge корзины растёт на 1 при добавлении и падает на 1 при удалении", async ({
   authenticatedPage,
 }) => {
   const { inventoryPage, cartPage } = authenticatedPage;

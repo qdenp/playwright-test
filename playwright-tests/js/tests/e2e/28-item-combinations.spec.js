@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test 28: Specific item combinations (3 of 6 products)
  */
 import { test, expect } from "../fixtures";
@@ -6,7 +6,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 test.describe("Item Combinations", () => {
-  test("28 - should add cheapest 3 products and verify cart", async ({
+  test("should add cheapest 3 products and verify cart", async ({
     page,
   }) => {
     // Login
@@ -34,7 +34,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Ждём отрисовки товаров, прежде чем читать список
+    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();
@@ -43,7 +43,7 @@ test.describe("Item Combinations", () => {
     expect(cartItems).toContain("Test.allTheThings() T-Shirt (Red)");
   });
 
-  test("29 - should add most expensive 3 products and verify cart", async ({
+  test("should add most expensive 3 products and verify cart", async ({
     page,
   }) => {
     // Login
@@ -71,7 +71,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Ждём отрисовки товаров, прежде чем читать список
+    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();
@@ -80,7 +80,7 @@ test.describe("Item Combinations", () => {
     expect(cartItems).toContain("Sauce Labs Bolt T-Shirt");
   });
 
-  test("30 - should add alternating products (1st, 3rd, 5th)", async ({
+  test("should add alternating products (1st, 3rd, 5th)", async ({
     page,
   }) => {
     // Login
@@ -106,7 +106,7 @@ test.describe("Item Combinations", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Ждём отрисовки товаров, прежде чем читать список
+    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
     await expect(cartPage.cartItems).toHaveCount(3);
 
     const cartItems = await cartPage.getCartItemNames();

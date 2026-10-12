@@ -1,5 +1,5 @@
 """
-Тест 15: Hamburger меню — открытие и закрытие
+Hamburger меню — открытие и закрытие
 """
 
 from playwright.sync_api import expect

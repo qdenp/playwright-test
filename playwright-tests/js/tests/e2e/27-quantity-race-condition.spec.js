@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test 27: Verify quantity stays at 1 per item (Sauce Demo doesn't allow editing quantity)
  */
 import { test, expect } from "../fixtures";
@@ -8,7 +8,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Quantity and Race Conditions", () => {
-  test("27 - should verify each item quantity stays at 1 (no editing in cart)", async ({
+  test("should verify each item quantity stays at 1 (no editing in cart)", async ({
     page,
   }) => {
     // Login
@@ -37,7 +37,7 @@ test.describe("Quantity and Race Conditions", () => {
     await expect(cartPage.cartItems).toHaveCount(3);
   });
 
-  test("28 - should handle rapid add multiple products", async ({ page }) => {
+  test("should handle rapid add multiple products", async ({ page }) => {
     // Login
     const loginPage = new LoginPage(page);
     await loginPage.goTo();

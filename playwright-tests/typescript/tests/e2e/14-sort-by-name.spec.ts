@@ -2,9 +2,9 @@ import { test, expect } from "../fixtures.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Тест 14: Сортировка по имени (a→z)
+ * Сортировка по имени (a→z)
  */
-test("Тест 14: Сортировка товаров по имени (a→z)", async ({ authenticatedPage }) => {
+test("Сортировка товаров по имени (a→z)", async ({ authenticatedPage }) => {
   const { inventoryPage } = authenticatedPage;
 
   await inventoryPage.sortByAlphaAtoZ();

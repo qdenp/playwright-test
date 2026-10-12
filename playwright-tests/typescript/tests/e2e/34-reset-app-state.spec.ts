@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures";
+﻿import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { timeouts } from "../config";
 
@@ -6,12 +6,12 @@ import { timeouts } from "../config";
  * Test 34: Reset App State
  */
 test.describe("Reset App State", () => {
-  test("01 - should reset cart via Reset App State in hamburger menu", async ({ authenticatedPage }) => {
+  test("should reset cart via Reset App State in hamburger menu", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     await inventoryPage.waitForPageLoad();
 
-    // Добавляем товары и сбрасываем корзину через Reset App State
+    // Р”РѕР±Р°РІР»СЏРµРј С‚РѕРІР°СЂС‹ Рё СЃР±СЂР°СЃС‹РІР°РµРј РєРѕСЂР·РёРЅСѓ С‡РµСЂРµР· Reset App State
     for (let i = 0; i < 3; i++) {
       await inventoryPage.addProductToCart(i);
     }
@@ -21,11 +21,11 @@ test.describe("Reset App State", () => {
     await inventoryPage.resetAppState();
     await inventoryPage.closeHamburgerMenu();
 
-    // Корзина пуста — badge отсутствует
+    // РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р° вЂ” badge РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 
-  test("02 - should reset app state and verify complete reset", async ({ authenticatedPage }) => {
+  test("should reset app state and verify complete reset", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     await inventoryPage.waitForPageLoad();

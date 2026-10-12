@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Тест 17: Logout — выход из аккаунта
+ * Logout — выход из аккаунта
  */
-test("Тест 17: Logout — выход из аккаунта", async ({ authenticatedPage }) => {
+test("Logout — выход из аккаунта", async ({ authenticatedPage }) => {
   const { loginPage, inventoryPage } = authenticatedPage;
   const { page } = authenticatedPage;
 

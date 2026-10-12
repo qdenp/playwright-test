@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test 34: Reset App State tests
  */
 import { test, expect } from "../fixtures";
@@ -8,7 +8,7 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Reset App State", () => {
-  test("34 - should reset cart via Reset App State in hamburger menu", async ({
+  test("should reset cart via Reset App State in hamburger menu", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -35,7 +35,7 @@ test.describe("Reset App State", () => {
     await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
   });
 
-  test("35 - should reset app state and verify complete reset", async ({
+  test("should reset app state and verify complete reset", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);

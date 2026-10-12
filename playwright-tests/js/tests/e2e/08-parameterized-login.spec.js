@@ -10,7 +10,7 @@ loginTests.forEach(
   ({ username, password, shouldLogin, expectedTitle, expectedError }) => {
     const status = shouldLogin ? "success" : "failure";
     test(
-      `Тест входа: ${username} — ${status}`,
+      `Вход: ${username} — ${status}`,
       { timeout: 60000 },
       async ({ page }) => {
         const loginPage = new LoginPage(page);

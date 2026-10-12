@@ -2,9 +2,9 @@ import { test, expect } from "../fixtures.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Тест 19: Item detail — просмотр и возврат
+ * Item detail — просмотр и возврат
  */
-test("Тест 19: Item detail — просмотр и возврат", async ({ authenticatedPage }) => {
+test("Item detail — просмотр и возврат", async ({ authenticatedPage }) => {
   const { inventoryPage } = authenticatedPage;
 
   // Клик по названию первого товара — открывает detail panel

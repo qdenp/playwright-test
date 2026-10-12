@@ -5,9 +5,9 @@ import { CartPage } from "../page-objects/CartPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Тест 13: Добавление и удаление всех товаров
+ * Добавление и удаление всех товаров
  */
-test("Тест 13: Добавление и удаление всех товаров", async ({ page }) => {
+test("Добавление и удаление всех товаров", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);

@@ -7,9 +7,9 @@ import { timeouts } from "../config.js";
 import fs from "fs";
 
 /**
- * Тест 21: Экспорт PDF заказа
+ * Экспорт PDF заказа
  */
-test("Тест 21: Экспорт PDF заказа", async ({ page }) => {
+test("Экспорт PDF заказа", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);

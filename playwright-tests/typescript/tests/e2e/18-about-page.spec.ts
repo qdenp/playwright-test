@@ -1,7 +1,7 @@
 import { test } from "../fixtures";
 
 /**
- * Тест 18: About page — переход из hamburger меню
+ * About page — переход из hamburger меню
  *
  * SAUCE_DEMO_BUG: ссылка About ведёт на saucelabs.com, который отдаёт
  * 403 Forbidden. Проверить переход и содержимое страницы About невозможно,
@@ -12,6 +12,6 @@ import { test } from "../fixtures";
  *   loginPage.goTo() → loginPage.login() → loginPage.openHamburgerMenu()
  *   → inventoryPage.clickAbout() → expect(page).toHaveURL(...)
  */
-test.skip("Тест 18: About page — переход из hamburger меню", async () => {
+test.skip("About page — переход из hamburger меню", async () => {
   // SAUCE_DEMO_BUG: About ведёт на saucelabs.com, который отдаёт 403 Forbidden.
 });

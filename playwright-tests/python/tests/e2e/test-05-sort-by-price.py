@@ -1,5 +1,5 @@
 """
-Тест 5: Сортировка по цене (low → high и high → low)
+Сортировка по цене (low → high и high → low)
 """
 
 import pytest

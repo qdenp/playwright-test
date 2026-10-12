@@ -3,9 +3,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { CartPage } from "../page-objects/CartPage.js";
 
 /**
- * Тест 13: Добавление и удаление всех товаров
+ * Добавление и удаление всех товаров
  */
-test("Тест 13: Добавление и удаление всех товаров", async ({ authenticatedPage }) => {
+test("Добавление и удаление всех товаров", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage } = authenticatedPage;
 
   const productCount = await inventoryPage.getProductCount();

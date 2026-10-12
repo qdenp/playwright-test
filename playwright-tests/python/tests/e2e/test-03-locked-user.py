@@ -1,5 +1,5 @@
 """
-Тест 3: Блокированный пользователь — locked_out_user
+Блокированный пользователь — locked_out_user
 """
 
 import pytest

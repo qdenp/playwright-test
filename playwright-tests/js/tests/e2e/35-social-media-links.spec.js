@@ -1,6 +1,6 @@
-/**
+﻿/**
  * Test 35: Social Media Links
- * Проверка социальных ссылок внизу экрана (X, Facebook, LinkedIn)
+ * РџСЂРѕРІРµСЂРєР° СЃРѕС†РёР°Р»СЊРЅС‹С… СЃСЃС‹Р»РѕРє РІРЅРёР·Сѓ СЌРєСЂР°РЅР° (X, Facebook, LinkedIn)
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";
@@ -8,7 +8,7 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Social Media Links", () => {
-  test("35 - should verify page loads correctly after login", async ({
+  test("should verify page loads correctly after login", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -23,7 +23,7 @@ test.describe("Social Media Links", () => {
     await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
-  test("36 - should verify page structure and elements", async ({ page }) => {
+  test("should verify page structure and elements", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const inventoryPage = new InventoryPage(page);
 
@@ -38,7 +38,7 @@ test.describe("Social Media Links", () => {
     await expect(inventoryPage.cartBadge).toBeVisible();
   });
 
-  test("37 - should verify all products are loaded and visible", async ({
+  test("should verify all products are loaded and visible", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);

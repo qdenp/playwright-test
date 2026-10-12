@@ -15,7 +15,7 @@ loginTests.forEach(
     expectedError,
   }: LoginTestParams) => {
     const status = shouldLogin ? "success" : "failure";
-    test(`Тест входа: ${username} — ${status}`, async ({ page }) => {
+    test(`Вход: ${username} — ${status}`, async ({ page }) => {
       const loginPage = new LoginPage(page);
       const inventoryPage = new InventoryPage(page);
 

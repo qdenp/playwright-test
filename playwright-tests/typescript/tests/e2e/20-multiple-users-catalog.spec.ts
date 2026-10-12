@@ -4,9 +4,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Тест 20: Разные пользователи видят одинаковый каталог
+ * Разные пользователи видят одинаковый каталог
  */
-test("Тест 20: Разные пользователи видят одинаковый каталог", async ({
+test("Разные пользователи видят одинаковый каталог", async ({
   page,
 }) => {
   const loginPage = new LoginPage(page);

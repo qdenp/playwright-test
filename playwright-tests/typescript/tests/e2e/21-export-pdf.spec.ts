@@ -5,9 +5,9 @@ import { timeouts } from "../config";
 import fs from "fs";
 
 /**
- * Тест 21: Экспорт PDF заказа
+ * Экспорт PDF заказа
  */
-test("Тест 21: Экспорт PDF заказа", async ({ authenticatedPage }) => {
+test("Экспорт PDF заказа", async ({ authenticatedPage }) => {
   const { inventoryPage, cartPage, checkoutPage } = authenticatedPage;
 
   // Добавляем товары в корзину

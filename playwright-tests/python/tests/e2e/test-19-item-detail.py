@@ -1,5 +1,5 @@
 """
-Тест 19: Item detail — просмотр и возврат
+Item detail — просмотр и возврат
 """
 
 import pytest

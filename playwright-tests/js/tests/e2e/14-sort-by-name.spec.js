@@ -4,9 +4,9 @@ import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 /**
- * Тест 14: Сортировка по имени (a→z)
+ * Сортировка по имени (a→z)
  */
-test("Тест 14: Сортировка товаров по имени (a→z)", async ({ page }) => {
+test("Сортировка товаров по имени (a→z)", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

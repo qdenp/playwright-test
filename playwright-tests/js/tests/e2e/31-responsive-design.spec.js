@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test 31: Responsive design tests
  */
 import { test, expect } from "../fixtures";
@@ -9,7 +9,7 @@ import { CheckoutPage } from "../page-objects/CheckoutPage.js";
 import { timeouts, EXPECTED_PRODUCT_COUNT } from "../config.js";
 
 test.describe("Responsive Design", () => {
-  test("31 - should work on mobile viewport (375x667)", async ({ page }) => {
+  test("should work on mobile viewport (375x667)", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const loginPage = new LoginPage(page);
@@ -26,7 +26,7 @@ test.describe("Responsive Design", () => {
     await loginPage.closeHamburgerMenu();
   });
 
-  test("32 - should work on tablet viewport (768x1024)", async ({ page }) => {
+  test("should work on tablet viewport (768x1024)", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const loginPage = new LoginPage(page);
@@ -39,7 +39,7 @@ test.describe("Responsive Design", () => {
     await expect(inventoryPage.products).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
-  test("33 - should handle viewport resize during interaction", async ({
+  test("should handle viewport resize during interaction", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -58,7 +58,7 @@ test.describe("Responsive Design", () => {
     await expect(inventoryPage.cartBadgeCount).toHaveText("1");
   });
 
-  test("34 - should add to cart on mobile viewport", async ({ page }) => {
+  test("should add to cart on mobile viewport", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     const loginPage = new LoginPage(page);
@@ -74,7 +74,7 @@ test.describe("Responsive Design", () => {
     await expect(inventoryPage.cartBadgeCount).toHaveText("2");
   });
 
-  test("35 - should checkout on tablet viewport", async ({ page }) => {
+  test("should checkout on tablet viewport", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
 
     const loginPage = new LoginPage(page);

@@ -1,5 +1,5 @@
 /**
- * Тест 25: Проверка карточек товаров на главной
+ * Проверка карточек товаров на главной
  */
 import { test, expect } from "../fixtures";
 import { LoginPage } from "../page-objects/LoginPage.js";

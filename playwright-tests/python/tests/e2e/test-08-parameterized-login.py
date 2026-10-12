@@ -1,5 +1,5 @@
 """
-Тест 8: Параметризация логинов через pytest.mark.parametrize
+Параметризация логинов через pytest.mark.parametrize
 """
 
 import re

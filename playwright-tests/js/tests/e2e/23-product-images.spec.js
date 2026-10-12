@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Test 23: Verify product images are displayed
  */
 import { test, expect } from "../fixtures";
@@ -6,7 +6,7 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config.js";
 
-test("23 - should display all product images", async ({ page }) => {
+test("should display all product images", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

@@ -1,9 +1,9 @@
 import { test, expect } from "../fixtures";
 
 /**
- * Тест 15: Hamburger меню — открытие и закрытие
+ * Hamburger меню — открытие и закрытие
  */
-test("Тест 15: Hamburger меню — открытие и закрытие", async ({ authenticatedPage }) => {
+test("Hamburger меню — открытие и закрытие", async ({ authenticatedPage }) => {
   const { loginPage, inventoryPage } = authenticatedPage;
 
   // Открываем меню

@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures";
+﻿import { test, expect } from "../fixtures";
 import { CartPage } from "../page-objects/CartPage.js";
 import { EXPECTED_PRODUCT_COUNT } from "../config";
 
@@ -6,7 +6,7 @@ import { EXPECTED_PRODUCT_COUNT } from "../config";
  * Test 29: Add all 6 products and verify
  */
 test.describe("Add All 6 Products", () => {
-  test("01 - should add all 6 products and verify cart", async ({ authenticatedPage }) => {
+  test("should add all 6 products and verify cart", async ({ authenticatedPage }) => {
     const { inventoryPage, cartPage } = authenticatedPage;
 
     // Add all 6 products (indices 0-5)
@@ -25,7 +25,7 @@ test.describe("Add All 6 Products", () => {
     await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
   });
 
-  test("02 - should verify product count and prices", async ({ authenticatedPage }) => {
+  test("should verify product count and prices", async ({ authenticatedPage }) => {
     const { inventoryPage } = authenticatedPage;
 
     // Verify 6 products loaded
@@ -40,7 +40,7 @@ test.describe("Add All 6 Products", () => {
     }
   });
 
-  test("03 - should add all 6 products and verify product names", async ({
+  test("should add all 6 products and verify product names", async ({
     authenticatedPage,
   }) => {
     const { inventoryPage, cartPage } = authenticatedPage;
@@ -54,7 +54,7 @@ test.describe("Add All 6 Products", () => {
     await inventoryPage.openCart();
     await cartPage.waitForPageLoad();
 
-    // Ждём отрисовки товаров, прежде чем читать список
+    // Р–РґС‘Рј РѕС‚СЂРёСЃРѕРІРєРё С‚РѕРІР°СЂРѕРІ, РїСЂРµР¶РґРµ С‡РµРј С‡РёС‚Р°С‚СЊ СЃРїРёСЃРѕРє
     await expect(cartPage.cartItems).toHaveCount(EXPECTED_PRODUCT_COUNT);
 
     // Verify specific product names

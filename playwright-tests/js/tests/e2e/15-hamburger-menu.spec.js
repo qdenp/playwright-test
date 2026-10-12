@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Тест 15: Hamburger меню — открытие и закрытие
+ * Hamburger меню — открытие и закрытие
  */
-test("Тест 15: Hamburger меню — открытие и закрытие", async ({ page }) => {
+test("Hamburger меню — открытие и закрытие", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

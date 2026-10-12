@@ -3,9 +3,9 @@ import { LoginPage } from "../page-objects/LoginPage.js";
 import { InventoryPage } from "../page-objects/InventoryPage.js";
 
 /**
- * Тест 19: Item detail — просмотр и возврат
+ * Item detail — просмотр и возврат
  */
-test("Тест 19: Item detail — просмотр и возврат", async ({ page }) => {
+test("Item detail — просмотр и возврат", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
 

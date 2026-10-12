@@ -1,5 +1,5 @@
 """
-Тест 18: About page — переход из hamburger меню
+About page — переход из hamburger меню
 
 SAUCE_DEMO_BUG: ссылка About ведёт на saucelabs.com, который отдаёт
 403 Forbidden. Проверить переход и содержимое страницы About невозможно,
