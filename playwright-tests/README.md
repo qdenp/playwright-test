@@ -1,42 +1,42 @@
 # Playwright E2E Tests — Sauce Demo
 
-Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **TypeScript**, **JavaScript** и **Python** с использованием [Playwright](https://playwright.dev/).
+Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **TypeScript**, **JavaScript**, **Python** (Playwright), **C#** (Playwright for .NET) и **Java** (Selenium).
 
 ## 📋 Содержание
 
-| # | Описание | TS | JS | Python |
-|---|----------|----|----|--------|
-| 01 | Успешный логин | ✅ | ✅ | ✅ |
-| 02 | Неверный пароль | ✅ | ✅ | ✅ |
-| 03 | Заблокированный пользователь | ✅ | ✅ | ✅ |
-| 04 | Параметризованный логин | ✅ | ✅ | ✅ |
-| 05 | Выход из аккаунта | ✅ | ✅ | ✅ |
-| 06 | Выход с разных страниц | ✅ | ✅ | ✅ |
-| 07 | Сортировка по цене | ✅ | ✅ | ✅ |
-| 08 | Сортировка по имени | ✅ | ✅ | ✅ |
-| 09 | Страница товара | ✅ | ✅ | ✅ |
-| 10 | Разные пользователи = одинаковый каталог | ✅ | ✅ | ✅ |
-| 11 | Изображения товаров | ✅ | ✅ | ✅ |
-| 12 | Карточки товаров | ✅ | ✅ | ✅ |
-| 13 | Добавление товара в корзину | ✅ | ✅ | ✅ |
-| 14 | Удаление из корзины | ✅ | ✅ | ✅ |
-| 15 | Арифметика корзины (badge) | ✅ | ✅ | ✅ |
-| 16 | Добавление/удаление всех товаров | ✅ | ✅ | ✅ |
-| 17 | Количество в корзине не редактируется | ✅ | ✅ | ✅ |
-| 18 | Комбинации товаров (cheapest/most expensive) | ✅ | ✅ | ✅ |
-| 19 | Добавление всех шести товаров | ✅ | ✅ | ✅ |
-| 20 | Полный флоу покупки | ✅ | ✅ | ✅ |
-| 21 | Валидация чекаута | ✅ | ✅ | ✅ |
-| 22 | Экспорт PDF заказа | ✅ | ✅ | ✅ |
-| 23 | Гамбургер-меню | ✅ | ✅ | ✅ |
-| 24 | About page | skip | skip | skip |
-| 25 | Адаптивность | ✅ | ✅ | ✅ |
-| 26 | Навигация браузера | ✅ | ✅ | ✅ |
-| 27 | Бюджет производительности | ✅ | ✅ | ✅ |
-| 28 | Сброс состояния приложения | ✅ | ✅ | ✅ |
-| 29 | Ссылки на соцсети | ✅ | ✅ | ✅ |
+| # | Описание | TS | JS | Python | C# | Java |
+|---|----------|----|----|--------|----|------|
+| 01 | Успешный логин | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 02 | Неверный пароль | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 03 | Заблокированный пользователь | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 04 | Параметризованный логин | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 05 | Выход из аккаунта | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 06 | Выход с разных страниц | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 07 | Сортировка по цене | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 08 | Сортировка по имени | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 09 | Страница товара | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 10 | Разные пользователи = одинаковый каталог | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 11 | Изображения товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 12 | Карточки товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 13 | Добавление товара в корзину | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 14 | Удаление из корзины | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 15 | Арифметика корзины (badge) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 16 | Добавление/удаление всех товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 17 | Количество в корзине не редактируется | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 18 | Комбинации товаров (cheapest/most expensive) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 19 | Добавление всех шести товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 20 | Полный флоу покупки | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 21 | Валидация чекаута | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 22 | Экспорт PDF заказа | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 23 | Гамбургер-меню | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 24 | About page | skip | skip | skip | skip | skip |
+| 25 | Адаптивность | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 26 | Навигация браузера | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 27 | Бюджет производительности | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 28 | Сброс состояния приложения | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 29 | Ссылки на соцсети | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-`24-about-page` помечен `skip` во всех трёх реализациях: About ведёт на
+`24-about-page` помечен `skip` во всех реализациях: About ведёт на
 `saucelabs.com`, который отдаёт 403.
 
 ## 🚀 Запуск
@@ -61,6 +61,23 @@ pytest tests/e2e/
 pytest tests/e2e/ --browser chromium
 pytest tests/e2e/ --browser firefox
 pytest tests/e2e/ --browser webkit
+```
+
+### C# (Playwright for .NET + xUnit)
+
+```bash
+cd csharp/PlaywrightTests
+dotnet playwright install chromium        # один раз на машину
+dotnet test
+dotnet test --filter "FullyQualifiedName~SortByPriceTests"
+```
+
+### Java (Selenium + JUnit 5 + Maven)
+
+```bash
+cd java
+mvn test
+mvn test -Dtest=SortByPriceTest
 ```
 
 ## 📊 Архитектура
@@ -89,6 +106,21 @@ playwright-tests/
 │       ├── constants.py       # Таймауты
 │       ├── e2e/               # 29 тестовых файлов (01-29)
 │       └── page_objects/      # login_page, inventory_page, cart_page, checkout_page
+├── csharp/                  # Набор на C# (Playwright for .NET + xUnit)
+│   ├── README.md                # Стек, запуск, соответствие сценариев
+│   └── PlaywrightTests/
+│       ├── Config/              # Таймауты, креди, бюджеты производительности
+│       ├── Fixtures/            # Общий chromium, контекст+страница на тест
+│       ├── Infrastructure/      # E2eTestBase (логин-хелперы, assert-хелперы)
+│       ├── PageObjects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
+│       └── Tests/E2e/           # 29 классов сценариев (номер — в Trait)
+├── java/                    # Набор на Java (Selenium + JUnit 5 + Maven)
+│   ├── README.md                # Стек, запуск, соответствие сценариев
+│   └── src/test/java/
+│       ├── config/              # TestConfig (креды, таймауты из env)
+│       ├── base/                # BaseTest (headless Chrome, хелперы)
+│       ├── pageobjects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
+│       └── e2e/                 # 29 классов сценариев
 ├── README.md
 ├── ENV_CONFIG.md             # Документация по env vars
 └── TEST_REVIEW_2026-10-12.md # Разбор качества тестов (5 заходов)
@@ -129,16 +161,23 @@ SAUCE_DEMO_BASE_URL=https://www.saucedemo.com
 
 | Реализация | Собрано | Passed | Skipped |
 |---|---|---|---|
-| TypeScript | 57 | 56 | 1 (`24-about-page`, баг SauceDemo) |
-| JavaScript | 57 | 56 | 1 (`24-about-page`, баг SauceDemo) |
-| Python | 61 | 60 | 1 (`24-about-page`, баг SauceDemo) |
+| TypeScript | 58 | 57 | 1 (`24-about-page`, баг SauceDemo) |
+| JavaScript | 58 | 57 | 1 (`24-about-page`, баг SauceDemo) |
+| Python | 62 | 61 | 1 (`24-about-page`, баг SauceDemo) |
+| C# | 58 | 57 | 1 (`About page`, баг SauceDemo) |
+| Java | 58 | 57 | 1 (`About page`, баг SauceDemo) |
 
 Firefox и WebKit сконфигурированы, но в последнем прогоне не проверялись.
 
 ## 🛠 Стек
 
 - **Playwright** — v1.40+
+- **Playwright for .NET** — v1.63 (C#-набор, xUnit)
 - **Node.js** — v18+
 - **Python** — v3.12+
 - **pytest** — v9+
 - **pytest-rerunfailures** — v16+
+- **Java** — 17+
+- **Selenium** — 4.38 (Java-набор)
+- **JUnit 5** — 5.11
+- **Maven** — 3.6+

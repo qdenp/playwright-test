@@ -1,11 +1,11 @@
 ---
 name: playwright-tests
-description: Работа с e2e-тестами SauceDemo в playwright-tests/ (TS, JS, Python). Использовать при правке спеков, page objects, фикстур, запуске тестов, ревью качества тестов и синхронизации трёх реализаций.
+description: Работа с e2e-тестами SauceDemo в playwright-tests/ (TS, JS, Python, C#, Java). Использовать при правке спеков, page objects, фикстур, запуске тестов, ревью качества тестов и синхронизации реализаций.
 ---
 
 # Skill: playwright-tests
 
-Набор e2e-тестов [SauceDemo](https://www.saucedemo.com) в трёх реализациях.
+Набор e2e-тестов [SauceDemo](https://www.saucedemo.com) в пяти реализациях.
 
 ---
 
@@ -16,6 +16,8 @@ description: Работа с e2e-тестами SauceDemo в playwright-tests/ (
 | TypeScript | `playwright-tests/typescript/` | `tests/page-objects/*.ts` | `tests/e2e/*.spec.ts` | `playwright.config.ts`, `tests/config.ts` |
 | JavaScript | `playwright-tests/js/` | `tests/page-objects/*.js` | `tests/e2e/*.spec.js` | `tests/config.js` |
 | Python | `playwright-tests/python/` | `tests/page_objects/*.py` | `tests/e2e/test-*.py` | `pytest.ini`, `tests/constants.py` |
+| C# | `playwright-tests/csharp/` | `PlaywrightTests/PageObjects/*.cs` | `PlaywrightTests/Tests/E2e/*.cs` | `PlaywrightTests/Config/*.cs`, `xunit.runner.json` |
+| Java | `playwright-tests/java/` | `src/test/java/pageobjects/*.java` | `src/test/java/e2e/*Test.java` | `pom.xml`, `src/test/java/config/TestConfig.java` |
 
 Общие элементы TS/JS:
 
@@ -69,14 +71,40 @@ cd playwright-tests\python
 pytest                                        # все
 pytest tests/e2e/test-20-full-purchase-flow.py
 pytest -k login -v
+
+# C# (Playwright for .NET + xUnit)
+cd playwright-tests\csharp\PlaywrightTests
+playwright install chromium                   # один раз на машину
+dotnet test
+dotnet test --filter "FullyQualifiedName~SortByPriceTests"
+
+# Java (Selenium + JUnit 5 + Maven)
+cd playwright-tests\java
+mvn test
+mvn test -Dtest=SortByPriceTest
 ```
 
 Таймауты/ретраи: TS — `actionTimeout: 60000`, `timeout: 120000`, ретраи только на CI.
 Python — `--reruns 3 --reruns-delay 1`.
+C# — `Timeouts.Action` (60s) на действие, `Timeouts.Navigation` (30s) на навигацию,
+2 параллельных потока (`xunit.runner.json`); ретраев нет.
+Java — константы в `TestConfig` (DEFAULT/SLOW, SLOW для `performance_glitch_user`),
+surefire без параллельного запуска; ретраев нет.
 
 ---
 
-## Известное состояние (актуально на 2026-10-12)
+## Известное состояние (актуально на 2026-10-13)
+
+### Окружение с перехватом TLS
+
+В сетях, где TLS терминируется прокси со своим CA (в этом образе —
+`Cloudflare TLS proxy-everything Intercept CA`), Chromium не читает системный
+trust store, и все наборы падают с `net::ERR_CERT_AUTHORITY_INVALID`. Это НЕ
+дефект тестов. Решения:
+
+- Добавить CA прокси в NSS-базу пользователя: `certutil -A -d sql:$HOME/.pki/nssdb -t "CT,," -n proxy-ca -i <ca.crt>` ( libnss3-tools) — тогда TS/JS/Python-наборы идут без правок конфигов (проверено 2026-10-13).
+- Либо включить `ignoreHTTPSErrors` в конфиге прогона (так работает C#-набор: `SAUCE_DEMO_IGNORE_HTTPS_ERRORS=true` по умолчанию; в Java — `--ignore-certificate-errors`).
+- Системный trust store тоже стоит обновить (`update-ca-certificates`) — на него смотрят curl/git/JVM.
 
 | Проблема | Где | Статус |
 |---|---|---|
@@ -101,9 +129,11 @@ Python — `--reruns 3 --reruns-delay 1`.
 
 | Набор | Собрано (chromium) |
 |---|---|
-| TypeScript | 57 (56 passed + 1 skipped) |
-| JavaScript | 57 (56 passed + 1 skipped) |
-| Python | 61 (60 passed + 1 skipped) |
+| TypeScript | 58 (57 passed + 1 skipped) |
+| JavaScript | 58 (57 passed + 1 skipped) |
+| Python | 62 (61 passed + 1 skipped) |
+| C# (Playwright for .NET) | 58 (57 passed + 1 skipped) |
+| Java (Selenium + JUnit 5) | 58 (57 passed + 1 skipped) |
 
 TS и JS паритны. Python собирает больше тестов из-за параметризации теста 20 по
 5 пользователям (TS/JS делают тот же перебор циклом внутри одного теста) и 8 кейсов
@@ -123,16 +153,19 @@ TS и JS паритны. Python собирает больше тестов из-
 | Вложенные `cartBadge.locator('.shopping_cart_badge')` вместо `cartBadgeCount`; магическое `6` вместо `EXPECTED_PRODUCT_COUNT` | TS, JS | **Закрыта 2026-10-12:** заменены на стандартизированный локатор и именованную константу |
 | Ложный запрет на PDF-тест в правилах: «экспорт PDF отсутствует в SauceDemo» | `AGENTS.md`, скил, workflows, README старого формата | **Закрыта 2026-10-13:** пробой подтверждено — кнопка "Generate PDF order" есть на `checkout-complete.html`, тест `22-export-pdf` легитимен; правила исправлены |
 
-### Baseline на 2026-10-12 (chromium)
+### Baseline на 2026-10-13 (chromium, доверенный сертификат прокси)
 
 | Набор | Команда | Результат |
 |---|---|---|
-| TypeScript | `npx tsc --noEmit` + `npx playwright test --project=chromium` | tsc чистый, **55 passed / 1 skipped** |
-| JavaScript | `npx playwright test --project=chromium` | **55 passed / 1 skipped** |
-| Python | `pytest` | **60 passed / 1 skipped** |
+| TypeScript | `npx tsc --noEmit` + `npx playwright test --project=chromium` | tsc чистый, **57 passed / 1 skipped** (перепрогон 2026-10-13) |
+| JavaScript | `npx playwright test --project=chromium` | **57 passed / 1 skipped** (перепрогон 2026-10-13) |
+| Python | `pytest` | **61 passed / 1 skipped** (перепрогон 2026-10-13) |
+| C# (Playwright for .NET) | `dotnet test` (из `playwright-tests/csharp/PlaywrightTests`) | **57 passed / 1 skipped** (проверено 2026-10-13) |
+| Java (Selenium + JUnit 5) | `mvn test` (из `playwright-tests/java`) | **57 passed / 1 skipped** (проверено 2026-10-13) |
 
-Все три набора перепрогнаны 2026-10-12 после снятия `auto: true` с фикстуры и
-переписывания теста 12 — результат тот же, значит ни один тест не зависел
+Все пять наборов перепрогнаны 2026-10-13 целиком — результат сходится с таблицей
+паритета выше. Историческая справка: после снятия `auto: true` с фикстуры и
+переписывания теста 12 (2026-10-12) результат был тем же — ни один тест не зависел
 от неявного авто-логина.
 
 Важно про паритет PO: JS-фикстура отдаёт только `{ page, loginPage, inventoryPage }`,
@@ -184,19 +217,31 @@ Python-фикстура возвращает только `page`, `login_page`, 
 
 ---
 
-## Синхронизация трёх реализаций
+## Синхронизация реализаций
 
-**Все три реализации намеренны** (практика на разных стеках + портфолио). Никогда не
-предлагай удалить JS или Python, свести всё к одному языку или объявить какую-либо
+**Все реализации намеренны** (практика на разных стеках + портфолио). Никогда не
+предлагай удалить JS, Python или C#, свести всё к одному языку или объявить какую-либо
 реализацию устаревшей. Цель — паритет, а не сокращение числа реализаций.
 
 При правке теста `NN-topic`:
 
 1. Правь TS — он эталонный.
 2. Отрази изменение в `js/tests/e2e/NN-topic.spec.js` и `python/tests/e2e/test-NN-topic.py`.
-3. Если метод PO меняется — он меняется во всех трёх `page-objects` / `page_objects`.
+3. Если метод PO меняется — он меняется во всех трёх `page-objects` / `page_objects`
+   (и в `csharp/PlaywrightTests/PageObjects`, если он там есть).
 4. Если реализацию осознанно не синхронизируешь — запиши расхождение в таблицу
    «Известное состояние» выше с причиной.
 5. Прогони проверки из `AGENTS.md` §2 для каждой затронутой реализации.
-6. Проверяй паритет набора: число файлов `NN-topic` в трёх реализациях должно совпадать
-   (сейчас 29 / 29 / 29; в Python дополнительно `__init__.py`).
+6. Проверяй паритет набора: число файлов `NN-topic` во всех реализациях должно совпадать
+   (сейчас 29 / 29 / 29 / 29; в Python дополнительно `__init__.py`).
+7. C#-набор не зеркалится в трёх других и наоборот: у него свой раннер и свой стэк,
+   классы в `Tests/E2e/` соответствуют событиям по смыслу, номер сценария лежит в
+   трейте `[Trait("Scenario", "NN-topic")]`. Осознанные расхождения C#-набора
+   (контекст на каждый тест, `IgnoreHTTPSErrors` для прокси-перехвата TLS) описаны
+   в `playwright-tests/csharp/README.md`.
+8. Java-набор (Selenium + JUnit 5) — тоже отдельная реализация со своим раннером:
+   29 классов `*Test.java` в `src/test/java/e2e/`, номера сценариев не в именах,
+   `@Disabled` вместо `test.skip`. Расхождения Java-стека (headless Chrome
+   `--ignore-certificate-errors` из-за TLS-прокси образа, скачивание PDF через
+   prefs в tmp-каталог, ожидания стабилизации меню вместо actionability Playwright)
+   описаны в `playwright-tests/java/README.md`.
