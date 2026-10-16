@@ -1,0 +1,19 @@
+{
+  "name": "saucedemo-playwright-js",
+  "version": "1.0.0",
+  "description": "Playwright e2e tests for Sauce Demo",
+  "type": "module",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:all-browsers": "npx playwright test --project=chromium --project=firefox --project=webkit",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.9.0"
+  }
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/playwright-test/" />
+  <meta charset="utf-8" />
+  <link rel="icon" href="favicon.ico" />
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Sauce Labs Swag Labs app" />
+  <link rel="apple-touch-icon" href="icon-192x192.png" />
+  <link rel="manifest" href="manifest.json"/>
+
+  <!-- SPA fallback for GitHub Pages subpath -->
+  <script type="text/javascript">
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) {
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+                l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500">
+  <title>Swag Labs</title>
+  <script type="module" crossorigin src="/playwright-test/assets/index-D3OxT1jE.js"></script>
+  <link rel="stylesheet" crossorigin href="/playwright-test/assets/index-aSZoiKGF.css">
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <!-- Pre-populate localStorage with product catalog data -->
+  <!-- This ensures the catalog is available even after localStorage.clear() -->
+  <script>
+    // Product catalog data (from SauceDemo)
+    const products = [
+      {
+        "id": "sauce_labs_backpack",
+        "name": "Sauce Labs Backpack",
+        "price": 29.99,
+        "description": "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with ultra-laptop protection.",
+        "image": "images/saucelabs_backpack.jpg"
+      },
+      {
+        "id": "sauce_labs_bike_light",
+        "name": "Sauce Labs Bike Light",
+        "price": 9.99,
+        "description": "A red light isn't the desired state in testing but it sure helps when riding your bike at night. Water-resistant with 3 lighting modes, 1 AAA battery included.",
+        "image": "images/sauce_labs_bike_light.jpg"
+      },
+      {
+        "id": "sauce_labs_fleece_jacket",
+        "name": "Sauce Labs Fleece Jacket",
+        "price": 49.99,
+        "description": "Get your testing on in this stylish and full-sleeve fleece jacket. Available in 'blue' but who doesn't love a fleece jacket?",
+        "image": "images/sauce_labs_fleece_jacket.jpg"
+      },
+      {
+        "id": "sauce_labs_light_bike",
+        "name": "Sauce Labs Light Bike",
+        "price": 15.99,
+        "description": "Lightweight internal gear hub in an alloy frame for a sporty look. 3 speeds so you can take on the streets or the bike trail.",
+        "image": "images/sauce_labs_light_bike.jpg"
+      },
+      {
+        "id": "sauce_labs_bolt_tee",
+        "name": "Sauce Labs Bolt T-Shirt",
+        "price": 15.99,
+        "description": "Get your testing on in this stylish full-sleeve bolt t-shirt. Available in 'blue' but who doesn't love a bolt t-shirt?",
+        "image": "images/sauce_labs_bolt_tee.jpg"
+      },
+      {
+        "id": "sauce_labs_fast_bike",
+        "name": "Sauce Labs Fast Bike",
+        "price": 53.99,
+        "description": "A racing bicycle copper alloy frame with an alloy internal gear hub. For when you need to get somewhere fast.",
+        "image": "images/sauce_labs_fast_bike.jpg"
+      }
+    ];
+
+    // Pre-populate localStorage with product catalog
+    // This ensures the catalog is available even after localStorage.clear()
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        // SauceDemo stores products under keys like 'saucedemo_custom_user_<username>'
+        // We pre-populate for the default user
+        const productData = JSON.stringify({ products: products });
+        localStorage.setItem('saucedemo_custom_user_standard_user', productData);
+        localStorage.setItem('saucedemo_custom_user_problem_user', productData);
+        localStorage.setItem('saucedemo_custom_user_performance_glitch_user', productData);
+        localStorage.setItem('saucedemo_custom_user_error_user', productData);
+        localStorage.setItem('saucedemo_custom_user_visual_user', productData);
+        localStorage.setItem('saucedemo_custom_user_locked_out_user', productData);
+      } catch (e) {
+        // localStorage might not be available
+      }
+    }
+  </script>
+</body>
+</html>

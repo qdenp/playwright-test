@@ -1,0 +1,24 @@
+import { test, expect } from "../fixtures";
+
+/**
+ * Removing a product from the cart
+ */
+test("Removing a product from the cart", async ({ authenticatedPage }) => {
+  const { inventoryPage, cartPage } = authenticatedPage;
+
+  await inventoryPage.addProductToCart(0);
+  await inventoryPage.addProductToCart(1);
+  await expect(inventoryPage.cartBadgeCount).toHaveText("2");
+
+  await inventoryPage.openCart();
+  await cartPage.waitForPageLoad();
+  await expect(cartPage.cartItems).toHaveCount(2);
+
+  await cartPage.removeItem(0);
+  await expect(cartPage.cartItems).toHaveCount(1);
+
+  // Go back to inventory and verify badge reflects the removal
+  await cartPage.continueShopping();
+  await inventoryPage.waitForPageLoad();
+  await expect(inventoryPage.cartBadgeCount).toHaveText("1");
+});
