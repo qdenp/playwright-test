@@ -1,0 +1,21 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "permission": {
+    "bash": {
+      "npx playwright *": "allow",
+      "npx tsc *": "allow",
+      "npx playwright install *": "allow",
+      "pytest *": "allow",
+      "python -m pytest *": "allow",
+      "npm test *": "allow",
+      "npm run test*": "allow",
+      "npm install *": "allow"
+    },
+    "edit": {
+      "playwright-tests/**": "allow",
+      "AGENTS.md": "ask",
+      ".kilo/**": "ask",
+      "*": "ask"
+    }
+  }
+}

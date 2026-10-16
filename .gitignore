@@ -1,0 +1,25 @@
+bin/
+obj/
+.vs/
+*.user
+.idea/
+TestResults/
+
+# IDE / tool cache
+.gigacode/
+.gigacode_vsc/
+.gigaide/
+.agent-cache/
+
+# Playwright / pytest generated output
+playwright-report/
+**/playwright-report/
+test-results/
+**/test-results/
+test_results/
+**/test_results/
+reports/
+**/reports/
+.pytest_cache/
+**/.pytest_cache/
+**/__pycache__/

@@ -1,0 +1,131 @@
+/**
+ * Test configuration
+ */
+export const config = {
+  username: process.env.SAUCE_DEMO_USERNAME || "standard_user",
+  password: process.env.SAUCE_DEMO_PASSWORD || "secret_sauce",
+  baseUrl: process.env.SAUCE_DEMO_BASE_URL || "https://www.saucedemo.com",
+};
+
+/**
+ * Timeouts for waits
+ */
+export const timeouts = {
+  DEFAULT: 10000,
+  NAVIGATION: 30000,
+  /** performance_glitch_user is deliberately slow - needs room to log in */
+  SLOW: 60000,
+  ERROR: 3000,
+  ASSERT: 5000,
+};
+
+/** Expected number of products on the inventory page */
+export const EXPECTED_PRODUCT_COUNT = 6;
+
+/** Expected text on the order completion page */
+export const COMPLETE_ORDER_TEXT = "Thank you for your order";
+
+/**
+ * Performance budgets for load-time assertions (in ms).
+ * Separate from timeouts — these are business thresholds, not wait limits.
+ */
+export const performanceBudgets = {
+  LOGIN_PAGE: 3000,
+  INVENTORY_PAGE: 3000,
+  PRODUCTS_LIST: 5000,
+  CART_PAGE: 4000,
+  AVERAGE_LOAD: 5000,
+  IMAGES: 3000,
+};
+
+/**
+ * All valid users and their passwords
+ */
+export const users = [
+  {
+    username: "standard_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_STANDARD || "secret_sauce",
+  },
+  {
+    username: "problem_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_PROBLEM || "secret_sauce",
+  },
+  {
+    username: "performance_glitch_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_PERFORMANCE || "secret_sauce",
+  },
+  {
+    username: "error_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_ERROR || "secret_sauce",
+  },
+  {
+    username: "visual_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_VISUAL || "secret_sauce",
+  },
+  {
+    username: "locked_out_user",
+    password: process.env.SAUCE_DEMO_PASSWORD_LOCKED || "secret_sauce",
+  },
+];
+
+/**
+ * Parameters for the parameterised test
+ */
+export const loginTests = [
+  {
+    username: "standard_user",
+    password: "secret_sauce",
+    shouldLogin: true,
+    expectedTitle: "Products",
+    expectedError: null,
+  },
+  {
+    username: "problem_user",
+    password: "secret_sauce",
+    shouldLogin: true,
+    expectedTitle: "Products",
+    expectedError: null,
+  },
+  {
+    username: "performance_glitch_user",
+    password: "secret_sauce",
+    shouldLogin: true,
+    expectedTitle: "Products",
+    expectedError: null,
+  },
+  {
+    username: "error_user",
+    password: "secret_sauce",
+    shouldLogin: true,
+    expectedTitle: "Products",
+    expectedError: null,
+  },
+  {
+    username: "visual_user",
+    password: "secret_sauce",
+    shouldLogin: true,
+    expectedTitle: "Products",
+    expectedError: null,
+  },
+  {
+    username: "locked_out_user",
+    password: "secret_sauce",
+    shouldLogin: false,
+    expectedTitle: null,
+    expectedError: "locked out",
+  },
+  {
+    username: "standard_user",
+    password: "wrong_password",
+    shouldLogin: false,
+    expectedTitle: null,
+    expectedError: "do not match",
+  },
+  {
+    username: "",
+    password: "secret_sauce",
+    shouldLogin: false,
+    expectedTitle: null,
+    expectedError: "Username is required",
+  },
+];

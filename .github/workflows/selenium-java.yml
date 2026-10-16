@@ -1,0 +1,54 @@
+name: Selenium Tests (Java)
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'playwright-tests/java/**'
+      - '.github/workflows/selenium-java.yml'
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - 'playwright-tests/java/**'
+      - '.github/workflows/selenium-java.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests (Chrome)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: java-maven-${{ runner.os }}-${{ hashFiles('playwright-tests/java/pom.xml') }}
+          restore-keys: |
+            java-maven-${{ runner.os }}-
+
+      - name: Run Maven tests
+        run: mvn test -Dheadless=true
+        working-directory: ./playwright-tests/java
+        env:
+          SAUCE_DEMO_USERNAME: standard_user
+          SAUCE_DEMO_PASSWORD: secret_sauce
+          SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-test-results
+          path: playwright-tests/java/target/surefire-reports/
+          retention-days: 30
+          if-no-files-found: ignore
