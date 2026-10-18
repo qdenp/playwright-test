@@ -196,6 +196,7 @@ Firefox и WebKit сконфигурированы, но в последнем �
 - **pytest** — v9+
 - **pytest-rerunfailures** — v16+
 - **Java** — 17+
-- **Selenium** — 4.38 (Java-набор)
+- **Selenium** — 4.38 (Java Selenium-набор)
+- **Playwright for Java** — v1.50 (Java Playwright-набор)
 - **JUnit 5** — 5.11
 - **Maven** — 3.6+
