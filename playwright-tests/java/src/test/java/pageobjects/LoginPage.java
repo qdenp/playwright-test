@@ -122,28 +122,22 @@ public class LoginPage {
     }
 
     public void closeHamburgerMenu() {
-        try {
-            String hidden = (String) ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
-                "var el = document.querySelector('.bm-menu-wrap');"
-                + "return el !== null ? el.getAttribute('aria-hidden') : null;");
-            if ("false".equals(hidden)) {
-                WebElement closeBtn = driver.findElement(closeButton);
-                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
-                    "arguments[0].click();", closeBtn);
-                wait.until(d -> {
-                    try {
-                        String h = (String) ((org.openqa.selenium.JavascriptExecutor) d).executeScript(
-                            "var el = document.querySelector('.bm-menu-wrap');"
-                            + "return el !== null ? el.getAttribute('aria-hidden') : null;");
-                        return "true".equals(h);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                });
-            }
-        } catch (Exception e) {
-            // Menu might already be closed
+        if (!isHamburgerMenuOpen()) {
+            return;
         }
+        WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+            "arguments[0].click();", closeBtn);
+        wait.until(d -> {
+            try {
+                String h = (String) ((org.openqa.selenium.JavascriptExecutor) d).executeScript(
+                    "var el = document.querySelector('.bm-menu-wrap');"
+                    + "return el !== null ? el.getAttribute('aria-hidden') : null;");
+                return "true".equals(h);
+            } catch (Exception e) {
+                return false;
+            }
+        });
     }
 
     public boolean isHamburgerMenuOpen() {

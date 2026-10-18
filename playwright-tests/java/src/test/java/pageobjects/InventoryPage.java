@@ -205,29 +205,22 @@ public class InventoryPage {
     }
 
     public void closeHamburgerMenu() {
-        try {
-            // Check if menu is open via aria-hidden (isDisplayed fails in Chrome 155)
-            String hidden = (String) ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
-                "var el = document.querySelector('.bm-menu-wrap');"
-                + "return el !== null ? el.getAttribute('aria-hidden') : null;");
-            if ("false".equals(hidden)) {
-                WebElement closeBtn = driver.findElement(closeButton);
-                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
-                    "arguments[0].click();", closeBtn);
-                wait.until(d -> {
-                    try {
-                        String h = (String) ((org.openqa.selenium.JavascriptExecutor) d).executeScript(
-                            "var el = document.querySelector('.bm-menu-wrap');"
-                            + "return el !== null ? el.getAttribute('aria-hidden') : null;");
-                        return "true".equals(h);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                });
-            }
-        } catch (Exception e) {
-            // Menu might already be closed
+        if (!isCloseButtonVisible()) {
+            return;
         }
+        WebElement closeBtn = driver.findElement(closeButton);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+            "arguments[0].click();", closeBtn);
+        wait.until(d -> {
+            try {
+                String h = (String) ((org.openqa.selenium.JavascriptExecutor) d).executeScript(
+                    "var el = document.querySelector('.bm-menu-wrap');"
+                    + "return el !== null ? el.getAttribute('aria-hidden') : null;");
+                return "true".equals(h);
+            } catch (Exception e) {
+                return false;
+            }
+        });
     }
 
     public void resetAppState() {
