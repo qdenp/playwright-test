@@ -11,6 +11,11 @@ TestResults/
 .gigaide/
 .agent-cache/
 
+# Agent / editor state
+AGENTS.md
+.kilo/
+.slim/
+
 # Playwright / pytest generated output
 playwright-report/
 **/playwright-report/

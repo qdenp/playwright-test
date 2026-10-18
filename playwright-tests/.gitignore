@@ -23,6 +23,9 @@ build/
 .env.*
 !.env.example
 
+# Agent / editor state
+.gigaide/
+
 # IDE
 .vscode/
 .idea/
