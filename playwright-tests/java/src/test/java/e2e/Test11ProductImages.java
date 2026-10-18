@@ -8,6 +8,7 @@ import base.BaseTest;
 import config.TestConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import pageobjects.InventoryPage;
 
 /**
@@ -26,6 +27,9 @@ public class Test11ProductImages extends BaseTest {
         for (int i = 0; i < count; i++) {
             var product = inventoryPage.getProductElement(i);
             var img = product.findElement(inventoryPage.productImages);
+            // Web-first wait: auto-retries until the image is actually visible
+            // (lazy-loading or slow CI may delay image rendering).
+            wait.until(ExpectedConditions.visibilityOf(img));
             assertTrue(img.isDisplayed(), "image #" + i + " is visible");
             String src = img.getAttribute("src");
             assertFalse(src == null || src.isEmpty(), "image #" + i + " has a src attribute");

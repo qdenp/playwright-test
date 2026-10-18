@@ -35,6 +35,11 @@ jobs:
           SAUCE_DEMO_USERNAME: standard_user
           SAUCE_DEMO_PASSWORD: secret_sauce
           SAUCE_DEMO_PASSWORDS: standard_user:secret_sauce,problem_user:secret_sauce,performance_glitch_user:secret_sauce,error_user:secret_sauce,visual_user:secret_sauce,locked_out_user:secret_sauce
+          # Tighten timeouts for CI: most tests complete in <10s locally;
+          # 30s gives generous headroom for a 2x-3x CI slowdown while failing
+          # faster (vs the 90s default) if a test truly hangs.
+          SAUCE_DEMO_TIMEOUT: 30
+          SAUCE_DEMO_NAVIGATION_TIMEOUT: 30
 
       - name: Upload test results
         if: always()
