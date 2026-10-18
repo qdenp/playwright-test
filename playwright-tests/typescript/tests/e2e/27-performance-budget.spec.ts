@@ -80,8 +80,7 @@ test.describe('Performance Budget', () => {
     await inventoryPage.waitForPageLoad();
 
     const startTime = Date.now();
-    const images = page.locator('.inventory_item_img');
-    await images.first().waitFor({ state: 'visible' });
+    await inventoryPage.productImages.first().waitFor({ state: 'visible' });
     const loadTime = Date.now() - startTime;
 
     expect(loadTime).toBeLessThan(performanceBudgets.IMAGES);

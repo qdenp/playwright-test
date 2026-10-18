@@ -1,4 +1,5 @@
 import { test, expect } from "../fixtures";
+import { LoginPage } from "../page-objects/LoginPage";
 import { timeouts } from "../config";
 
 /**
@@ -15,15 +16,10 @@ test("Logout - signing out of the account", async ({ authenticatedPage }) => {
   await inventoryPage.clickLogout();
 
   // Logging out brings the login form back
-  await expect(page.locator("#user-name")).toBeVisible({
-    timeout: timeouts.DEFAULT,
-  });
-  await expect(page.locator("#password")).toBeVisible({
-    timeout: timeouts.DEFAULT,
-  });
-  await expect(page.locator("#login-button")).toBeVisible({
-    timeout: timeouts.DEFAULT,
-  });
+  const loginPage = new LoginPage(page);
+  await expect(loginPage.usernameInput).toBeVisible({ timeout: timeouts.DEFAULT });
+  await expect(loginPage.passwordInput).toBeVisible({ timeout: timeouts.DEFAULT });
+  await expect(loginPage.loginButton).toBeVisible({ timeout: timeouts.DEFAULT });
 
   // The inventory page is not reachable any more
   await expect(inventoryPage.headerTitle).toBeHidden();
