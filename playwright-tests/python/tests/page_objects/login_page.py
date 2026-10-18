@@ -5,7 +5,7 @@ Page Object for the login page
 import os
 from playwright.sync_api import Page, expect
 
-from constants import DEFAULT_TIMEOUT, ERROR_TIMEOUT, NAVIGATION_TIMEOUT
+from constants import DEFAULT_TIMEOUT, NAVIGATION_TIMEOUT
 
 # Credentials from environment variables (with defaults)
 DEFAULT_USERNAME = os.getenv("SAUCE_DEMO_USERNAME", "standard_user")
@@ -53,11 +53,7 @@ class LoginPage:
         return self.error_message.inner_text()
 
     def is_error_message_visible(self) -> bool:
-        try:
-            self.error_message.wait_for(state="visible", timeout=ERROR_TIMEOUT)
-            return True
-        except Exception:
-            return False
+        return self.error_message.is_visible()
 
     def wait_for_error_message(self, timeout: int = DEFAULT_TIMEOUT):
         """Explicitly wait for the error message with auto-retry"""
