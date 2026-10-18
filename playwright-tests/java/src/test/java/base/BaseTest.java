@@ -175,6 +175,26 @@ public abstract class BaseTest {
         return loginAs(TestConfig.USERNAME, TestConfig.PASSWORD);
     }
 
+    /**
+     * Clear the session and force a fresh login within the same browser.
+     *
+     * <p>Selenium/Chrome cannot reliably re-login in the same session after
+     * {@code deleteAllCookies()} alone: Chrome's bfcache serves a cached copy
+     * of the SPA that keeps its in-memory React state (inventory screen) and
+     * never re-evaluates the auth cookie, so {@code LoginPage.open()} waits
+     * forever for the username field that is never rendered. Navigating to
+     * {@code about:blank} invalidates the bfcache entry, so the subsequent
+     * {@code driver.get(BASE_URL)} fetches a fresh document from the server.</p>
+     *
+     * <p>Unlike {@link #restartBrowser()}, this does not spawn a new Chrome
+     * process per iteration, which is both faster and avoids resource
+     * exhaustion on CI workers.</p>
+     */
+    protected void resetToLoginPage() {
+        driver.manage().deleteAllCookies();
+        driver.get("about:blank");
+    }
+
     /** Change the viewport of the browser window, e.g. 375x667 for a phone. */
     protected void setViewport(int width, int height) {
         driver.manage().window().setSize(new Dimension(width, height));

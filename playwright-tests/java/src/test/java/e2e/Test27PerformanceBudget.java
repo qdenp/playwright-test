@@ -14,12 +14,14 @@ import pageobjects.InventoryPage;
 /**
  * Performance budget tests, mirroring the TypeScript reference suite.
  *
- * Measurements use warmup + averaging to avoid cold-start noise (AGENTS.md §3.2).
- *
- * Inventory-page measurements use restartBrowser() + loginAsStandardUser() for
- * each run, because Selenium/Chrome cannot reliably re-login within the same
- * browser session (Chrome serves a cached login page where form fields don't
- * receive input). The reference Playwright suites re-login via SPA navigation.
+ * <p>Measurements use warmup + averaging to avoid cold-start noise
+ * (AGENTS.md §3.2). Re-login uses {@code resetToLoginPage()} (cookie deletion
+ * plus a navigation to about:blank to invalidate Chrome's bfcache) instead of
+ * page.reload() because the test site is a static SPA on GitHub Pages:
+ * /inventory.html triggers a 404 fallback that redirects to / (login).
+ * page.reload() lands on the login page after cookie deletion because the
+ * SPA serves its cached in-memory state. {@code resetToLoginPage()} forces
+ * a fresh page load from the server.</p>
  */
 public class Test27PerformanceBudget extends BaseTest {
 
@@ -40,19 +42,18 @@ public class Test27PerformanceBudget extends BaseTest {
 
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.LOGIN_PAGE_BUDGET),
-            "the login page took " + avg + " ms to load on average");
+            "the login page took " + avg + " ms on average");
     }
 
     @Test
     @DisplayName("The inventory page loads within the budget after login")
     void inventoryPageLoadsWithinBudget() {
-        // Warmup — fresh browser and login to prime caches
-        restartBrowser();
+        // Warmup — first login (fresh browser from @BeforeEach)
         InventoryPage inventoryPage = loginAsStandardUser();
 
         long[] loadTimes = new long[RUNS];
         for (int i = 0; i < RUNS; i++) {
-            restartBrowser();
+            resetToLoginPage();
             long start = System.nanoTime();
             inventoryPage = loginAsStandardUser();
             loadTimes[i] = elapsedMillis(start);
@@ -61,20 +62,18 @@ public class Test27PerformanceBudget extends BaseTest {
         assertTrue(inventoryPage.isFirstProductVisible(), "the catalogue is rendered");
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.INVENTORY_BUDGET),
-            "the inventory page took " + avg + " ms to load on average");
+            "the inventory page took " + avg + " ms on average");
     }
 
     @Test
     @DisplayName("The whole catalogue loads within the budget")
     void wholeCatalogueLoadsWithinBudget() {
         // Warmup
-        restartBrowser();
-        loginAsStandardUser();
+        InventoryPage inventoryPage = loginAsStandardUser();
 
         long[] loadTimes = new long[RUNS];
-        InventoryPage inventoryPage = null;
         for (int i = 0; i < RUNS; i++) {
-            restartBrowser();
+            resetToLoginPage();
             long start = System.nanoTime();
             inventoryPage = loginAsStandardUser();
             loadTimes[i] = elapsedMillis(start);
@@ -84,14 +83,13 @@ public class Test27PerformanceBudget extends BaseTest {
         assertEquals(TestConfig.EXPECTED_PRODUCT_COUNT, count);
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.CATALOGUE_BUDGET),
-            "the catalogue took " + avg + " ms to load on average");
+            "the catalogue took " + avg + " ms on average");
     }
 
     @Test
     @DisplayName("The cart page loads within the budget")
     void cartPageLoadsWithinBudget() {
-        // Warmup — fresh browser, login, add product, open cart, return to inventory
-        restartBrowser();
+        // Warmup — login, add product, open cart, return to inventory
         InventoryPage inventoryPage = loginAsStandardUser();
         inventoryPage.addProductToCart(0);
         inventoryPage.openCart();
@@ -113,24 +111,24 @@ public class Test27PerformanceBudget extends BaseTest {
 
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.CART_BUDGET),
-            "the cart page took " + avg + " ms to load on average");
+            "the cart page took " + avg + " ms on average");
     }
 
     @Test
     @DisplayName("Repeated logins keep a stable load time")
     void loadTimeStaysConsistent() {
-        // Warmup
-        restartBrowser();
+        // Warmup — first login (fresh browser)
         InventoryPage inventoryPage = loginAsStandardUser();
 
         long[] loadTimes = new long[RUNS];
         for (int i = 0; i < RUNS; i++) {
-            restartBrowser();
+            resetToLoginPage();
             long start = System.nanoTime();
             inventoryPage = loginAsStandardUser();
             loadTimes[i] = elapsedMillis(start);
         }
 
+        assertTrue(inventoryPage.isFirstProductVisible(), "run #" + RUNS + " rendered the catalogue");
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.CATALOGUE_BUDGET),
             "the average load time is " + avg + " ms");
@@ -140,13 +138,12 @@ public class Test27PerformanceBudget extends BaseTest {
     @DisplayName("The product images load within the budget")
     void productImagesLoadWithinBudget() {
         // Warmup
-        restartBrowser();
         InventoryPage inventoryPage = loginAsStandardUser();
         wait.until(ExpectedConditions.visibilityOfElementLocated(inventoryPage.productImages));
 
         long[] loadTimes = new long[RUNS];
         for (int i = 0; i < RUNS; i++) {
-            restartBrowser();
+            resetToLoginPage();
             long start = System.nanoTime();
             inventoryPage = loginAsStandardUser();
             wait.until(ExpectedConditions.visibilityOfElementLocated(inventoryPage.productImages));
@@ -157,7 +154,7 @@ public class Test27PerformanceBudget extends BaseTest {
         assertEquals(TestConfig.EXPECTED_PRODUCT_COUNT, count);
         long avg = (loadTimes[0] + loadTimes[1] + loadTimes[2]) / 3;
         assertTrue(avg < TestConfig.budget(TestConfig.INVENTORY_BUDGET),
-            "the images took " + avg + " ms to load on average");
+            "the images took " + avg + " ms on average");
     }
 
     private long elapsedMillis(long start) {
