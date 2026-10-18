@@ -212,6 +212,13 @@ public abstract class BaseTest {
             "--disable-dev-shm-usage",
             "--window-size=1920,1080",
             "--disable-gpu",
+            // Disable the Back/Forward Cache so that after deleteAllCookies()
+            // the next driver.get() always fetches a fresh document from the
+            // server instead of restoring a cached SPA page whose in-memory
+            // React state never re-evaluates the auth cookie. This is
+            // essential for the perf-budget tests (Test27) which re-login
+            // multiple times within the same browser session.
+            "--disable-features=BackforwardCache",
             // The CI images reach the site through a TLS-inspecting proxy whose CA
             // lives in the system trust store; Chrome keeps its own store, so the
             // certificate errors of that proxy have to be tolerated.
