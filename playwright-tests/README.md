@@ -157,15 +157,18 @@ SAUCE_DEMO_BASE_URL=https://www.saucedemo.com
 
 ## 📈 Результаты
 
-Прогон на Chromium (октябрь 2026):
+Прогон на Chromium (октябрь 2026, локально):
 
 | Реализация | Собрано | Passed | Skipped |
 |---|---|---|---|
-| TypeScript | 58 | 57 | 1 (`24-about-page`, баг SauceDemo) |
-| JavaScript | 58 | 57 | 1 (`24-about-page`, баг SauceDemo) |
-| Python | 62 | 61 | 1 (`24-about-page`, баг SauceDemo) |
-| C# | 58 | 57 | 1 (`About page`, баг SauceDemo) |
-| Java | 58 | 57 | 1 (`About page`, баг SauceDemo) |
+| TypeScript | 58 | 56 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+| JavaScript | 58 | 56 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+| Python | 62 | 59 | 3 (`14-remove-from-cart`, `24-about-page`, `28-reset-app-state:2`) |
+| C# | 58 | 56 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+| Java | 58 | 58 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+
+`24-about-page` — About ведёт на `saucelabs.com` (403).
+`28-reset-app-state:2` — второй сабтест пропускается: `SAUCE_DEMO_BUG` (Reset App State требует page reload, который на GitHub Pages перенаправляет на логин).
 
 Firefox и WebKit сконфигурированы, но в последнем прогоне не проверялись.
 
