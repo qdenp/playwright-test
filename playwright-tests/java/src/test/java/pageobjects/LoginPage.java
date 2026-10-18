@@ -125,7 +125,7 @@ public class LoginPage {
         if (!isHamburgerMenuOpen()) {
             return;
         }
-        WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+        WebElement closeBtn = driver.findElement(closeButton);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
             "arguments[0].click();", closeBtn);
         wait.until(d -> {
