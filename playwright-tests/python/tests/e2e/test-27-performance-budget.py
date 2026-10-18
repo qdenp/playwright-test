@@ -102,7 +102,7 @@ def test_verify_product_images_load_within_budget(page):
     inventory_page.wait_for_page_load()
 
     start_time = time.time() * 1000
-    images = page.locator(".inventory_item_img")
+    images = inventory_page.product_images
     images.first.wait_for(state="visible")
     load_time = time.time() * 1000 - start_time
 

@@ -1,5 +1,5 @@
 import { test, expect } from "../fixtures";
-import { COMPLETE_ORDER_TEXT } from "../config";
+import { COMPLETE_ORDER_TEXT, timeouts } from "../config";
 
 /**
  * Full purchase flow (E2E)
@@ -26,7 +26,7 @@ test("Full purchase flow (E2E)", async ({ authenticatedPage }) => {
   await checkoutPage.clickContinue();
 
   // Complete order
-  await expect(checkoutPage.finishButton).toBeVisible({ timeout: 120000 });
+  await expect(checkoutPage.finishButton).toBeVisible({ timeout: timeouts.NAVIGATION });
 
   // Verify the order totals: item total equals the sum of the item prices
   const itemPrices = await checkoutPage.getSummaryItemPrices();
@@ -47,6 +47,6 @@ test("Full purchase flow (E2E)", async ({ authenticatedPage }) => {
   await checkoutPage.clickFinish();
 
   // Verify success
-  await expect(checkoutPage.completeTitle).toBeVisible({ timeout: 120000 });
+  await expect(checkoutPage.completeTitle).toBeVisible({ timeout: timeouts.NAVIGATION });
   await expect(checkoutPage.completeTitle).toContainText(COMPLETE_ORDER_TEXT);
 });

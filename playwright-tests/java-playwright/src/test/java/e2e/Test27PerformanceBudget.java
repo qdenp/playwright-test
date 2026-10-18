@@ -93,8 +93,8 @@ class Test27PerformanceBudget extends BaseTest {
         inventoryPage.waitForPageLoad();
 
         long startTime = System.currentTimeMillis();
-        Locator images = page.locator(".inventory_item_img");
-        images.first().waitFor(new Locator.WaitForOptions().setTimeout(3000));
+        inventoryPage.getProductImages().first().waitFor(new Locator.WaitForOptions()
+                .setTimeout(TestConfig.DEFAULT_TIMEOUT));
         long loadTime = System.currentTimeMillis() - startTime;
 
         Assertions.assertTrue(loadTime < TestConfig.IMAGES_BUDGET);

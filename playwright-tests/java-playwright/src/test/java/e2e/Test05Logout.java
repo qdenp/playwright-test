@@ -3,6 +3,7 @@ package e2e;
 import com.microsoft.playwright.*;
 import config.TestConfig;
 import pageobjects.InventoryPage;
+import pageobjects.LoginPage;
 import base.BaseTest;
 import org.junit.jupiter.api.*;
 
@@ -24,9 +25,10 @@ class Test05Logout extends BaseTest {
         inventoryPage.clickLogout();
 
         // Logging out brings the login form back
-        Assertions.assertTrue(page.locator("#user-name").isVisible());
-        Assertions.assertTrue(page.locator("#password").isVisible());
-        Assertions.assertTrue(page.locator("#login-button").isVisible());
+        LoginPage loginPage = new LoginPage(page);
+        Assertions.assertTrue(loginPage.getUsernameInput().isVisible());
+        Assertions.assertTrue(loginPage.getPasswordInput().isVisible());
+        Assertions.assertTrue(loginPage.getLoginButton().isVisible());
 
         // The inventory page is not reachable any more
         Assertions.assertFalse(inventoryPage.getHeaderTitle().isVisible());
