@@ -7,7 +7,10 @@
 - Полностью статический React SPA (Vite build)
 - Клиентская генерация PDF (`@react-pdf/renderer`)
 - localStorage для корзины и авторизации
-- 29 e2e-тестов (TypeScript, JavaScript, Python, C#, Java)
+- 29 e2e-тестовых файлов (NN-topic) в каждой из 5 реализаций
+- TypeScript считается эталоном; правки зеркалируются в JS, Python, C#, Java
+- Java реализация использует **Selenium WebDriver + JUnit 5** (не Playwright)
+- Java perf-budget тесты (Test27) используют warmup + 3-run averaging с перелогином через `resetToLoginPage()`
 
 ## Деплой на GitHub Pages
 
@@ -40,26 +43,28 @@ node saucedemo-server.js
 
 ## Тесты
 
-Тесты находятся в `playwright-tests/` и настроены на `http://localhost:3000`.
+Тесты находятся в `playwright-tests/`.
 
 ```bash
-# TypeScript
+# TypeScript (эталонная реализация)
 cd playwright-tests/typescript
-npx playwright test --project=chromium
+npx tsc --noEmit && npx playwright test --project=chromium --reporter=line
 
 # JavaScript
 cd ../js
-npx playwright test --project=chromium
+npx playwright test --project=chromium --reporter=line
 
 # Python
 cd ../python
 pytest
 
-# C#
+# C# (Playwright .NET + xUnit)
 cd ../csharp/PlaywrightTests
 dotnet test
 
-# Java
+# Java (Selenium WebDriver + JUnit 5)
 cd ../java
-mvn test
+mvn test -Dheadless=true
 ```
+
+CI для Java: `.github/workflows/selenium-java.yml`
