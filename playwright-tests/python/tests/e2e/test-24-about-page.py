@@ -31,4 +31,6 @@ def test_about_page(page):
     # Return to Products and check that the app is still alive.
     inventory_page.go_to()
     inventory_page.wait_for_page_load()
-    expect(inventory_page.header_title).to_contain_text("Products", timeout=DEFAULT_TIMEOUT)
+    expect(inventory_page.header_title).to_contain_text(
+        "Products", timeout=DEFAULT_TIMEOUT
+    )
