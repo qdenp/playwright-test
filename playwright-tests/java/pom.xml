@@ -58,6 +58,14 @@
                suite: on a 2-CPU machine headless Chrome starves and a single
                click may not take effect within the wait budget. -->
           <rerunFailingTestsCount>1</rerunFailingTestsCount>
+          <!-- Run tests in parallel: each test gets its own WebDriver instance
+               via @BeforeEach, so they are fully isolated. Two threads are
+               safe for CI runners with 2-4 CPUs; the bfcache-disabling flag
+               ensures cookie-based re-login works reliably in parallel. -->
+          <parallel>methods</parallel>
+          <threadCount>2</threadCount>
+          <forkCount>1</forkCount>
+          <reuseForks>true</reuseForks>
         </configuration>
       </plugin>
     </plugins>
