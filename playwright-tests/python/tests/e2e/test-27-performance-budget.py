@@ -43,7 +43,9 @@ def test_load_login_page_within_2_seconds(page, base_url):
 
     avg_load_time = sum(load_times) / len(load_times)
     assert avg_load_time < PERFORMANCE_BUDGETS["LOGIN_PAGE"]
-    print(f"Login page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs")
+    print(
+        f"Login page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs"
+    )
 
 
 def test_load_inventory_page_within_3_seconds_after_login(page):
@@ -62,7 +64,9 @@ def test_load_inventory_page_within_3_seconds_after_login(page):
 
     avg_load_time = sum(load_times) / len(load_times)
     assert avg_load_time < PERFORMANCE_BUDGETS["INVENTORY_PAGE"]
-    print(f"Inventory page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs")
+    print(
+        f"Inventory page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs"
+    )
 
 
 def test_load_all_6_products_within_performance_budget(page):
@@ -82,7 +86,9 @@ def test_load_all_6_products_within_performance_budget(page):
     avg_load_time = sum(load_times) / len(load_times)
     assert inventory_page.get_product_count() == 6
     assert avg_load_time < PERFORMANCE_BUDGETS["PRODUCTS_LIST"]
-    print(f"All 6 products avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs")
+    print(
+        f"All 6 products avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs"
+    )
 
 
 def test_load_cart_page_within_2_seconds(page):
@@ -115,7 +121,9 @@ def test_load_cart_page_within_2_seconds(page):
 
     avg_load_time = sum(load_times) / len(load_times)
     assert avg_load_time < PERFORMANCE_BUDGETS["CART_PAGE"]
-    print(f"Cart page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs")
+    print(
+        f"Cart page avg load time: {avg_load_time:.0f}ms over {MEASUREMENT_COUNT} runs"
+    )
 
 
 def test_verify_page_load_consistency_3_runs(page):
