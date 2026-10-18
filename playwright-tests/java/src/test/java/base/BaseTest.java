@@ -215,6 +215,8 @@ public abstract class BaseTest {
             "--disable-dev-shm-usage",
             "--window-size=1920,1080",
             "--disable-gpu",
+            // Allow target="_blank" links to open new tabs in headless Chrome
+            "--disable-popup-blocking",
             // The CI images reach the site through a TLS-inspecting proxy whose CA
             // lives in the system trust store; Chrome keeps its own store, so the
             // certificate errors of that proxy have to be tolerated.

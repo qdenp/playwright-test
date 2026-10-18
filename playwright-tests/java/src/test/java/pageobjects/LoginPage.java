@@ -21,10 +21,8 @@ public class LoginPage {
     private final By passwordInput = By.id("password");
     private final By loginButton = By.id("login-button");
     private final By errorMessage = By.cssSelector(".error-message-container");
-    private final By errorBanner = By.cssSelector("[role='alert']");
     private final By hamburgerMenu = By.id("react-burger-menu-btn");
     private final By closeButton = By.id("react-burger-cross-btn");
-    private final By menuOverlay = By.cssSelector(".bm-menu-wrap");
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -78,12 +76,7 @@ public class LoginPage {
     }
 
     public String getErrorMessage() {
-        try {
-            if (driver.findElement(errorBanner).isDisplayed()) {
-                return driver.findElement(errorBanner).getText();
-            }
-        } catch (Exception ignored) {}
-        return driver.findElement(errorMessage).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 
     public boolean isErrorMessageVisible() {

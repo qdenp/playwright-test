@@ -38,8 +38,6 @@ public class InventoryPage {
     public final By socialLinkedinLink = By.cssSelector("[data-test='social-linkedin']");
 
     private final By resetSidebarLink = By.cssSelector("[data-test='reset-sidebar-link']");
-    private final By logoutSidebarLink = By.cssSelector("[data-test='logout-sidebar-link']");
-    private final By inventorySidebarLink = By.cssSelector("[data-test='inventory-sidebar-link']");
     private final By menuItems = By.cssSelector(".bm-item-list a");
     private final By inventoryItemName = By.cssSelector("[data-test='inventory-item-name']");
     private final By backToProductsButton = By.cssSelector("[data-test='back-to-products']");
@@ -56,14 +54,10 @@ public class InventoryPage {
 
     public void waitForPageLoad() {
         WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(TestConfig.NAVIGATION_TIMEOUT));
-        // SPA may render .title with delay - try both title and products
-        try {
-            longWait.until(ExpectedConditions.visibilityOfElementLocated(headerTitle));
-        } catch (Exception ignored) {
-            // If title not visible, wait for products instead
-        }
-        longWait.until(ExpectedConditions.presenceOfElementLocated(products));
-        // Give React SPA time to fully render
+        longWait.until(ExpectedConditions.or(
+            ExpectedConditions.visibilityOfElementLocated(headerTitle),
+            ExpectedConditions.presenceOfElementLocated(products)
+        ));
         longWait.until(ExpectedConditions.visibilityOfElementLocated(productNames));
     }
 
@@ -293,12 +287,7 @@ public class InventoryPage {
 
     public void clickLogout() {
         // The logout link is inside the hamburger menu - open it first.
-        // Wait for inventory page to be fully loaded before opening menu.
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='primary-header']")));
-        } catch (Exception e) {
-            return;
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='primary-header']")));
         openHamburgerMenu();
         // Wait for menu items to be present (isDisplayed may fail on overlay
         // elements in Chrome 155, so use a JS offsetParent check on the list).
@@ -312,7 +301,7 @@ public class InventoryPage {
                 return false;
             }
         });
-        WebElement logoutEl = driver.findElement(logoutSidebarLink);
+        WebElement logoutEl = driver.findElement(logoutLink);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
             "arguments[0].click();", logoutEl);
         // The SPA redirects to the login page after logout; wait for it.
@@ -328,7 +317,7 @@ public class InventoryPage {
     }
 
     public boolean isInventoryLinkVisible() {
-        return isSidebarLinkVisible(inventorySidebarLink);
+        return isSidebarLinkVisible(inventoryLink);
     }
 
     public boolean isAboutLinkVisible() {
@@ -389,7 +378,7 @@ public class InventoryPage {
     }
 
     public void continueShopping() {
-        WebElement link = wait.until(ExpectedConditions.presenceOfElementLocated(inventorySidebarLink));
+        WebElement link = wait.until(ExpectedConditions.presenceOfElementLocated(inventoryLink));
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
             "arguments[0].click();", link);
     }
