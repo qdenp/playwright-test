@@ -1,40 +1,40 @@
 # Playwright E2E Tests — Sauce Demo
 
-Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **TypeScript**, **JavaScript**, **Python** (Playwright), **C#** (Playwright for .NET) и **Java** (Selenium).
+Комплексные E2E-тесты для [Sauce Demo](https://www.saucedemo.com/) на **TypeScript**, **JavaScript**, **Python** (Playwright), **C#** (Playwright for .NET), **Java** (Selenium WebDriver + JUnit 5) и **Java** (Playwright for Java + JUnit 5).
 
 ## 📋 Содержание
 
-| # | Описание | TS | JS | Python | C# | Java |
-|---|----------|----|----|--------|----|------|
-| 01 | Успешный логин | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 02 | Неверный пароль | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 03 | Заблокированный пользователь | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 04 | Параметризованный логин | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 05 | Выход из аккаунта | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 06 | Выход с разных страниц | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 07 | Сортировка по цене | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 08 | Сортировка по имени | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 09 | Страница товара | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 10 | Разные пользователи = одинаковый каталог | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 11 | Изображения товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 12 | Карточки товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 13 | Добавление товара в корзину | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 14 | Удаление из корзины | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 15 | Арифметика корзины (badge) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 16 | Добавление/удаление всех товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 17 | Количество в корзине не редактируется | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 18 | Комбинации товаров (cheapest/most expensive) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 19 | Добавление всех шести товаров | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 20 | Полный флоу покупки | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 21 | Валидация чекаута | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 22 | Экспорт PDF заказа | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 23 | Гамбургер-меню | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 24 | About page | skip | skip | skip | skip | skip |
-| 25 | Адаптивность | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 26 | Навигация браузера | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 27 | Бюджет производительности | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 28 | Сброс состояния приложения | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 29 | Ссылки на соцсети | ✅ | ✅ | ✅ | ✅ | ✅ |
+| # | Описание | TS | JS | Python | C# | Java (Selenium) | Java (Playwright) |
+|---|----------|----|----|--------|----|----|----|
+| 01 | Успешный логин | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 02 | Неверный пароль | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 03 | Заблокированный пользователь | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 04 | Параметризованный логин | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 05 | Выход из аккаунта | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 06 | Выход с разных страниц | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 07 | Сортировка по цене | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 08 | Сортировка по имени | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 09 | Страница товара | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 10 | Разные пользователи = одинаковый каталог | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 11 | Изображения товаров | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 12 | Карточки товаров | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 13 | Добавление товара в корзину | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 14 | Удаление из корзины | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 15 | Арифметика корзины (badge) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 16 | Добавление/удаление всех товаров | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 17 | Количество в корзине не редактируется | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 18 | Комбинации товаров (cheapest/most expensive) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 19 | Добавление всех шести товаров | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 20 | Полный флоу покупки | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 21 | Валидация чекаута | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 22 | Экспорт PDF заказа | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 23 | Гамбургер-меню | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 24 | About page | skip | skip | skip | skip | skip | skip |
+| 25 | Адаптивность | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 26 | Навигация браузера | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 27 | Бюджет производительности | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 28 | Сброс состояния приложения | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 29 | Ссылки на соцсети | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 `24-about-page` помечен `skip` во всех реализациях: About ведёт на
 `saucelabs.com`, который отдаёт 403.
@@ -76,8 +76,16 @@ dotnet test --filter "FullyQualifiedName~SortByPriceTests"
 
 ```bash
 cd java
-mvn test
-mvn test -Dtest=SortByPriceTest
+mvn test -Dheadless=true
+mvn test -Dtest=Test07SortByPrice
+```
+
+### Java (Playwright for Java + JUnit 5)
+
+```bash
+cd java-playwright
+mvn test -Dheadless=true
+mvn test -Dtest=Test07SortByPrice
 ```
 
 ## 📊 Архитектура
@@ -119,6 +127,12 @@ playwright-tests/
 │   └── src/test/java/
 │       ├── config/              # TestConfig (креды, таймауты из env)
 │       ├── base/                # BaseTest (headless Chrome, хелперы)
+│       ├── pageobjects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
+│       └── e2e/                 # 29 классов сценариев
+├── java-playwright/         # Набор на Java (Playwright for Java + JUnit 5)
+│   └── src/test/java/
+│       ├── config/              # TestConfig, PlaywrightConfig
+│       ├── base/                # BaseTest (Playwright fixtures)
 │       ├── pageobjects/         # LoginPage, InventoryPage, CartPage, CheckoutPage
 │       └── e2e/                 # 29 классов сценариев
 ├── README.md
@@ -165,7 +179,8 @@ SAUCE_DEMO_BASE_URL=https://www.saucedemo.com
 | JavaScript | 58 | 56 | 2 (`24-about-page`, `28-reset-app-state:2`) |
 | Python | 62 | 59 | 3 (`14-remove-from-cart`, `24-about-page`, `28-reset-app-state:2`) |
 | C# | 58 | 56 | 2 (`24-about-page`, `28-reset-app-state:2`) |
-| Java | 58 | 58 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+| Java (Selenium) | 58 | 58 | 2 (`24-about-page`, `28-reset-app-state:2`) |
+| Java (Playwright) | 58 | 58 | 2 (`24-about-page`, `28-reset-app-state:2`) |
 
 `24-about-page` — About ведёт на `saucelabs.com` (403).
 `28-reset-app-state:2` — второй сабтест пропускается: `SAUCE_DEMO_BUG` (Reset App State требует page reload, который на GitHub Pages перенаправляет на логин).

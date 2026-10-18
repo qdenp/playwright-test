@@ -14,36 +14,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: maven
-
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: java-playwright-maven-${{ runner.os }}-${{ hashFiles('playwright-tests/java-playwright/pom.xml') }}
-          restore-keys: |
-            java-playwright-maven-${{ runner.os }}-
-
-      - name: Build
-        run: mvn compile -DskipTests
-        working-directory: ./playwright-tests/java-playwright
-
   test:
     name: Tests (Chromium)
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,29 +27,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: maven
-
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: java-playwright-maven-${{ runner.os }}-${{ hashFiles('playwright-tests/java-playwright/pom.xml') }}
-          restore-keys: |
-            java-playwright-maven-${{ runner.os }}-
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: cache-browser
-        with:
-          path: ~/.cache/ms-playwright
-          key: java-playwright-browser-${{ runner.os }}-${{ hashFiles('playwright-tests/java-playwright/pom.xml') }}
-
-      - name: Install Playwright browsers
-        if: steps.cache-browser.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-        working-directory: ./playwright-tests/java-playwright
+          cache-dependency-path: playwright-tests/java-playwright/pom.xml
 
       - name: Run Maven tests
-        run: mvn test
+        run: mvn test -Dheadless=true
         working-directory: ./playwright-tests/java-playwright
         env:
           SAUCE_DEMO_USERNAME: standard_user
