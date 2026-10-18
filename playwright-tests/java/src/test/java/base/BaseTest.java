@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -180,27 +179,6 @@ public abstract class BaseTest {
     /** Change the viewport of the browser window, e.g. 375x667 for a phone. */
     protected void setViewport(int width, int height) {
         driver.manage().window().setSize(new Dimension(width, height));
-    }
-
-    /** Wait until the browser reports the given number of open windows / tabs. */
-    protected void waitForWindowCount(int expected) {
-        waitFor(TestConfig.DEFAULT_TIMEOUT)
-            .until(d -> d.getWindowHandles().size() == expected);
-    }
-
-    /**
-     * Switch to the window that is not {@code currentHandle} and return its handle.
-     * Used by the scenarios that open a link in a new tab.
-     */
-    protected String switchToOtherWindow(String currentHandle) {
-        Set<String> handles = driver.getWindowHandles();
-        for (String handle : handles) {
-            if (!handle.equals(currentHandle)) {
-                driver.switchTo().window(handle);
-                return handle;
-            }
-        }
-        throw new IllegalStateException("No window other than " + currentHandle + " is open: " + handles);
     }
 
     /** Handles of all currently open windows / tabs. */
