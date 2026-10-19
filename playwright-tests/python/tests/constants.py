@@ -45,6 +45,7 @@ LOGIN_TEST_PARAMS = [
 def get_all_credentials():
     """Return a dict of all users and their passwords from SAUCE_DEMO_PASSWORDS"""
     import os
+
     passwords_str = os.getenv("SAUCE_DEMO_PASSWORDS", "")
     if not passwords_str:
         return {}
