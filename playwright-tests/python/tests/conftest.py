@@ -10,38 +10,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import pytest
 
-
-def get_all_credentials():
-    """Return a dict of all users and their passwords from SAUCE_DEMO_PASSWORDS"""
-    passwords_str = os.getenv("SAUCE_DEMO_PASSWORDS", "")
-    if not passwords_str:
-        return {}
-    credentials = {}
-    for pair in passwords_str.split(","):
-        username, password = pair.split(":")
-        credentials[username] = password
-    return credentials
-
-
-def get_login_params(index=None):
-    """
-    Return the parameters for the parameterised test.
-    If index is given, return that case; otherwise the standard credentials.
-    """
-    params = [
-        ("standard_user", "secret_sauce", True, "Products", None),
-        ("problem_user", "secret_sauce", True, "Products", None),
-        ("performance_glitch_user", "secret_sauce", True, "Products", None),
-        ("error_user", "secret_sauce", True, "Products", None),
-        ("visual_user", "secret_sauce", True, "Products", None),
-        ("locked_out_user", "secret_sauce", False, None, "locked out"),
-        ("standard_user", "wrong_password", False, None, "do not match"),
-        ("", "secret_sauce", False, None, "Username is required"),
-    ]
-
-    if index is not None and index < len(params):
-        return params[index]
-    return ("standard_user", "secret_sauce", True, "Products", None)
+# Re-export test data so existing imports still work
+from constants import get_all_credentials, get_login_params
 
 
 @pytest.fixture
@@ -49,12 +19,22 @@ def authenticated_page(page):
     """Automatically authenticated page"""
     from page_objects.login_page import LoginPage
     from page_objects.inventory_page import InventoryPage
+    from page_objects.cart_page import CartPage
+    from page_objects.checkout_page import CheckoutPage
 
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
+    cart_page = CartPage(page)
+    checkout_page = CheckoutPage(page)
 
     login_page.go_to()
     login_page.login()  # With no arguments - uses the credentials from the env vars
     inventory_page.wait_for_page_load()
 
-    return {"page": page, "login_page": login_page, "inventory_page": inventory_page}
+    return {
+        "page": page,
+        "login_page": login_page,
+        "inventory_page": inventory_page,
+        "cart_page": cart_page,
+        "checkout_page": checkout_page,
+    }

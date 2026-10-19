@@ -6,7 +6,7 @@ import pytest
 from playwright.sync_api import expect
 from constants import SLOW_TIMEOUT
 from page_objects.login_page import LoginPage
-from conftest import get_login_params
+from constants import get_login_params
 from page_objects.inventory_page import InventoryPage
 
 

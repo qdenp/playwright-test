@@ -12,7 +12,7 @@ test("Cart badge increments on add and decrements on remove", async ({
   const cartPage = new CartPage(page);
 
   // The cart starts empty - no badge
-  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
+  await expect(inventoryPage.cartBadgeCount).toBeHidden();
 
   // Adding a product increments the badge by 1
   await inventoryPage.addProductToCart(0);
@@ -34,5 +34,5 @@ test("Cart badge increments on add and decrements on remove", async ({
   // Removing the last product clears the badge
   await cartPage.removeItem(0);
   await expect(cartPage.cartItems).toHaveCount(0);
-  await expect(inventoryPage.cartBadgeCount).toHaveCount(0);
+  await expect(inventoryPage.cartBadgeCount).toBeHidden();
 });

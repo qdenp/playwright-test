@@ -22,6 +22,6 @@ test("Sorting products by name (a to z)", async ({ page }) => {
   const names = await inventoryPage.getAllProductNames();
 
   for (let i = 1; i < names.length; i++) {
-    expect(names[i].toLowerCase() > names[i - 1].toLowerCase()).toBeTruthy();
+    expect(names[i].toLowerCase() > names[i - 1].toLowerCase()).toBe(true);
   }
 });

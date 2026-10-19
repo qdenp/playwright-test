@@ -10,8 +10,6 @@ from page_objects.cart_page import CartPage
 
 
 def test_remove_from_cart(page):
-    """SKIPPED on GitHub Pages: localStorage cleared after removeItem + reload"""
-    pytest.skip("localStorage cleared after removeItem + reload on GitHub Pages")
     login_page = LoginPage(page)
     inventory_page = InventoryPage(page)
     cart_page = CartPage(page)
@@ -31,6 +29,7 @@ def test_remove_from_cart(page):
     cart_page.remove_item(0)
     expect(cart_page.cart_items).to_have_count(1)
 
-    page.reload()
-    cart_page.wait_for_page_load()
+    # Go back to inventory and verify badge reflects the removal
+    cart_page.continue_shopping_button.click()
+    inventory_page.wait_for_page_load()
     expect(inventory_page.cart_badge_count).to_have_text("1")

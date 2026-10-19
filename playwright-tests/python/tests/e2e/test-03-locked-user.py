@@ -5,7 +5,7 @@ Locked out user sees the locked out error
 import pytest
 from playwright.sync_api import expect
 from page_objects.login_page import LoginPage
-from conftest import get_all_credentials
+from constants import get_all_credentials
 
 
 def test_locked_user(page):

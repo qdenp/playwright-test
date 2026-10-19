@@ -5,7 +5,7 @@ All users see the same catalogue
 import pytest
 from playwright.sync_api import expect
 from page_objects.login_page import LoginPage
-from conftest import get_all_credentials
+from constants import get_all_credentials
 from page_objects.inventory_page import InventoryPage
 
 
