@@ -40,6 +40,8 @@ LOGIN_TEST_PARAMS = [
 ]
 
 # All users and their passwords from SAUCE_DEMO_PASSWORDS env var
+
+
 def get_all_credentials():
     """Return a dict of all users and their passwords from SAUCE_DEMO_PASSWORDS"""
     import os
